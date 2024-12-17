@@ -1,0 +1,31 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import databaseConfig from '../../infrastructure/config/database.config';
+
+import { RssFeedModule } from './rss-feed/rss-feed.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      isGlobal: true, // Rendre ConfigService accessible partout
+      load: [databaseConfig], // Charger la config via registerAs('database', ...)
+    }),
+
+    // Configuration TypeORM avec forRootAsync
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        // Récupère l'objet renvoyé par "registerAs('database', ...)"
+        // Note : par défaut, configService.get('database') va récupérer
+        // l'objet retourné par la fonction default() dans database.config.ts
+        return configService.get('database');
+      },
+      inject: [ConfigService],
+    }),
+    RssFeedModule,
+  ],
+})
+export class AppModule {}
