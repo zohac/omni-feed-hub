@@ -3,11 +3,19 @@
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { RssFeedEntity } from '../entities';
 
+import { RssFeedCollectionMapper } from './rss-feed.collection.mapper';
+
 export class RssFeedMapper {
   static toDomain(entity: RssFeedEntity): RssFeed {
     const domain = this.toPartialDomain(entity);
 
     domain.description = entity.description;
+
+    if (undefined !== entity.collection && null !== entity.collection) {
+      domain.collection = RssFeedCollectionMapper.toPartialDomain(
+        entity.collection,
+      );
+    }
 
     return domain;
   }
@@ -19,6 +27,14 @@ export class RssFeedMapper {
   static toEntity(domain: RssFeed): RssFeedEntity {
     const entity = this.toPartialEntity(domain);
 
+    entity.description = domain.description;
+
+    if (undefined !== domain.collection && null !== domain.collection) {
+      entity.collection = RssFeedCollectionMapper.toPartialEntity(
+        domain.collection,
+      );
+    }
+
     return entity;
   }
 
@@ -27,7 +43,6 @@ export class RssFeedMapper {
     if (undefined !== domain.id) entity.id = domain.id;
     entity.title = domain.title;
     entity.url = domain.url;
-    entity.description = domain.description;
 
     return entity;
   }

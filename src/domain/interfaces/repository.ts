@@ -9,7 +9,7 @@ export interface IRepository<T extends IEntity> {
 
   create(entity: T): Promise<T>;
 
-  update(entity: T): Promise<T>;
+  update(entity: T): Promise<T | null>;
 
   delete(id: number): Promise<void>;
 }

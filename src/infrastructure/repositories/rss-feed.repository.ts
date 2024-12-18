@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { IRepository } from '../../domain/interfaces/repository';
-import { RssFeedEntity } from '../entities/rss-feed.entity';
+import { RssFeedEntity } from '../entities';
 import { RssFeedMapper } from '../mappers/rss-feed.mapper';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class RssFeedRepository implements IRepository<RssFeed> {
   async getOneById(id: number): Promise<RssFeed | null> {
     const entity = await this.repository.findOne({
       where: { id },
-      // relations: ['collection'],
+      relations: ['collection'],
     });
     if (!entity) return null;
 
@@ -26,13 +26,13 @@ export class RssFeedRepository implements IRepository<RssFeed> {
 
   async getAll(): Promise<RssFeed[]> {
     const entities = await this.repository.find({
-      // relations: ['collection'],
+      relations: ['collection'],
     });
     return entities.map((entity) => RssFeedMapper.toDomain(entity));
   }
 
   async create(feed: RssFeed): Promise<RssFeed> {
-    const rssFeedEntity = RssFeedMapper.toPartialEntity(feed);
+    const rssFeedEntity = RssFeedMapper.toEntity(feed);
 
     const entity = this.repository.create(rssFeedEntity);
     const result = await this.repository.save(entity);
@@ -40,12 +40,12 @@ export class RssFeedRepository implements IRepository<RssFeed> {
     return RssFeedMapper.toDomain(result);
   }
 
-  async update(feed: RssFeed): Promise<RssFeed> {
-    const rssFeedEntity = RssFeedMapper.toPartialEntity(feed);
+  async update(feed: RssFeed): Promise<RssFeed | null> {
+    const rssFeedEntity = RssFeedMapper.toEntity(feed);
 
     await this.repository.update(rssFeedEntity.id, rssFeedEntity);
 
-    return RssFeedMapper.toDomain(rssFeedEntity);
+    return await this.getOneById(rssFeedEntity.id);
   }
 
   async delete(id: number): Promise<void> {

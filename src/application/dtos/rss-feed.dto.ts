@@ -1,6 +1,13 @@
 // src/application/dtos/rss-feed.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Min,
+} from 'class-validator';
 
 export class CreateRssFeedDto {
   @ApiProperty({ description: 'Title of the RSS feed' })
@@ -16,6 +23,12 @@ export class CreateRssFeedDto {
   @IsNotEmpty()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({ description: 'Collection id of the feed' })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  collectionId?: number;
 }
 
 export class UpdateRssFeedDto {
@@ -36,4 +49,10 @@ export class UpdateRssFeedDto {
   @IsNotEmpty()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({ description: 'New collection id of the feed' })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  collectionId?: number;
 }

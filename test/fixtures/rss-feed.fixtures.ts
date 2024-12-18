@@ -9,14 +9,14 @@ export const createRssFeedFixture = async (
     {
       id: undefined,
       title: 'Feed 1',
-      url: 'http://example.com/feed1',
+      url: 'https://example.com/feed1',
       description: 'Description 1',
       collectionId: 1,
     },
     {
       id: undefined,
       title: 'Feed 2',
-      url: 'http://example.com/feed2',
+      url: 'https://example.com/feed2',
       description: 'Description 2',
     },
   ];

@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import databaseConfig from '../../infrastructure/config/database.config';
+import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
 
 import { RssFeedModule } from './rss-feed/rss-feed.module';
 
@@ -26,6 +27,7 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
       inject: [ConfigService],
     }),
     RssFeedModule,
+    RssFeedCollectionModule,
   ],
 })
 export class AppModule {}

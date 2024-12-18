@@ -8,13 +8,18 @@ import {
   CreateRssFeedDto,
   UpdateRssFeedDto,
 } from '../../src/application/dtos/rss-feed.dto';
-import { RssFeedEntity } from '../../src/infrastructure/entities';
+import {
+  RssFeedCollectionEntity,
+  RssFeedEntity,
+} from '../../src/infrastructure/entities';
 import { AppModule } from '../../src/presentation/modules/app.module';
+import { createRssFeedCollectionFixture } from '../fixtures/rss-feed.collection.fixtures';
 import { createRssFeedFixture } from '../fixtures/rss-feed.fixtures';
 
 describe('RssFeedController (e2e)', () => {
   let app: INestApplication;
   let repository: Repository<RssFeedEntity>;
+  let collectionRepository: Repository<RssFeedCollectionEntity>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -35,6 +40,9 @@ describe('RssFeedController (e2e)', () => {
     repository = moduleFixture.get<Repository<RssFeedEntity>>(
       getRepositoryToken(RssFeedEntity),
     );
+    collectionRepository = moduleFixture.get<
+      Repository<RssFeedCollectionEntity>
+    >(getRepositoryToken(RssFeedCollectionEntity));
 
     // Nettoyer la table avant chaque test (important en E2E)
     await repository.clear();
@@ -103,7 +111,7 @@ describe('RssFeedController (e2e)', () => {
     it('should create a new feed', async () => {
       const newFeedDTO: CreateRssFeedDto = {
         title: 'New Feed',
-        url: 'http://example.com/newfeed',
+        url: 'https://example.com/newfeed',
         description: 'New feed description',
       };
 
@@ -119,6 +127,32 @@ describe('RssFeedController (e2e)', () => {
       const feed = await repository.findOneBy({ id: response.body.id });
       expect(feed).toBeDefined();
       expect(feed?.title).toBe('New Feed');
+    });
+
+    it('should create a new feed with a collection', async () => {
+      const [collection] =
+        await createRssFeedCollectionFixture(collectionRepository);
+
+      const newFeedDTO: CreateRssFeedDto = {
+        title: 'New Feed with collection',
+        url: 'https://example.com/newfeed',
+        description: 'New feed description',
+        collectionId: collection.id,
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/feeds')
+        .send(newFeedDTO);
+
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('title', 'New Feed with collection');
+      expect(response.body).toHaveProperty('collection');
+
+      // Vérifier dans la base de données
+      const feed = await repository.findOneBy({ id: response.body.id });
+      expect(feed).toBeDefined();
+      expect(feed?.title).toBe('New Feed with collection');
     });
 
     it('should return 400 for validation errors', async () => {

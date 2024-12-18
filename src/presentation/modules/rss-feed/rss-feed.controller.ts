@@ -14,7 +14,7 @@ import {
   CreateRssFeedDto,
   UpdateRssFeedDto,
 } from '../../../application/dtos/rss-feed.dto';
-import { RssFeedUseCases } from '../../../application/usecases/rss-feed.usecases';
+import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { RssFeed } from '../../../domain/entities/rss-feed';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
 

@@ -104,37 +104,35 @@ Ensure you have the following installed on your machine:
     - `PORT`: The port on which the server will run. Default is 3000.
     - `DATABASE_PATH`: Path to the SQLite database file. Default is `./rssfeeds.sqlite`.
 
-    2. **TypeScript Configuration**
+2. **TypeScript Configuration**
 
-       Ensure your `tsconfig.json` includes the following settings:
+   Ensure your `tsconfig.json` includes the following settings:
 
-        ```json
-       {
-         "compilerOptions": {
-           "module": "commonjs",
-           "declaration": true,
-           "removeComments": true,
-           "emitDecoratorMetadata": true,
-           "experimentalDecorators": true,
-           "allowSyntheticDefaultImports": true,
-           "target": "ES2021",
-           "sourceMap": true,
-           "outDir": "./dist",
-           "baseUrl": "./",
-           "incremental": true,
-           "skipLibCheck": true,
-           "strictNullChecks": false,
-           "noImplicitAny": false,
-           "strictBindCallApply": false,
-           "forceConsistentCasingInFileNames": false,
-           "noFallthroughCasesInSwitch": false
-         },
-         "exclude": ["node_modules/", "dist/"],
-         "include": ["src/**/*.ts"]
-       }
- 
- 
-        ```
+    ```json
+   {
+     "compilerOptions": {
+       "module": "commonjs",
+       "declaration": true,
+       "removeComments": true,
+       "emitDecoratorMetadata": true,
+       "experimentalDecorators": true,
+       "allowSyntheticDefaultImports": true,
+       "target": "ES2021",
+       "sourceMap": true,
+       "outDir": "./dist",
+       "baseUrl": "./",
+       "incremental": true,
+       "skipLibCheck": true,
+       "strictNullChecks": false,
+       "noImplicitAny": false,
+       "strictBindCallApply": false,
+       "forceConsistentCasingInFileNames": false,
+       "noFallthroughCasesInSwitch": false
+     },
+     "exclude": ["node_modules/", "dist/"],
+     "include": ["src/**/*.ts"]
+    }
+    ```
 
 ### Running the Application
 
@@ -192,53 +190,55 @@ http://localhost:3000/api-docs
 ## Project Structure
 
 ```bash
-rss-feed-manager/
+omni-feed-hub/
 ├── src/
 │   ├── application/
 │   │   ├── dtos/
+│   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
 │   │   └── usecases/
-│   │       ├── ActionUseCases.ts
-│   │       ├── AIAgentUseCases.ts
-│   │       ├── AIAnalysisUseCases.ts
-│   │       ├── ArticleCollectionUseCases.ts
-│   │       ├── ArticleUseCases.ts
-│   │       ├── ParseFeedUseCases.ts
-│   │       ├── RSSFeedCollectionUseCases.ts
-│   │       └── rss-feed.usecases.ts
+│   │       ├── rss-feed.collection.use-cases.ts
+│   │       └── rss-feed.use-cases.ts
 │   ├── domain/
-│   │   └── entities/
+│   │   ├── entities/
+│   │   │   ├── rss-feed.collection.ts
 │   │   │   └── rss-feed.ts
 │   │   └── interfaces/
+│   │       ├── base.collection.ts
 │   │       ├── entity.ts
 │   │       ├── repository.ts
 │   │       └── usecases.ts
 │   ├── infrastructure/
 │   │   ├── Config/
 │   │   │   └── database.config.ts
-│   │   ├── database/
-│   │   │   ├── dataSource.ts
-│   │   │   └── testDataSource.ts
 │   │   ├── entities/
 │   │   │   ├── index.ts
+│   │   │   ├── rss-feed.collection.entity.ts
 │   │   │   └── rss-feed.entity.ts
 │   │   ├── mappers/
+│   │   │   ├── rss-feed.collection.mapper.ts
 │   │   │   └── rss-feed.mapper.ts
 │   │   └── repositories/
+│   │       ├── rss-feed.collection.repository.ts
 │   │       └── Rrss-feed.repository.ts
 │   ├── presentation/
 │   │   ├── modules/
 │   │   │   ├── rss-feed/
 │   │   │   │   ├── rss-feed.controller.ts
 │   │   │   │   └── rss-feed.module.ts
+│   │   │   ├── rss-feed-collection/
+│   │   │   │   ├── rss-feed.collection.controller.ts
+│   │   │   │   └── rss-feed.collection.module.ts
 │   │   │   └── app.module.ts
 │   │   └── pipes/
 │   │       └── parse.positive.int.pipe.ts
 │   └── main.ts
 ├── test/
 │   ├── e2e/
+│   │   ├── rss-feed.collection.controller.e2e.spec.ts
 │   │   └── rss-feed.controller.e2e.spec.ts
 │   └── fixtures/
+│       ├── rss-feed.collection.fixtures.ts
 │       └── rss-feed.fixtures.ts
 ├── .env.example
 ├── .gitignore
