@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NestLoggerAdapter } from './adapters/nest-logger.adapter';
 
 import {
   ArticleEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
 } from './entities';
-import { NestLoggerAdapter } from './nest-logger.adapter';
 import { ArticleRepository } from './repositories/article.repository';
 import { RssFeedCollectionRepository } from './repositories/rss-feed.collection.repository';
 import { RssFeedRepository } from './repositories/rss-feed.repository';

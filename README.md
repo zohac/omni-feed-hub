@@ -21,7 +21,7 @@
 
 ## Description
 
-**RSS Feed Manager** is a RESTful API built with Node.js and TypeScript, designed to manage RSS feeds and organize them
+**Omni Feed Hub** is a RESTful API built with Node.js and TypeScript, designed to manage RSS feeds and organize them
 into collections. Leveraging Clean Architecture principles, the application ensures a modular, maintainable, and
 scalable codebase. The API uses SQLite as the database, managed through TypeORM, and includes comprehensive API
 documentation via Swagger.
@@ -196,9 +196,10 @@ omni-feed-hub/
 │   │   ├── dtos/
 │   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
-│   │   └── scheduler/
-│   │       └── parse.feed.scheduler.ts
+│   │   ├── scheduler/
+│   │   │   └── parse.feed.scheduler.ts
 │   │   └── usecases/
+│   │       ├── parse.feed.use-cases.ts
 │   │       ├── rss-feed.collection.use-cases.ts
 │   │       └── rss-feed.use-cases.ts
 │   ├── domain/
@@ -218,7 +219,9 @@ omni-feed-hub/
 │   │       ├── rss-parser.ts
 │   │       └── usecases.ts
 │   ├── infrastructure/
-│   │   ├── Config/
+│   │   ├── adapters/
+│   │   │   └── nest-logger.adapter.ts
+│   │   ├── config/
 │   │   │   └── database.config.ts
 │   │   ├── entities/
 │   │   │   ├── article.entity.ts
@@ -239,8 +242,7 @@ omni-feed-hub/
 │   │   │   └── schedule.module.ts
 │   │   ├── services/
 │   │   │   └── rss-parser.service.ts
-│   │   ├── infrastructure.module.ts
-│   │   └── nest-logger.adapter.ts
+│   │   └── infrastructure.module.ts
 │   ├── presentation/
 │   │   ├── modules/
 │   │   │   ├── rss-feed/
@@ -279,20 +281,26 @@ omni-feed-hub/
 
 ### Description of Key Directories and Files
 
-- `application/`: Contains use cases, DTOs, and interfaces defining the business logic and contracts.
-- `domain/`: Core entities representing the business models.
-    - `entities/`: Domain entities representing the core business objects.
-- `infrastructure/`:
-    - `config/`: Configuration settings and utilities.
-    - `database/`: TypeORM DataSource configuration.
+- `application/`: Contains use cases, DTOs, and logic for executing application-specific workflows.
+    - `dtos/`: Data Transfer Objects used for input/output validation and data shaping.
+    - `schedulers/`: Schedulers responsible for executing periodic or triggered tasks.
+    - `usecases/`: Application-specific business logic defining workflows and use cases.
+- `domain/`: Core entities and interfaces representing the business models and rules.
+    - `entities/`: Domain entities encapsulating core business data and behavior.
+    - `interfaces/`: Contracts defining abstractions for domain-level services and repositories.
+- `infrastructure/`: Implements the technical details required to support the application.
+    - `adapters/`: Adapters for third-party libraries and framework integrations (e.g., logging, parsers).
+    - `config/`: Configuration settings and environment-specific utilities.
     - `entities/`: TypeORM entity definitions for database interaction.
-    - `mappers/`: Transformations between domain and database entities.
-    - `repositories/`: Data access layer interfacing with TypeORM.
-- `presentation/`:
-    - `controllers/`: Express controllers handling HTTP requests and responses.
-    - `pipes/`: Express controllers handling HTTP requests and responses.
-- `tests/`: Includes E2E tests.
-- `main.ts`: Application entry point, initializing the server and dependencies.
+    - `mappers/`: Components for transforming data between domain and persistence layers.
+    - `repositories/`: Concrete implementations of data access interfaces using TypeORM.
+    - `schedulers/`: Infrastructure-level schedulers managing periodic tasks.
+    - `services/`: Implementation of services interacting with external APIs or systems.
+- `presentation/`: Layer handling user interactions and external API exposure.
+    - `modules/`: NestJS modules defining application features and dependency injection boundaries.
+    - `pipes/`: Pipes for request validation and transformation within the NestJS framework.
+- `test/`: Includes unit tests, integration tests, and end-to-end (E2E) tests.
+- `main.ts`: Application entry point, responsible for initializing the server and dependency injection.
 
 ## License
 

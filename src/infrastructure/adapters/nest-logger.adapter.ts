@@ -1,7 +1,7 @@
-// infrastructure/logger/nest-logger.adapter.ts
+// infrastructure/adapters/nest-logger.adapter.ts
 import { Logger } from '@nestjs/common';
 
-import { ILogger } from '../domain/interfaces/logger';
+import { ILogger } from '../../domain/interfaces/logger';
 
 export class NestLoggerAdapter implements ILogger {
   private readonly logger = new Logger('App'); // nom du contexte
