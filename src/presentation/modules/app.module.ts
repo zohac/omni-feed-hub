@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import databaseConfig from '../../infrastructure/config/database.config';
+import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
+import { InfrastructureScheduleModule } from '../../infrastructure/schedulers/schedule.module';
 import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
 
 import { RssFeedModule } from './rss-feed/rss-feed.module';
@@ -14,8 +16,6 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
       isGlobal: true, // Rendre ConfigService accessible partout
       load: [databaseConfig], // Charger la config via registerAs('database', ...)
     }),
-
-    // Configuration TypeORM avec forRootAsync
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
@@ -26,6 +26,8 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
       },
       inject: [ConfigService],
     }),
+    InfrastructureModule,
+    InfrastructureScheduleModule,
     RssFeedModule,
     RssFeedCollectionModule,
   ],

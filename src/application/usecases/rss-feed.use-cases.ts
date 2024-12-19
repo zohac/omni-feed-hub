@@ -7,6 +7,7 @@ import { IRepository } from '../../domain/interfaces/repository';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateRssFeedDto, UpdateRssFeedDto } from '../dtos/rss-feed.dto';
 
+import { ParseFeedUseCase } from './parse.feed.use-case';
 import { RssFeedCollectionUseCases } from './rss-feed.collection.use-cases';
 
 @Injectable()
@@ -17,6 +18,7 @@ export class RssFeedUseCases
     @Inject('IRepository<RssFeed>')
     private readonly repository: IRepository<RssFeed>,
     private readonly collectionUseCases: RssFeedCollectionUseCases,
+    private readonly parseFeedUseCase: ParseFeedUseCase,
   ) {}
 
   async getAll(): Promise<RssFeed[]> {
@@ -42,7 +44,7 @@ export class RssFeedUseCases
 
     const createdFeed = await this.repository.create(feed);
 
-    // await this.parseFeedUseCase.execute(createdFeed);
+    await this.parseFeedUseCase.execute(createdFeed);
 
     return createdFeed;
   }

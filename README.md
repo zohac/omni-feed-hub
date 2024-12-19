@@ -196,31 +196,51 @@ omni-feed-hub/
 │   │   ├── dtos/
 │   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
+│   │   └── scheduler/
+│   │       └── parse.feed.scheduler.ts
 │   │   └── usecases/
 │   │       ├── rss-feed.collection.use-cases.ts
 │   │       └── rss-feed.use-cases.ts
 │   ├── domain/
 │   │   ├── entities/
+│   │   │   ├── article.ts
+│   │   │   ├── media.attachment.ts
 │   │   │   ├── rss-feed.collection.ts
 │   │   │   └── rss-feed.ts
 │   │   └── interfaces/
+│   │       ├── article.repository.ts
 │   │       ├── base.collection.ts
 │   │       ├── entity.ts
+│   │       ├── item.parser.ts
+│   │       ├── logger.ts
+│   │       ├── parser.output.ts
 │   │       ├── repository.ts
+│   │       ├── rss-parser.ts
 │   │       └── usecases.ts
 │   ├── infrastructure/
 │   │   ├── Config/
 │   │   │   └── database.config.ts
 │   │   ├── entities/
+│   │   │   ├── article.entity.ts
+│   │   │   ├── media.attachment.entity.ts
 │   │   │   ├── index.ts
 │   │   │   ├── rss-feed.collection.entity.ts
 │   │   │   └── rss-feed.entity.ts
 │   │   ├── mappers/
+│   │   │   ├── article.mapper.ts
+│   │   │   ├── media.attachment.mapper.ts
 │   │   │   ├── rss-feed.collection.mapper.ts
 │   │   │   └── rss-feed.mapper.ts
-│   │   └── repositories/
-│   │       ├── rss-feed.collection.repository.ts
-│   │       └── Rrss-feed.repository.ts
+│   │   ├── repositories/
+│   │   │   ├── article.repository.ts
+│   │   │   ├── rss-feed.collection.repository.ts
+│   │   │   └── Rrss-feed.repository.ts
+│   │   ├── schedulers/
+│   │   │   └── schedule.module.ts
+│   │   ├── services/
+│   │   │   └── rss-parser.service.ts
+│   │   ├── infrastructure.module.ts
+│   │   └── nest-logger.adapter.ts
 │   ├── presentation/
 │   │   ├── modules/
 │   │   │   ├── rss-feed/

@@ -14,13 +14,17 @@ import {
   CreateRssFeedDto,
   UpdateRssFeedDto,
 } from '../../../application/dtos/rss-feed.dto';
+import { ParseFeedUseCase } from '../../../application/usecases/parse.feed.use-case';
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { RssFeed } from '../../../domain/entities/rss-feed';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
 
 @Controller('feeds')
 export class RssFeedController {
-  constructor(private readonly useCase: RssFeedUseCases) {}
+  constructor(
+    private readonly useCase: RssFeedUseCases,
+    private readonly parseFeedUseCase: ParseFeedUseCase,
+  ) {}
 
   @ApiOperation({ summary: 'Retrieve all RSS feeds' })
   @ApiResponse({
@@ -67,5 +71,11 @@ export class RssFeedController {
   @HttpCode(204)
   async deleteFeed(@Param('id', ParsePositiveIntPipe) id: number) {
     return await this.useCase.delete(id);
+  }
+
+  @Post('/parse/:id')
+  async parseFeed(@Param('id', ParsePositiveIntPipe) id: number) {
+    const feed = await this.useCase.getOneById(id);
+    return await this.parseFeedUseCase.execute(feed);
   }
 }

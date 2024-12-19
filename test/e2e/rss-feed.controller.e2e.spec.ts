@@ -110,9 +110,8 @@ describe('RssFeedController (e2e)', () => {
   describe('POST /api/feeds', () => {
     it('should create a new feed', async () => {
       const newFeedDTO: CreateRssFeedDto = {
-        title: 'New Feed',
-        url: 'https://example.com/newfeed',
-        description: 'New feed description',
+        title: 'Korben',
+        url: 'https://korben.info/feed',
       };
 
       const response = await request(app.getHttpServer())
@@ -121,12 +120,12 @@ describe('RssFeedController (e2e)', () => {
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body).toHaveProperty('title', 'New Feed');
+      expect(response.body).toHaveProperty('title', 'Korben');
 
       // Vérifier dans la base de données
       const feed = await repository.findOneBy({ id: response.body.id });
       expect(feed).toBeDefined();
-      expect(feed?.title).toBe('New Feed');
+      expect(feed?.title).toBe('Korben');
     });
 
     it('should create a new feed with a collection', async () => {
