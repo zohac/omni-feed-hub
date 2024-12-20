@@ -1,12 +1,11 @@
 // src/infrastructure/rss-parser/rss-parser.service.ts
 import { Injectable } from '@nestjs/common';
+import Parser from 'rss-parser';
 
 import { IRssParser } from 'src/domain/interfaces/rss-parser';
 
 import { ItemParser } from '../../domain/interfaces/item.parser';
 import { IParserOutput } from '../../domain/interfaces/parser.output';
-
-const Parser = require('rss-parser'); // Utilisation de require pour CommonJS
 
 @Injectable()
 export class RssParserService implements IRssParser {

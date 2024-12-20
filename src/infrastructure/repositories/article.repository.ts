@@ -35,11 +35,6 @@ export class ArticleRepository implements IArticleRepository {
     const entity = await this.articleRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.feed', 'feed')
-      .leftJoinAndSelect('article.analysis', 'analysis')
-      .leftJoinAndSelect('article.collection', 'collection')
-      .leftJoinAndSelect('analysis.agent', 'agent')
-      .leftJoinAndSelect('agent.configuration', 'configuration')
-      .leftJoinAndSelect('agent.actions', 'actions')
       .where('article.id = :id', { id })
       .getOne();
 
@@ -80,7 +75,8 @@ export class ArticleRepository implements IArticleRepository {
 
   async update(article: Article): Promise<Article> {
     const articleEntity = ArticleMapper.toEntity(article);
-    await this.articleRepository.update(articleEntity.id, articleEntity);
+
+    await this.articleRepository.save(articleEntity);
 
     return await this.getOneById(articleEntity.id);
   }

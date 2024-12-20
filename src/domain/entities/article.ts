@@ -2,6 +2,7 @@
 
 import { IEntity } from '../interfaces/entity';
 
+import { ArticleCollection } from './article.collection';
 import { MediaAttachment } from './media.attachment';
 import { RssFeed } from './rss-feed';
 
@@ -32,6 +33,7 @@ export class Article implements IEntity {
     public content?: string,
     public tags?: { id: string; label: string }[],
     public mediaAttachments?: MediaAttachment[], // Fichiers multimédias
-    public metadata?: Record<string, any>, // GUID, auteur, etc.
+    public metadata?: Record<string, string>, // GUID, auteur, etc.
+    public collection?: ArticleCollection,
   ) {}
 }

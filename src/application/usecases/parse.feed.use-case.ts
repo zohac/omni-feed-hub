@@ -36,8 +36,8 @@ export class ParseFeedUseCase {
           const article = new Article(
             undefined, // id
             item.title ?? 'No title',
-            new Date(),
-            new Date(),
+            null,
+            null,
             item.pubDate ? new Date(item.pubDate) : new Date(),
             ArticleSourceType.RSS,
             {

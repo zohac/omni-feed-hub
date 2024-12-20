@@ -8,7 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { ArticleCollectionEntity } from './article.collection.entity';
 import { MediaAttachmentEntity } from './media.attachment.entity';
+import { RssFeedCollectionEntity } from './rss-feed.collection.entity';
 import { RssFeedEntity } from './rss-feed.entity';
 
 export enum ArticleSourceType {
@@ -24,14 +26,14 @@ export class ArticleEntity {
   @Column()
   title: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({ nullable: true })
+  createdAt: Date | null;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date | null;
 
-  @Column()
-  publicationAt: Date;
+  @Column({ nullable: true })
+  publicationAt: Date | null;
 
   @Column({ enum: ArticleSourceType })
   sourceType: ArticleSourceType;
@@ -78,5 +80,11 @@ export class ArticleEntity {
   mediaAttachments: MediaAttachmentEntity[];
 
   @Column({ type: 'json', nullable: true })
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string>;
+
+  @ManyToOne(() => ArticleCollectionEntity, (entity) => entity.articles, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  collection?: RssFeedCollectionEntity;
 }

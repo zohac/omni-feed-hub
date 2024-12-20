@@ -194,16 +194,24 @@ omni-feed-hub/
 ├── src/
 │   ├── application/
 │   │   ├── dtos/
+│   │   │   ├── article.collection.dto.ts
+│   │   │   ├── article.dto.ts
+│   │   │   ├── article.state.dto.ts
+│   │   │   ├── article.tag.dto.ts
+│   │   │   ├── media.attachment.dto.ts
 │   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
 │   │   ├── scheduler/
 │   │   │   └── parse.feed.scheduler.ts
 │   │   └── usecases/
+│   │       ├── article.collection.use-cases.ts
+│   │       ├── article.use-cases.ts
 │   │       ├── parse.feed.use-cases.ts
 │   │       ├── rss-feed.collection.use-cases.ts
 │   │       └── rss-feed.use-cases.ts
 │   ├── domain/
 │   │   ├── entities/
+│   │   │   ├── article.collection.ts
 │   │   │   ├── article.ts
 │   │   │   ├── media.attachment.ts
 │   │   │   ├── rss-feed.collection.ts
@@ -224,17 +232,20 @@ omni-feed-hub/
 │   │   ├── config/
 │   │   │   └── database.config.ts
 │   │   ├── entities/
+│   │   │   ├── article.collection.entity.ts
 │   │   │   ├── article.entity.ts
 │   │   │   ├── media.attachment.entity.ts
 │   │   │   ├── index.ts
 │   │   │   ├── rss-feed.collection.entity.ts
 │   │   │   └── rss-feed.entity.ts
 │   │   ├── mappers/
+│   │   │   ├── article.collection.mapper.ts
 │   │   │   ├── article.mapper.ts
 │   │   │   ├── media.attachment.mapper.ts
 │   │   │   ├── rss-feed.collection.mapper.ts
 │   │   │   └── rss-feed.mapper.ts
 │   │   ├── repositories/
+│   │   │   ├── article.collection.repository.ts
 │   │   │   ├── article.repository.ts
 │   │   │   ├── rss-feed.collection.repository.ts
 │   │   │   └── Rrss-feed.repository.ts
@@ -245,6 +256,12 @@ omni-feed-hub/
 │   │   └── infrastructure.module.ts
 │   ├── presentation/
 │   │   ├── modules/
+│   │   │   ├── article/
+│   │   │   │   ├── article.controller.ts
+│   │   │   │   └── article.module.ts
+│   │   │   ├── article-collection/
+│   │   │   │   ├── article.collection.controller.ts
+│   │   │   │   └── article.collection.module.ts
 │   │   │   ├── rss-feed/
 │   │   │   │   ├── rss-feed.controller.ts
 │   │   │   │   └── rss-feed.module.ts
@@ -257,9 +274,13 @@ omni-feed-hub/
 │   └── main.ts
 ├── test/
 │   ├── e2e/
+│   │   ├── article.collection.controller.e2e.spec.ts
+│   │   ├── article.controller.e2e.spec.ts
 │   │   ├── rss-feed.collection.controller.e2e.spec.ts
 │   │   └── rss-feed.controller.e2e.spec.ts
 │   └── fixtures/
+│       ├── article.collection.fixtures.ts
+│       ├── article.fixtures.ts
 │       ├── rss-feed.collection.fixtures.ts
 │       └── rss-feed.fixtures.ts
 ├── .env.example

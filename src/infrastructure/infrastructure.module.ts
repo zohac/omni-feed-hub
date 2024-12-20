@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NestLoggerAdapter } from './adapters/nest-logger.adapter';
 
+import { NestLoggerAdapter } from './adapters/nest-logger.adapter';
 import {
+  ArticleCollectionEntity,
   ArticleEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
 } from './entities';
+import { ArticleCollectionRepository } from './repositories/article.collection.repository';
 import { ArticleRepository } from './repositories/article.repository';
 import { RssFeedCollectionRepository } from './repositories/rss-feed.collection.repository';
 import { RssFeedRepository } from './repositories/rss-feed.repository';
@@ -18,6 +20,7 @@ import { RssParserService } from './services/rss-parser.service';
       ArticleEntity,
       RssFeedEntity,
       RssFeedCollectionEntity,
+      ArticleCollectionEntity,
     ]),
   ],
   providers: [
@@ -32,6 +35,10 @@ import { RssParserService } from './services/rss-parser.service';
     {
       provide: 'IRepository<Article>',
       useClass: ArticleRepository,
+    },
+    {
+      provide: 'IRepository<ArticleCollection>',
+      useClass: ArticleCollectionRepository,
     },
     {
       provide: 'IRepository<RssFeed>',
@@ -49,6 +56,7 @@ import { RssParserService } from './services/rss-parser.service';
     'IRepository<Article>',
     'IRepository<RssFeed>',
     'IRepository<RssFeedCollection>',
+    'IRepository<ArticleCollection>',
   ],
 })
 export class InfrastructureModule {}

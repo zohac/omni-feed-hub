@@ -12,10 +12,12 @@ import {
 export class CreateRssFeedDto {
   @ApiProperty({ description: 'Title of the RSS feed' })
   @IsString()
+  @IsNotEmpty()
   title!: string;
 
   @ApiProperty({ description: 'URL of the RSS feed' })
   @IsUrl()
+  @IsNotEmpty()
   url!: string;
 
   @ApiPropertyOptional({ description: 'Description of the feed' })

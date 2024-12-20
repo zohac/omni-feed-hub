@@ -166,10 +166,9 @@ describe('RssFeedController (e2e)', () => {
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('error', 'Bad Request');
-      expect(response.body.message).toEqual([
-        'title must be a string',
-        'url must be a URL address',
-      ]);
+      expect(response.body.message).toContain('title must be a string');
+      expect(response.body.message).toContain('url must be a URL address');
+      expect(response.body.message).toContain('title should not be empty');
     });
   });
 

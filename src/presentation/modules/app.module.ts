@@ -5,8 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseConfig from '../../infrastructure/config/database.config';
 import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
 import { InfrastructureScheduleModule } from '../../infrastructure/schedulers/schedule.module';
-import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
+import { ArticleCollectionModule } from './article-collection/article.collection.module';
 
+import { ArticleModule } from './article/article.module';
+import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
 import { RssFeedModule } from './rss-feed/rss-feed.module';
 
 @Module({
@@ -30,6 +32,8 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
     InfrastructureScheduleModule,
     RssFeedModule,
     RssFeedCollectionModule,
+    ArticleModule,
+    ArticleCollectionModule,
   ],
 })
 export class AppModule {}

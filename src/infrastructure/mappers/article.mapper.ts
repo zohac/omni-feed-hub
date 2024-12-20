@@ -8,7 +8,7 @@ export class ArticleMapper {
   static toDomain(entity: ArticleEntity): Article {
     const domain = this.toPartialDomain(entity);
 
-    domain.feed = RssFeedMapper.toPartialDomain(entity.feed);
+    if (entity.feed) domain.feed = RssFeedMapper.toPartialDomain(entity.feed);
     domain.link = entity.link;
     domain.description = entity.description;
     domain.content = entity.content;

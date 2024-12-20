@@ -10,22 +10,21 @@ export class CreateRssFeedCollectionDto {
 
   @ApiProperty({ description: 'Description of the RSS feed Collection' })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   description?: string;
 }
 
 export class UpdateRssFeedCollectionDto {
   @ApiProperty({ description: 'New name of the RSS feed Collection' })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   @IsNotEmpty()
   name?: string;
 
   @ApiProperty({ description: 'New description of the RSS feed Collection' })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   description?: string;
 }
