@@ -8,15 +8,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { ArticleSourceType } from '../../domain/enums/article.source.type';
+
 import { ArticleCollectionEntity } from './article.collection.entity';
 import { MediaAttachmentEntity } from './media.attachment.entity';
 import { RssFeedCollectionEntity } from './rss-feed.collection.entity';
 import { RssFeedEntity } from './rss-feed.entity';
-
-export enum ArticleSourceType {
-  MANUAL = 'manual',
-  RSS = 'rss',
-}
 
 @Entity('article')
 export class ArticleEntity {

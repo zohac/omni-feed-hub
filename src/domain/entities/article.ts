@@ -1,22 +1,12 @@
 // src/domain/entities/article.ts
 
+import { ArticleSourceType } from '../enums/article.source.type';
+import { ArticleState } from '../interfaces/article.state';
 import { IEntity } from '../interfaces/entity';
 
 import { ArticleCollection } from './article.collection';
 import { MediaAttachment } from './media.attachment';
 import { RssFeed } from './rss-feed';
-
-export enum ArticleSourceType {
-  MANUAL = 'manual',
-  RSS = 'rss',
-}
-
-export interface ArticleState {
-  isRead: boolean;
-  isFavorite: boolean;
-  isArchived: boolean;
-  isSaved: boolean;
-}
 
 export class Article implements IEntity {
   constructor(

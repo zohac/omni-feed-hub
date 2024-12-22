@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { ArticleSourceType } from '../../src/domain/entities/article';
+import { ArticleSourceType } from '../../src/domain/enums/article.source.type';
 import { ArticleEntity } from '../../src/infrastructure/entities';
 
 export const createArticlesFixture = async (

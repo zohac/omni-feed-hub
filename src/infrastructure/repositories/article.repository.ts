@@ -3,7 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 
-import { Article, ArticleSourceType } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/Article';
+import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ArticleEntity } from '../entities';
 import { ArticleMapper } from '../mappers/article.mapper';
@@ -65,15 +66,13 @@ export class ArticleRepository implements IArticleRepository {
   async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
     const entities = await this.articleRepository
       .createQueryBuilder('article')
-      .leftJoin('article.analysis', 'analysis')
-      .leftJoin('analysis.agent', 'agent')
       .where('agent.id IS NULL OR agent.id != :agentId', { agentId })
       .getMany();
 
     return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 
-  async update(article: Article): Promise<Article> {
+  async update(article: Article): Promise<Article | null> {
     const articleEntity = ArticleMapper.toEntity(article);
 
     await this.articleRepository.save(articleEntity);

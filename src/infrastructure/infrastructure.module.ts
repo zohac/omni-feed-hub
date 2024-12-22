@@ -3,11 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { NestLoggerAdapter } from './adapters/nest-logger.adapter';
 import {
+  AiAgentEntity,
   ArticleCollectionEntity,
   ArticleEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
 } from './entities';
+import { AiAgentRepository } from './repositories/ai-agent.repository';
 import { ArticleCollectionRepository } from './repositories/article.collection.repository';
 import { ArticleRepository } from './repositories/article.repository';
 import { RssFeedCollectionRepository } from './repositories/rss-feed.collection.repository';
@@ -21,6 +23,7 @@ import { RssParserService } from './services/rss-parser.service';
       RssFeedEntity,
       RssFeedCollectionEntity,
       ArticleCollectionEntity,
+      AiAgentEntity,
     ]),
   ],
   providers: [
@@ -48,6 +51,10 @@ import { RssParserService } from './services/rss-parser.service';
       provide: 'IRepository<RssFeedCollection>',
       useClass: RssFeedCollectionRepository,
     },
+    {
+      provide: 'IRepository<AiAgent>',
+      useClass: AiAgentRepository,
+    },
   ],
   exports: [
     TypeOrmModule,
@@ -57,6 +64,7 @@ import { RssParserService } from './services/rss-parser.service';
     'IRepository<RssFeed>',
     'IRepository<RssFeedCollection>',
     'IRepository<ArticleCollection>',
+    'IRepository<AiAgent>',
   ],
 })
 export class InfrastructureModule {}

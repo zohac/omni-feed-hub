@@ -2,9 +2,10 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Article, ArticleSourceType } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/Article';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { RssFeed } from '../../domain/entities/rss-feed';
+import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ItemParser } from '../../domain/interfaces/item.parser';
 import { ILogger } from '../../domain/interfaces/logger';

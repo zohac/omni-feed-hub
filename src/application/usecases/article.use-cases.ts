@@ -8,8 +8,9 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { Article, ArticleSourceType } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/Article';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
+import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateArticleDto, UpdateArticleDto } from '../dtos/article.dto';
@@ -117,7 +118,15 @@ export class ArticleUseCases
     if (undefined !== articleDto.state?.isSaved)
       article.state.isSaved = articleDto.state.isSaved;
 
-    return await this.repository.update(article);
+    const updatedArticle = await this.repository.update(article);
+    if (!updatedArticle) {
+      throw new HttpException(
+        `Failed to update RSS Feed with ID ${id}. It may not exist.`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return updatedArticle;
   }
 
   async delete(id: number): Promise<void> {

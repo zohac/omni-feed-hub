@@ -1,6 +1,6 @@
 // src/application/usecases/article.collection.use-cases.ts
 
-import { HttpException, HttpStatus, Inject } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { ArticleCollection } from '../../domain/entities/article.collection';
 import { IRepository } from '../../domain/interfaces/repository';
@@ -10,6 +10,7 @@ import {
   UpdateArticleCollectionDto,
 } from '../dtos/article.collection.dto';
 
+@Injectable()
 export class ArticleCollectionUseCases
   implements
     IUsecase<
@@ -66,7 +67,15 @@ export class ArticleCollectionUseCases
       collection.description = description;
     }
 
-    return this.repository.update(collection);
+    const updatedCollection = await this.repository.update(collection);
+    if (!updatedCollection) {
+      throw new HttpException(
+        `Failed to update RSS Feed with ID ${id}. It may not exist.`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return updatedCollection;
   }
 
   async delete(id: number): Promise<void> {
