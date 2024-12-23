@@ -5,12 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { AiAgent } from '../../domain/entities/ai-agent';
-import { IRepository } from '../../domain/interfaces/repository';
+import { AiAgentRole } from '../../domain/enums/ai-agent.role';
+import { IAiAgentRepository } from '../../domain/interfaces/ai-agent.repository';
 import { AiAgentEntity } from '../entities';
 import { AiAgentMapper } from '../mappers/ai-agent.mapper';
 
 @Injectable()
-export class AiAgentRepository implements IRepository<AiAgent> {
+export class AiAgentRepository implements IAiAgentRepository {
   constructor(
     @InjectRepository(AiAgentEntity)
     private readonly repository: Repository<AiAgentEntity>,
@@ -18,6 +19,13 @@ export class AiAgentRepository implements IRepository<AiAgent> {
 
   async getAll(): Promise<AiAgent[]> {
     const entities = await this.repository.find();
+    return entities.map((entity) => AiAgentMapper.toDomain(entity));
+  }
+
+  async getAllAnalysisAgent(): Promise<AiAgent[]> {
+    const entities = await this.repository.find({
+      where: { role: AiAgentRole.ANALYSIS },
+    });
     return entities.map((entity) => AiAgentMapper.toDomain(entity));
   }
 

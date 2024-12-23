@@ -1,9 +1,11 @@
+// src/presentation/app.module.ts
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import databaseConfig from '../../infrastructure/config/database.config';
-import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../../infrastructure/modules/infrastructure.module';
 import { InfrastructureScheduleModule } from '../../infrastructure/schedulers/schedule.module';
 
 import { AiAgentModule } from './ai-agent/ai-agent.module';

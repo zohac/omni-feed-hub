@@ -4,9 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 
 import { Article } from '../../domain/entities/Article';
+import { ActionType } from '../../domain/enums/action.type';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
+import { TaskStatus } from '../../domain/enums/task.status';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
-import { ArticleEntity } from '../entities';
+import { ArticleEntity, TaskEntity } from '../entities';
 import { ArticleMapper } from '../mappers/article.mapper';
 
 @Injectable()
@@ -65,8 +67,23 @@ export class ArticleRepository implements IArticleRepository {
 
   async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
     const entities = await this.articleRepository
-      .createQueryBuilder('article')
-      .where('agent.id IS NULL OR agent.id != :agentId', { agentId })
+      .createQueryBuilder()
+      .select('article')
+      .from(ArticleEntity, 'article')
+      .where((qb) => {
+        const subQuery = qb
+          .subQuery()
+          .select('task.articleId')
+          .from(TaskEntity, 'task')
+          .where('task.assignedAgentId = :agentId', { agentId })
+          .andWhere('task.type = :type', {
+            type: ActionType.ASSIGN_TO_COLLECTION,
+          })
+          .andWhere('task.status = :status', { status: TaskStatus.COMPLETED })
+          .getQuery();
+
+        return `article.id NOT IN ${subQuery}`;
+      })
       .getMany();
 
     return entities.map((entity) => ArticleMapper.toDomain(entity));

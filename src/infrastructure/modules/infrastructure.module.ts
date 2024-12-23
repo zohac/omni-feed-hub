@@ -1,20 +1,25 @@
+// src/infrastructure/modules/infrastructure.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { NestLoggerAdapter } from './adapters/nest-logger.adapter';
+import { NestLoggerAdapter } from '../adapters/nest-logger.adapter';
 import {
   AiAgentEntity,
   ArticleCollectionEntity,
   ArticleEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
-} from './entities';
-import { AiAgentRepository } from './repositories/ai-agent.repository';
-import { ArticleCollectionRepository } from './repositories/article.collection.repository';
-import { ArticleRepository } from './repositories/article.repository';
-import { RssFeedCollectionRepository } from './repositories/rss-feed.collection.repository';
-import { RssFeedRepository } from './repositories/rss-feed.repository';
-import { RssParserService } from './services/rss-parser.service';
+  TaskEntity,
+} from '../entities';
+import { AiServiceFactory } from '../factories/ai-service.factory';
+import { AiAgentRepository } from '../repositories/ai-agent.repository';
+import { ArticleCollectionRepository } from '../repositories/article.collection.repository';
+import { ArticleRepository } from '../repositories/article.repository';
+import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection.repository';
+import { RssFeedRepository } from '../repositories/rss-feed.repository';
+import { TaskRepository } from '../repositories/task.repository';
+import { RssParserService } from '../services/rss-parser.service';
 
 @Module({
   imports: [
@@ -24,6 +29,7 @@ import { RssParserService } from './services/rss-parser.service';
       RssFeedCollectionEntity,
       ArticleCollectionEntity,
       AiAgentEntity,
+      TaskEntity,
     ]),
   ],
   providers: [
@@ -55,6 +61,18 @@ import { RssParserService } from './services/rss-parser.service';
       provide: 'IRepository<AiAgent>',
       useClass: AiAgentRepository,
     },
+    {
+      provide: 'IRepository<Task>',
+      useClass: TaskRepository,
+    },
+    {
+      provide: 'IRepository<Task>',
+      useClass: TaskRepository,
+    },
+    {
+      provide: 'IAiServiceFactory',
+      useClass: AiServiceFactory,
+    },
   ],
   exports: [
     TypeOrmModule,
@@ -65,6 +83,8 @@ import { RssParserService } from './services/rss-parser.service';
     'IRepository<RssFeedCollection>',
     'IRepository<ArticleCollection>',
     'IRepository<AiAgent>',
+    'IRepository<Task>',
+    'IAiServiceFactory',
   ],
 })
 export class InfrastructureModule {}

@@ -1,10 +1,10 @@
-// src/usecases/AgentAIUseCases.ts
+// src/usecases/ai-agent.use-cases.ts
 
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { AiAgent } from '../../domain/entities/ai-agent';
 import { AiConfiguration } from '../../domain/entities/ai-configuration';
-import { IRepository } from '../../domain/interfaces/repository';
+import { IAiAgentRepository } from '../../domain/interfaces/ai-agent.repository';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateAiAgentDto, UpdateAiAgentDto } from '../dtos/ai-agent.dto';
 
@@ -14,7 +14,7 @@ export class AiAgentUseCases
 {
   constructor(
     @Inject('IRepository<AiAgent>')
-    private readonly repository: IRepository<AiAgent>,
+    private readonly repository: IAiAgentRepository,
   ) {}
 
   async getAll(): Promise<AiAgent[]> {
@@ -92,5 +92,9 @@ export class AiAgentUseCases
     const agent = await this.getOneById(id);
 
     await this.repository.delete(agent.id);
+  }
+
+  async getAllAnalysisAgent(): Promise<AiAgent[]> {
+    return await this.repository.getAllAnalysisAgent();
   }
 }

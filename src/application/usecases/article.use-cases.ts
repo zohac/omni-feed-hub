@@ -9,11 +9,14 @@ import {
 } from '@nestjs/common';
 
 import { Article } from '../../domain/entities/Article';
+import { ArticleCollection } from '../../domain/entities/article.collection';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateArticleDto, UpdateArticleDto } from '../dtos/article.dto';
+
+import { ArticleCollectionUseCases } from './article.collection.use-cases';
 
 @Injectable()
 export class ArticleUseCases
@@ -22,6 +25,7 @@ export class ArticleUseCases
   constructor(
     @Inject('IRepository<Article>')
     private readonly repository: IArticleRepository,
+    private readonly articleCollectionUseCases: ArticleCollectionUseCases,
   ) {}
 
   async create(articleDTO: CreateArticleDto): Promise<Article> {
@@ -151,22 +155,20 @@ export class ArticleUseCases
     }
   }
 
-  // async assignToCollection(
-  //   article: Article,
-  //   articleCollection: ArticleCollection,
-  // ): Promise<void> {
-  //   if (undefined !== articleCollection.id) {
-  //     const collection = await this.collectionRepository.getOneById(
-  //       articleCollection.id,
-  //     );
-  //     if (!collection) {
-  //       throw new NotFoundException(
-  //         `Collection avec l'ID ${articleCollection.id} non trouvée`,
-  //       );
-  //     }
-  //     article.collection = collection;
-  //
-  //     await this.repository.update(article);
-  //   }
-  // }
+  async assignToCollection(
+    article: Article,
+    articleCollection: ArticleCollection,
+  ): Promise<void> {
+    if (undefined !== articleCollection.id) {
+      article.collection = await this.articleCollectionUseCases.getOneById(
+        articleCollection.id,
+      );
+
+      await this.repository.update(article);
+    }
+  }
+
+  async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
+    return this.repository.getUnanalyzedArticlesByAgent(agentId);
+  }
 }

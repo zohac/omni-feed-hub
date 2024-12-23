@@ -29,16 +29,4 @@ export class AiAgent implements IEntity {
   removeAction(actionId: number): void {
     this._actions = this._actions.filter((a) => a.id !== actionId);
   }
-
-  // --- MÉTHODES MÉTIER ---
-  executeAction(action: Action): string {
-    if (!this._actions.includes(action)) {
-      throw new Error(`Action ${action.name} non reconnue pour cet agent.`);
-    }
-    return `Exécution de l'action ${action.name} par l'agent ${this.name}`;
-  }
-
-  canHandleTask(taskType: AiAgentRole): boolean {
-    return this.role === taskType;
-  }
 }

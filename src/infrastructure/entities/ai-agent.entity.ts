@@ -4,11 +4,14 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { ActionEntity } from './action.entity';
 import { AiConfigurationEntity } from './ai-configuration.entity';
+import { TaskEntity } from './task.entity';
 
 @Entity('ai_agent')
 export class AiAgentEntity {
@@ -36,9 +39,14 @@ export class AiAgentEntity {
   @JoinColumn()
   configuration!: AiConfigurationEntity;
 
-  // @OneToMany(() => ActionEntity, (actionEntity) => actionEntity.agent, {
-  //   cascade: true,
-  //   eager: true,
-  // })
-  // actions?: ActionEntity[];
+  @OneToMany(() => ActionEntity, (entity) => entity.agent, {
+    cascade: true,
+    eager: true,
+  })
+  actions?: ActionEntity[];
+
+  @OneToMany(() => TaskEntity, (entity) => entity.assignedAgent, {
+    cascade: true,
+  })
+  tasks?: TaskEntity[];
 }

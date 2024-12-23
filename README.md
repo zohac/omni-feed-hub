@@ -193,6 +193,8 @@ http://localhost:3000/api-docs
 omni-feed-hub/
 ├── src/
 │   ├── application/
+│   │   ├── commands/
+│   │   │   └── assign.to.collection.command.ts
 │   │   ├── dtos/
 │   │   │   ├── ai-agent.dto.ts
 │   │   │   ├── ai-configuration.dto.ts
@@ -203,10 +205,13 @@ omni-feed-hub/
 │   │   │   ├── media.attachment.dto.ts
 │   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
+│   │   ├── executor/
+│   │   │   └── action.executor.ts
 │   │   ├── scheduler/
 │   │   │   └── parse.feed.scheduler.ts
 │   │   └── usecases/
-│   │       ├── aai-agent.use-cases.ts
+│   │       ├── ai-agent.use-cases.ts
+│   │       ├── analysis.use-cases.ts
 │   │       ├── article.collection.use-cases.ts
 │   │       ├── article.use-cases.ts
 │   │       ├── parse.feed.use-cases.ts
@@ -218,10 +223,11 @@ omni-feed-hub/
 │   │   │   ├── ai-configuration.ts
 │   │   │   ├── article.collection.ts
 │   │   │   ├── article.ts
+│   │   │   ├── assign.to.collection.action.ts
 │   │   │   ├── media.attachment.ts
 │   │   │   ├── rss-feed.collection.ts
 │   │   │   └── rss-feed.ts
-│   │   ├── interfaces/
+│   │   ├── enums/
 │   │   │   ├── action.type.ts
 │   │   │   ├── ai-agent.provider.ts
 │   │   │   ├── ai-agent.role.ts
@@ -229,6 +235,9 @@ omni-feed-hub/
 │   │   │   ├── task.mode.ts
 │   │   │   └── task.status.ts
 │   │   └── interfaces/
+│   │       ├── ai-agent.repository.ts
+│   │       ├── ai-service.factory.ts
+│   │       ├── ai-service.ts
 │   │       ├── article.repository.ts
 │   │       ├── article.state.ts
 │   │       ├── base.collection.ts
@@ -238,21 +247,31 @@ omni-feed-hub/
 │   │       ├── parser.output.ts
 │   │       ├── repository.ts
 │   │       ├── rss-parser.ts
+│   │       ├── task.repository.ts
 │   │       └── usecases.ts
 │   ├── infrastructure/
 │   │   ├── adapters/
 │   │   │   └── nest-logger.adapter.ts
 │   │   ├── config/
+│   │   │   ├── ai.config.ts
 │   │   │   └── database.config.ts
 │   │   ├── entities/
 │   │   │   ├── ai-agent.entity.ts
 │   │   │   ├── ai-configuration.entity.ts
 │   │   │   ├── article.collection.entity.ts
 │   │   │   ├── article.entity.ts
-│   │   │   ├── media.attachment.entity.ts
+│   │   │   ├── assign.to.collection.action.entity.ts
 │   │   │   ├── index.ts
+│   │   │   ├── media.attachment.entity.ts
 │   │   │   ├── rss-feed.collection.entity.ts
-│   │   │   └── rss-feed.entity.ts
+│   │   │   ├── rss-feed.entity.ts
+│   │   │   └── task.entity.ts
+│   │   ├── factories/
+│   │   │   └── ai-service.factory.ts
+│   │   ├── integrations/
+│   │   │   └── ollama.service.ts
+│   │   ├── modules/
+│   │   │   └── infrastructure.module.ts
 │   │   ├── mappers/
 │   │   │   ├── ai-agent.mapper.ts
 │   │   │   ├── ai-configuration.mapper.ts
@@ -260,18 +279,19 @@ omni-feed-hub/
 │   │   │   ├── article.mapper.ts
 │   │   │   ├── media.attachment.mapper.ts
 │   │   │   ├── rss-feed.collection.mapper.ts
-│   │   │   └── rss-feed.mapper.ts
+│   │   │   ├── rss-feed.mapper.ts
+│   │   │   └── task.mapper.ts
 │   │   ├── repositories/
 │   │   │   ├── ai-agent.repository.ts
 │   │   │   ├── article.collection.repository.ts
 │   │   │   ├── article.repository.ts
 │   │   │   ├── rss-feed.collection.repository.ts
-│   │   │   └── Rrss-feed.repository.ts
+│   │   │   ├── rss-feed.repository.ts
+│   │   │   └── task.repository.ts
 │   │   ├── schedulers/
 │   │   │   └── schedule.module.ts
-│   │   ├── services/
-│   │   │   └── rss-parser.service.ts
-│   │   └── infrastructure.module.ts
+│   │   └── services/
+│   │       └── rss-parser.service.ts
 │   ├── presentation/
 │   │   ├── modules/
 │   │   │   ├── ai-agent/

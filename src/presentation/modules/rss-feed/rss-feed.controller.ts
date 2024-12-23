@@ -14,7 +14,7 @@ import {
   CreateRssFeedDto,
   UpdateRssFeedDto,
 } from '../../../application/dtos/rss-feed.dto';
-import { ParseFeedUseCase } from '../../../application/usecases/parse.feed.use-case';
+import { ParseFeedUseCases } from '../../../application/usecases/parse.feed.use-cases';
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { RssFeed } from '../../../domain/entities/rss-feed';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
@@ -23,7 +23,7 @@ import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
 export class RssFeedController {
   constructor(
     private readonly useCase: RssFeedUseCases,
-    private readonly parseFeedUseCase: ParseFeedUseCase,
+    private readonly parseFeedUseCase: ParseFeedUseCases,
   ) {}
 
   @ApiOperation({ summary: 'Retrieve all RSS feeds' })

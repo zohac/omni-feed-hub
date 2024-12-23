@@ -7,6 +7,7 @@ import { IEntity } from '../interfaces/entity';
 import { ArticleCollection } from './article.collection';
 import { MediaAttachment } from './media.attachment';
 import { RssFeed } from './rss-feed';
+import { Task } from './task';
 
 export class Article implements IEntity {
   constructor(
@@ -25,5 +26,6 @@ export class Article implements IEntity {
     public mediaAttachments?: MediaAttachment[], // Fichiers multimédias
     public metadata?: Record<string, string>, // GUID, auteur, etc.
     public collection?: ArticleCollection,
+    public tasks?: Task[],
   ) {}
 }

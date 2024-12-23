@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { RssFeedCollectionUseCases } from '../../../application/usecases/rss-feed.collection.use-cases';
-import { InfrastructureModule } from '../../../infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../../../infrastructure/modules/infrastructure.module';
 
 import { RssFeedCollectionController } from './rss-feed.collection.controller';
 

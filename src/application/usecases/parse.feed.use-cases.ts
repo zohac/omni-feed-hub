@@ -12,7 +12,7 @@ import { ILogger } from '../../domain/interfaces/logger';
 import { IRssParser } from '../../domain/interfaces/rss-parser';
 
 @Injectable()
-export class ParseFeedUseCase {
+export class ParseFeedUseCases {
   constructor(
     @Inject('ILogger')
     private readonly logger: ILogger,

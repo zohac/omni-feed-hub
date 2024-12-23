@@ -14,6 +14,7 @@ import { ArticleCollectionEntity } from './article.collection.entity';
 import { MediaAttachmentEntity } from './media.attachment.entity';
 import { RssFeedCollectionEntity } from './rss-feed.collection.entity';
 import { RssFeedEntity } from './rss-feed.entity';
+import { TaskEntity } from './task.entity';
 
 @Entity('article')
 export class ArticleEntity {
@@ -84,4 +85,7 @@ export class ArticleEntity {
     onDelete: 'SET NULL',
   })
   collection?: RssFeedCollectionEntity;
+
+  @OneToMany(() => TaskEntity, (task) => task.article)
+  tasks: TaskEntity[];
 }

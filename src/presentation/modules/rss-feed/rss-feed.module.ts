@@ -1,15 +1,28 @@
+// src/presentation/rss-feed/rss-feed.module.ts
+
 import { Module } from '@nestjs/common';
 
-import { ParseFeedUseCase } from '../../../application/usecases/parse.feed.use-case';
-import { RssFeedCollectionUseCases } from '../../../application/usecases/rss-feed.collection.use-cases';
+import { AnalysisUseCases } from '../../../application/usecases/analysis.use-cases';
+import { ParseFeedUseCases } from '../../../application/usecases/parse.feed.use-cases';
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
-import { InfrastructureModule } from '../../../infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../../../infrastructure/modules/infrastructure.module';
+import { AiAgentModule } from '../ai-agent/ai-agent.module';
+import { ArticleCollectionModule } from '../article-collection/article.collection.module';
+import { ArticleModule } from '../article/article.module';
+import { RssFeedCollectionModule } from '../rss-feed-collection/rss-feed.collection.module';
 
 import { RssFeedController } from './rss-feed.controller';
 
 @Module({
-  imports: [InfrastructureModule],
+  imports: [
+    InfrastructureModule,
+    RssFeedCollectionModule,
+    ArticleModule,
+    ArticleCollectionModule,
+    AiAgentModule,
+  ],
   controllers: [RssFeedController],
-  providers: [RssFeedUseCases, ParseFeedUseCase, RssFeedCollectionUseCases],
+  providers: [RssFeedUseCases, ParseFeedUseCases, AnalysisUseCases],
+  exports: [RssFeedUseCases],
 })
 export class RssFeedModule {}
