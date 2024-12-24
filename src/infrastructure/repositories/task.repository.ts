@@ -33,7 +33,7 @@ export class TaskRepository implements ITaskRepository {
 
   async create(task: Task): Promise<Task> {
     const taskEntity = TaskMapper.toEntity(task);
-    console.log(taskEntity);
+
     const entity = this.repository.create(taskEntity);
     const result = await this.repository.save(entity);
 

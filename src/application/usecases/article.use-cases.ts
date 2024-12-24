@@ -143,18 +143,6 @@ export class ArticleUseCases
     await this.repository.deleteOldRSSArticles(olderThan);
   }
 
-  private updateManualArticle(article: Article, articleDto: UpdateArticleDto) {
-    if (article.sourceType === 'manual') {
-      // Permettre la modification de toutes les propriétés
-      if (articleDto.title !== undefined) article.title = articleDto.title;
-      if (articleDto.link !== undefined) article.link = articleDto.link;
-      if (articleDto.description !== undefined)
-        article.description = articleDto.description;
-      if (articleDto.content !== undefined)
-        article.content = articleDto.content;
-    }
-  }
-
   async assignToCollection(
     article: Article,
     articleCollection: ArticleCollection,
@@ -170,5 +158,17 @@ export class ArticleUseCases
 
   async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
     return this.repository.getUnanalyzedArticlesByAgent(agentId);
+  }
+
+  private updateManualArticle(article: Article, articleDto: UpdateArticleDto) {
+    if (article.sourceType === 'manual') {
+      // Permettre la modification de toutes les propriétés
+      if (articleDto.title !== undefined) article.title = articleDto.title;
+      if (articleDto.link !== undefined) article.link = articleDto.link;
+      if (articleDto.description !== undefined)
+        article.description = articleDto.description;
+      if (articleDto.content !== undefined)
+        article.content = articleDto.content;
+    }
   }
 }

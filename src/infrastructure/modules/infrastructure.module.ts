@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { NestLoggerAdapter } from '../adapters/nest-logger.adapter';
 import {
+  ActionEntity,
   AiAgentEntity,
   ArticleCollectionEntity,
   ArticleEntity,
@@ -13,6 +14,7 @@ import {
   TaskEntity,
 } from '../entities';
 import { AiServiceFactory } from '../factories/ai-service.factory';
+import { ActionRepository } from '../repositories/action.repository';
 import { AiAgentRepository } from '../repositories/ai-agent.repository';
 import { ArticleCollectionRepository } from '../repositories/article.collection.repository';
 import { ArticleRepository } from '../repositories/article.repository';
@@ -30,6 +32,8 @@ import { RssParserService } from '../services/rss-parser.service';
       ArticleCollectionEntity,
       AiAgentEntity,
       TaskEntity,
+      ActionEntity,
+      ActionEntity,
     ]),
   ],
   providers: [
@@ -66,8 +70,8 @@ import { RssParserService } from '../services/rss-parser.service';
       useClass: TaskRepository,
     },
     {
-      provide: 'IRepository<Task>',
-      useClass: TaskRepository,
+      provide: 'IRepository<Action>',
+      useClass: ActionRepository,
     },
     {
       provide: 'IAiServiceFactory',
@@ -84,6 +88,7 @@ import { RssParserService } from '../services/rss-parser.service';
     'IRepository<ArticleCollection>',
     'IRepository<AiAgent>',
     'IRepository<Task>',
+    'IRepository<Action>',
     'IAiServiceFactory',
   ],
 })

@@ -1,33 +1,31 @@
 // src/infrastructure/mappers/AiAgentMapper.ts
 
-import { Action } from '../../domain/entities/Action';
 import { AiAgent } from '../../domain/entities/ai-agent';
 import { AiAgentProvider } from '../../domain/enums/ai-agent.provider';
 import { AiAgentRole } from '../../domain/enums/ai-agent.role';
-import { ActionEntity } from '../entities/action.entity';
-import { AiAgentEntity } from '../entities/ai-agent.entity';
+import { ActionEntity, AiAgentEntity } from '../entities';
 
 import { ActionMapper } from './action.mapper';
 import { AiConfigurationMapper } from './ai-configuration.mapper';
 
 export class AiAgentMapper {
   static toDomain(entity: AiAgentEntity): AiAgent {
-    const actions: Action[] = [];
-    // if (undefined !== entity.actions && entity.actions.length > 0) {
-    //   for (const action of entity.actions) {
-    //     actions.push(ActionMapper.toDomain(action));
-    //   }
-    // }
-
-    return new AiAgent(
+    const agent = new AiAgent(
       entity.id,
       entity.name,
       entity.description,
       entity.provider as AiAgentProvider,
       entity.role as AiAgentRole,
       AiConfigurationMapper.toDomain(entity.configuration),
-      actions,
     );
+
+    if (undefined !== entity.actions && entity.actions.length > 0) {
+      for (const action of entity.actions) {
+        agent.addAction(ActionMapper.toDomain(action));
+      }
+    }
+
+    return agent;
   }
 
   static toEntity(domain: AiAgent): AiAgentEntity {
@@ -46,7 +44,7 @@ export class AiAgentMapper {
     entity.provider = domain.provider;
     entity.role = domain.role;
     entity.configuration = AiConfigurationMapper.toEntity(domain.configuration);
-    // entity.actions = actions;
+    entity.actions = actions;
 
     return entity;
   }

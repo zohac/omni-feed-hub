@@ -165,6 +165,8 @@ describe('AIAgentController E2E Tests', () => {
         'configuration.prompt should not be empty',
       );
     });
+
+    //TODO: Test ajout d'action à l'agent ia
   });
 
   describe('PUT /api/agents/:id', () => {

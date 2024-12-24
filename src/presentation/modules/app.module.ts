@@ -8,6 +8,7 @@ import databaseConfig from '../../infrastructure/config/database.config';
 import { InfrastructureModule } from '../../infrastructure/modules/infrastructure.module';
 import { InfrastructureScheduleModule } from '../../infrastructure/schedulers/schedule.module';
 
+import { ActionModule } from './action/action.module';
 import { AiAgentModule } from './ai-agent/ai-agent.module';
 import { ArticleCollectionModule } from './article-collection/article.collection.module';
 import { ArticleModule } from './article/article.module';
@@ -38,6 +39,7 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
     ArticleModule,
     ArticleCollectionModule,
     AiAgentModule,
+    ActionModule,
   ],
 })
 export class AppModule {}
