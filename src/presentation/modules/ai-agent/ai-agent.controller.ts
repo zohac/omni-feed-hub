@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  UsePipes,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
@@ -14,13 +15,19 @@ import {
   CreateAiAgentDto,
   UpdateAiAgentDto,
 } from '../../../application/dtos/ai-agent.dto';
+import { AssignActionsToAgentDto } from '../../../application/dtos/assign.action.to.agent.dto';
 import { AiAgentUseCases } from '../../../application/usecases/ai-agent.use-cases';
+import { AssignActionsToAgentUseCases } from '../../../application/usecases/assign-actions-to-agent.use-cases';
 import { AiAgent } from '../../../domain/entities/ai-agent';
+import { AssignActionToAgentDtoTransformPipe } from '../../pipes/assign.action.to.agent.dto.transform.pipe';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
 
 @Controller('agents')
 export class AiAgentController {
-  constructor(private readonly useCase: AiAgentUseCases) {}
+  constructor(
+    private readonly useCase: AiAgentUseCases,
+    private readonly assignActionsToAgentUseCase: AssignActionsToAgentUseCases,
+  ) {}
 
   @ApiOperation({ summary: 'Retrieve all AI agents' })
   @ApiResponse({
@@ -88,5 +95,23 @@ export class AiAgentController {
   @HttpCode(204)
   async deleteAgent(@Param('id', ParsePositiveIntPipe) id: number) {
     return await this.useCase.delete(id);
+  }
+
+  @ApiOperation({ summary: 'Assign an AI agent to an action' })
+  @ApiResponse({ status: 204, description: 'AiAgent deleted successfully.' })
+  @ApiResponse({ status: 404, description: 'AiAgent not found.' })
+  @ApiResponse({ status: 404, description: 'Action not found.' })
+  @ApiResponse({
+    status: 409,
+    description:
+      'An action already exists for agent ID : {{agentId}}., and collection ID : {{collectionId}}.',
+  })
+  @Post('/:id/actions')
+  @UsePipes(AssignActionToAgentDtoTransformPipe)
+  async assignActions<T extends AssignActionsToAgentDto>(
+    @Param('id', ParsePositiveIntPipe) agentId: number,
+    @Body() dto: T,
+  ): Promise<AiAgent> {
+    return this.assignActionsToAgentUseCase.execute(agentId, dto);
   }
 }

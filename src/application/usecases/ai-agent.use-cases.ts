@@ -8,6 +8,8 @@ import { IAiAgentRepository } from '../../domain/interfaces/ai-agent.repository'
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateAiAgentDto, UpdateAiAgentDto } from '../dtos/ai-agent.dto';
 
+import { ActionUseCases } from './action.use-cases';
+
 @Injectable()
 export class AiAgentUseCases
   implements IUsecase<AiAgent, CreateAiAgentDto, UpdateAiAgentDto>
@@ -15,6 +17,7 @@ export class AiAgentUseCases
   constructor(
     @Inject('IRepository<AiAgent>')
     private readonly repository: IAiAgentRepository,
+    private readonly actionUseCase: ActionUseCases,
   ) {}
 
   async getAll(): Promise<AiAgent[]> {
@@ -54,38 +57,55 @@ export class AiAgentUseCases
   async update(id: number, aiAgentDTO: UpdateAiAgentDto): Promise<AiAgent> {
     const aiAgent = await this.getOneById(id);
 
-    if (undefined !== aiAgentDTO?.name) {
-      aiAgent.name = aiAgentDTO.name;
+    this.updateAgentFields(aiAgent, aiAgentDTO);
+    this.updateAgentConfiguration(aiAgent, aiAgentDTO.configuration);
+
+    if (aiAgentDTO.actionIds) {
+      await this.updateAgentActions(aiAgent, aiAgentDTO.actionIds);
     }
 
-    if (undefined !== aiAgentDTO?.description) {
-      aiAgent.description = aiAgentDTO.description;
+    return this.repository.update(aiAgent);
+  }
+
+  // Mise à jour des champs de base (nom, description, rôle, provider)
+  private updateAgentFields(agent: AiAgent, dto: UpdateAiAgentDto): void {
+    const fields = ['name', 'description', 'provider', 'role'];
+
+    for (const field of fields) {
+      if (dto[field] !== undefined) {
+        agent[field] = dto[field];
+      }
     }
+  }
 
-    if (undefined !== aiAgentDTO?.provider) {
-      aiAgent.provider = aiAgentDTO.provider;
+  // Mise à jour de la configuration IA
+  private updateAgentConfiguration(
+    agent: AiAgent,
+    config?: Partial<AiConfiguration>,
+  ): void {
+    if (!config) return;
+
+    const configFields = ['model', 'prompt', 'stream', 'temperature'];
+
+    for (const field of configFields) {
+      if (config[field] !== undefined) {
+        agent.configuration[field] = config[field];
+      }
     }
+  }
 
-    if (undefined !== aiAgentDTO?.role) {
-      aiAgent.role = aiAgentDTO.role;
-    }
+  // Mise à jour des actions (en parallèle avec Promise.all)
+  private async updateAgentActions(
+    agent: AiAgent,
+    actionIds: number[],
+  ): Promise<void> {
+    const actions = await Promise.all(
+      actionIds.map((id) => this.actionUseCase.getOneById(id)),
+    );
 
-    if (undefined !== aiAgentDTO?.configuration) {
-      if (undefined !== aiAgentDTO.configuration.model)
-        aiAgent.configuration.model = aiAgentDTO.configuration.model;
-
-      if (undefined !== aiAgentDTO.configuration.prompt)
-        aiAgent.configuration.prompt = aiAgentDTO.configuration.prompt;
-
-      if (undefined !== aiAgentDTO.configuration.stream)
-        aiAgent.configuration.stream = aiAgentDTO.configuration.stream;
-
-      if (undefined !== aiAgentDTO.configuration.temperature)
-        aiAgent.configuration.temperature =
-          aiAgentDTO.configuration.temperature;
-    }
-
-    return await this.repository.update(aiAgent);
+    actions.forEach((action) => {
+      agent.addAction(action);
+    });
   }
 
   async delete(id: number): Promise<void> {

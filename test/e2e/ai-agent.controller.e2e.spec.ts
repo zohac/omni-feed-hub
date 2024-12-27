@@ -8,12 +8,20 @@ import { Repository } from 'typeorm';
 import { CreateAiAgentDto } from '../../src/application/dtos/ai-agent.dto';
 import { AiAgentProvider } from '../../src/domain/enums/ai-agent.provider';
 import { AiAgentRole } from '../../src/domain/enums/ai-agent.role';
-import { AiAgentEntity } from '../../src/infrastructure/entities/ai-agent.entity';
+import {
+  ActionEntity,
+  AiAgentEntity,
+  ArticleCollectionEntity,
+} from '../../src/infrastructure/entities';
 import { AppModule } from '../../src/presentation/modules/app.module';
+import { createActionFixtures } from '../fixtures/action.fixtures';
 import { createAiAgentFixtures } from '../fixtures/ai-agent.fixtures';
+import { createArticleCollectionFixture } from '../fixtures/article.collection.fixtures';
 
 describe('AIAgentController E2E Tests', () => {
   let repository: Repository<AiAgentEntity>;
+  let actionRepository: Repository<ActionEntity>;
+  let collectionRepository: Repository<ArticleCollectionEntity>;
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -35,9 +43,17 @@ describe('AIAgentController E2E Tests', () => {
     repository = moduleFixture.get<Repository<AiAgentEntity>>(
       getRepositoryToken(AiAgentEntity),
     );
+    actionRepository = moduleFixture.get<Repository<ActionEntity>>(
+      getRepositoryToken(ActionEntity),
+    );
+    collectionRepository = moduleFixture.get<
+      Repository<ArticleCollectionEntity>
+    >(getRepositoryToken(ArticleCollectionEntity));
 
     // Nettoyer la table avant chaque test (important en E2E)
     await repository.clear();
+    await actionRepository.clear();
+    await collectionRepository.clear();
   });
 
   afterEach(async () => {
@@ -165,8 +181,6 @@ describe('AIAgentController E2E Tests', () => {
         'configuration.prompt should not be empty',
       );
     });
-
-    //TODO: Test ajout d'action à l'agent ia
   });
 
   describe('PUT /api/agents/:id', () => {
@@ -281,6 +295,222 @@ describe('AIAgentController E2E Tests', () => {
       expect(response.body).toHaveProperty(
         'message',
         'ID must be a positive integer',
+      );
+    });
+  });
+
+  describe('POST /agents/:id/actions (Success Cases)', () => {
+    it('should assign new actions to an existing agent', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+      const [collection] =
+        await createArticleCollectionFixture(collectionRepository);
+
+      const newActionDto = {
+        newActions: [
+          {
+            name: 'Assign to Collection 5',
+            type: 'ASSIGN_TO_COLLECTION',
+            collectionId: collection.id,
+          },
+        ],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(newActionDto);
+
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toHaveProperty('name', agent.name);
+      expect(response.body._actions).toHaveLength(1);
+      expect(response.body._actions[0]).toHaveProperty(
+        'name',
+        'Assign to Collection 5',
+      );
+    });
+
+    it('should assign existing actions to an agent', async () => {
+      const aiAgentDTO: CreateAiAgentDto = {
+        name: 'New AI Agent',
+        description: 'Un super Agent',
+        provider: AiAgentProvider.OLLAMA,
+        role: AiAgentRole.ANALYSIS,
+        configuration: {
+          model: 'llama3.1',
+          prompt: "Un super prompt pour l'agent IA.",
+          stream: false,
+          temperature: 0.7,
+        },
+      };
+
+      const agentResponse = await request(app.getHttpServer())
+        .post('/agents')
+        .send(aiAgentDTO);
+
+      const [action] = await createActionFixtures(actionRepository);
+
+      const assignDto = {
+        existingActionIds: [action.id],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agentResponse.body.id}/actions`)
+        .send(assignDto);
+
+      expect(response.status).toBe(201);
+      expect(response.body._actions).toHaveLength(1);
+      expect(response.body._actions[0].id).toBe(action.id);
+    });
+
+    it('should assign multiple actions (new and existing) to an agent', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+      const [collection] =
+        await createArticleCollectionFixture(collectionRepository);
+      const [existingAction] = await createActionFixtures(actionRepository);
+
+      const assignDto = {
+        existingActionIds: [existingAction.id],
+        newActions: [
+          {
+            name: 'New Action for Collection 7',
+            type: 'ASSIGN_TO_COLLECTION',
+            collectionId: collection.id,
+          },
+        ],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(assignDto);
+
+      expect(response.status).toBe(201);
+      expect(response.body._actions).toHaveLength(2);
+    });
+  });
+
+  // --- Cas d'Erreurs ---
+  describe('POST /agents/:id/actions (Error Cases)', () => {
+    it('should return 404 if agent not found', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/agents/999/actions')
+        .send({
+          newActions: [
+            {
+              name: 'New Action',
+              type: 'ASSIGN_TO_COLLECTION',
+              collectionId: 5,
+            },
+          ],
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('AI Agent not found.');
+    });
+
+    it('should return 404 if action not found in existingActionIds', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send({
+          existingActionIds: [999],
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Action not found.');
+    });
+
+    it('should return 409 if action already exists for agent and collection', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+      await createActionFixtures(actionRepository);
+
+      const duplicateDto = {
+        newActions: [
+          {
+            name: 'Duplicate Action',
+            type: 'ASSIGN_TO_COLLECTION',
+            collectionId: 2,
+          },
+        ],
+      };
+
+      await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(duplicateDto);
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(duplicateDto);
+
+      expect(response.status).toBe(409);
+      expect(response.body.message).toContain(
+        `An action already exists for collection ID : 2.`,
+      );
+    });
+
+    it('should return 400 for invalid agent ID', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/agents/invalid-id/actions')
+        .send({
+          newActions: [
+            {
+              name: 'Invalid Action',
+              type: 'ASSIGN_TO_COLLECTION',
+              collectionId: 5,
+            },
+          ],
+        });
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toContain('ID must be a positive integer');
+    });
+
+    it('should return 400 for missing fields in payload', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+
+      const invalidPayload = {
+        newActions: [{ name: '', type: 'ASSIGN_TO_COLLECTION' }],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(invalidPayload);
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toContain(
+        'collectionId - collectionId must be a number conforming to the specified constraints, collectionId should not be empty',
+      );
+      expect(response.body.message).toContain(
+        'name - name should not be empty',
+      );
+    });
+
+    it('should return 409 for duplicate actions in newActions', async () => {
+      const [agent] = await createAiAgentFixtures(repository);
+      const [collection] =
+        await createArticleCollectionFixture(collectionRepository);
+
+      const duplicatePayload = {
+        newActions: [
+          {
+            name: 'Duplicate 1',
+            type: 'ASSIGN_TO_COLLECTION',
+            collectionId: collection.id,
+          },
+          {
+            name: 'Duplicate 2',
+            type: 'ASSIGN_TO_COLLECTION',
+            collectionId: collection.id,
+          },
+        ],
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/agents/${agent.id}/actions`)
+        .send(duplicatePayload);
+
+      expect(response.status).toBe(409);
+      expect(response.body.message).toContain(
+        `Duplicate collection IDs detected in newActions: ${collection.id}`,
       );
     });
   });

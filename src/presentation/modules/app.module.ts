@@ -10,10 +10,10 @@ import { InfrastructureScheduleModule } from '../../infrastructure/schedulers/sc
 
 import { ActionModule } from './action/action.module';
 import { AiAgentModule } from './ai-agent/ai-agent.module';
-import { ArticleCollectionModule } from './article-collection/article.collection.module';
 import { ArticleModule } from './article/article.module';
-import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
+import { ArticleCollectionModule } from './article-collection/article.collection.module';
 import { RssFeedModule } from './rss-feed/rss-feed.module';
+import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
 
 @Module({
   imports: [

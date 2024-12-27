@@ -171,35 +171,6 @@ describe('AIAgentController E2E Tests', () => {
         'name - name should not be empty',
       );
     });
-
-    it('should return 409 if action with this collection exist', async () => {
-      const [collection] =
-        await createArticleCollectionFixture(collectionRepository);
-
-      const aiActionDtoOne: CreateAssignToCollectionActionDto = {
-        name: 'New Action 1',
-        type: ActionType.ASSIGN_TO_COLLECTION,
-        collectionId: collection.id,
-      };
-
-      await request(app.getHttpServer()).post('/actions').send(aiActionDtoOne);
-
-      const aiActionDtoTwo: CreateAssignToCollectionActionDto = {
-        name: 'New Action 2',
-        type: ActionType.ASSIGN_TO_COLLECTION,
-        collectionId: collection.id,
-      };
-
-      const response = await request(app.getHttpServer())
-        .post('/actions')
-        .send(aiActionDtoTwo);
-
-      expect(response.status).toBe(409);
-      expect(response.body).toHaveProperty(
-        'message',
-        `An action already exists for collection ID : ${collection.id}.`,
-      );
-    });
   });
 
   describe('PUT /api/actions/:id', () => {

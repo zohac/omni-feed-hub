@@ -35,7 +35,6 @@ export class OllamaService implements IAiService {
     });
 
     if (!response.ok) {
-      // logger.error(`Ollama responded with status ${response.status}`);
       throw new Error(`Ollama responded with status ${response.status}`);
     }
 

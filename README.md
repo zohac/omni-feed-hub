@@ -210,7 +210,8 @@ omni-feed-hub/
 │   │   ├── executor/
 │   │   │   └── action.executor.ts
 │   │   ├── factories/
-│   │   │   └── action.dto.factory.ts
+│   │   │   ├── action.dto.factory.ts
+│   │   │   └── assign.action.to.agent.dto.factory.ts
 │   │   ├── scheduler/
 │   │   │   └── parse.feed.scheduler.ts
 │   │   └── usecases/
@@ -219,6 +220,7 @@ omni-feed-hub/
 │   │       ├── analysis.use-cases.ts
 │   │       ├── article.collection.use-cases.ts
 │   │       ├── article.use-cases.ts
+│   │       ├── assign-actions-to-agent.use-cases.ts
 │   │       ├── parse.feed.use-cases.ts
 │   │       ├── rss-feed.collection.use-cases.ts
 │   │       └── rss-feed.use-cases.ts
@@ -232,7 +234,8 @@ omni-feed-hub/
 │   │   │   ├── assign.to.collection.action.ts
 │   │   │   ├── media.attachment.ts
 │   │   │   ├── rss-feed.collection.ts
-│   │   │   └── rss-feed.ts
+│   │   │   ├── rss-feed.ts
+│   │   │   └── task.ts
 │   │   ├── enums/
 │   │   │   ├── action.type.ts
 │   │   │   ├── ai-agent.provider.ts
@@ -325,6 +328,7 @@ omni-feed-hub/
 │   │   │   │   └── rss-feed.collection.module.ts
 │   │   │   └── app.module.ts
 │   │   └── pipes/
+│   │       ├── assign.action.to.agent.dto.transform.pipe.ts
 │   │       ├── create.action.dto.transform.pipe.ts
 │   │       ├── parse.positive.int.pipe.ts
 │   │       └── update.action.dto.transform.pipe.ts

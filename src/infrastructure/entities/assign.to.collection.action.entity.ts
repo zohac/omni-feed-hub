@@ -1,13 +1,14 @@
 // src/infrastructure/entities/AssignToCollectionActionEntity.ts
 
-import { ChildEntity, JoinColumn, OneToOne } from 'typeorm';
+import { ChildEntity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
 import { ActionEntity } from './action.entity';
 import { ArticleCollectionEntity } from './article.collection.entity';
 
 @ChildEntity('ASSIGN_TO_COLLECTION')
+@Unique(['agent', 'collection'])
 export class AssignToCollectionActionEntity extends ActionEntity {
-  @OneToOne(() => ArticleCollectionEntity, {
+  @ManyToOne(() => ArticleCollectionEntity, {
     nullable: true,
     cascade: true,
     eager: true,

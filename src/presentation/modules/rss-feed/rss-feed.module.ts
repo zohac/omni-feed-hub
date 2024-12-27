@@ -7,8 +7,8 @@ import { ParseFeedUseCases } from '../../../application/usecases/parse.feed.use-
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { InfrastructureModule } from '../../../infrastructure/modules/infrastructure.module';
 import { AiAgentModule } from '../ai-agent/ai-agent.module';
-import { ArticleCollectionModule } from '../article-collection/article.collection.module';
 import { ArticleModule } from '../article/article.module';
+import { ArticleCollectionModule } from '../article-collection/article.collection.module';
 import { RssFeedCollectionModule } from '../rss-feed-collection/rss-feed.collection.module';
 
 import { RssFeedController } from './rss-feed.controller';

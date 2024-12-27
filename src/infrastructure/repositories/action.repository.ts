@@ -60,4 +60,18 @@ export class ActionRepository implements IActionRepository {
 
     return ActionMapper.toDomain(entity);
   }
+
+  async findActionWithAgentAndCollectionExist(
+    agentId: number,
+    collectionId: number,
+  ): Promise<Action | null> {
+    const entity = await this.repository
+      .createQueryBuilder('action')
+      .where('agentId = :agentId', { agentId })
+      .andWhere('collectionId = :collectionId', { collectionId })
+      .getOne();
+    if (!entity) return null;
+
+    return ActionMapper.toDomain(entity);
+  }
 }

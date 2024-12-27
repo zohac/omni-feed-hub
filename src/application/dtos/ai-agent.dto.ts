@@ -1,7 +1,9 @@
 // src/application/dtos/ArticleDTO.ts
 import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -37,6 +39,11 @@ export class CreateAiAgentDto {
   @ValidateNested()
   @Type(() => CreateAiConfigurationDto)
   configuration!: CreateAiConfigurationDto;
+
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  actionIds?: number[];
 }
 
 export class UpdateAiAgentDto {
@@ -65,4 +72,9 @@ export class UpdateAiAgentDto {
   @ValidateNested()
   @Type(() => UpdateAiConfigurationDto)
   configuration!: UpdateAiConfigurationDto;
+
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  actionIds?: number[];
 }

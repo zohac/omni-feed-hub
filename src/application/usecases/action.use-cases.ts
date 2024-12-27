@@ -35,24 +35,21 @@ export class ActionUseCases {
     return actionDto;
   }
 
+  async getByIds(ids: number[]): Promise<Action[]> {
+    let actions: Action[] = [];
+    for (const id of ids) {
+      actions.push(await this.getOneById(id));
+    }
+
+    return actions;
+  }
+
   async create(actionDto: CreateActionDto): Promise<Action> {
     if (ActionType.ASSIGN_TO_COLLECTION === actionDto.type) {
       const dto = actionDto as CreateAssignToCollectionActionDto;
       const collection = await this.collectionUseCase.getOneById(
         dto.collectionId,
       );
-
-      // Vérification si une action existe déjà pour cette collection
-      const existingAction = await this.repository.findActionExistForCollection(
-        dto.collectionId,
-      );
-
-      if (existingAction) {
-        throw new HttpException(
-          `An action already exists for collection ID : ${dto.collectionId}.`,
-          HttpStatus.CONFLICT, // 409 Conflict
-        );
-      }
 
       const action = new AssignToCollectionAction(
         undefined,
@@ -82,8 +79,9 @@ export class ActionUseCases {
       if (undefined !== dto.name) action.name = dto.name;
 
       if (undefined !== dto.collectionId) {
-        const existingAction =
-          await this.repository.findActionExistForCollection(dto.collectionId);
+        const existingAction = await this.findActionExistForCollection(
+          dto.collectionId,
+        );
 
         // Si une autre action utilise déjà cette collection, renvoyer une erreur 409
         if (existingAction && existingAction.id !== id) {
@@ -117,5 +115,23 @@ export class ActionUseCases {
     const action = await this.getOneById(id);
 
     await this.repository.delete(action.id);
+  }
+
+  async findActionExistForCollection(id: number): Promise<Action | null> {
+    return await this.repository.findActionExistForCollection(id);
+  }
+
+  async findActionWithAgentAndCollectionExist(
+    agentId: number,
+    collectionId: number,
+  ): Promise<Action | null> {
+    return await this.repository.findActionWithAgentAndCollectionExist(
+      agentId,
+      collectionId,
+    );
+  }
+
+  async save(action: Action): Promise<Action> {
+    return await this.repository.create(action);
   }
 }

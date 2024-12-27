@@ -7,7 +7,7 @@ import { ActionType } from '../../domain/enums/action.type';
 export abstract class CreateActionDto {
   @IsNotEmpty()
   @IsString()
-  name?: string;
+  name!: string;
 
   @IsNotEmpty()
   @IsEnum(ActionType)

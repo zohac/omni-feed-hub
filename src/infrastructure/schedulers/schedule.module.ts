@@ -5,10 +5,10 @@ import { ParseFeedScheduler } from '../../application/scheduler/parse.feed.sched
 import { AnalysisUseCases } from '../../application/usecases/analysis.use-cases';
 import { ParseFeedUseCases } from '../../application/usecases/parse.feed.use-cases';
 import { AiAgentModule } from '../../presentation/modules/ai-agent/ai-agent.module';
-import { ArticleCollectionModule } from '../../presentation/modules/article-collection/article.collection.module';
 import { ArticleModule } from '../../presentation/modules/article/article.module';
-import { RssFeedCollectionModule } from '../../presentation/modules/rss-feed-collection/rss-feed.collection.module';
+import { ArticleCollectionModule } from '../../presentation/modules/article-collection/article.collection.module';
 import { RssFeedModule } from '../../presentation/modules/rss-feed/rss-feed.module';
+import { RssFeedCollectionModule } from '../../presentation/modules/rss-feed-collection/rss-feed.collection.module';
 import { InfrastructureModule } from '../modules/infrastructure.module';
 
 @Module({
