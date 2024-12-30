@@ -2,20 +2,21 @@
 
 import { Injectable } from '@nestjs/common';
 
-import { Article } from '../../domain/entities/Article';
-import { ArticleCollection } from '../../domain/entities/article.collection';
-import { IActionCommand } from '../../domain/interfaces/action.command';
+import { ITaskCommand } from '../../domain/interfaces/task.command';
 import { ArticleUseCases } from '../usecases/article.use-cases';
 
 @Injectable()
-export class AssignToCollectionCommand implements IActionCommand {
+export class AssignToCollectionCommand implements ITaskCommand {
   constructor(
-    private readonly article: Article,
-    private readonly collection: ArticleCollection,
+    private readonly articleId: number,
+    private readonly collectionId: number,
     private readonly articleUseCase: ArticleUseCases,
   ) {}
 
   async execute(): Promise<void> {
-    await this.articleUseCase.assignToCollection(this.article, this.collection);
+    await this.articleUseCase.assignToCollection(
+      this.articleId,
+      this.collectionId,
+    );
   }
 }

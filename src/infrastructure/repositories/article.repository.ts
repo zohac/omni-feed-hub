@@ -1,33 +1,32 @@
-// src/infrastructure/articleRepositorysitories/ArticleRepository.ts
+// src/infrastructure/repositories/article.analysis.repository.ts
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 
 import { Article } from '../../domain/entities/Article';
-import { ActionType } from '../../domain/enums/action.type';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
-import { TaskStatus } from '../../domain/enums/task.status';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
-import { ArticleEntity, TaskEntity } from '../entities';
+import { ArticleAnalysisEntity, ArticleEntity } from '../entities';
 import { ArticleMapper } from '../mappers/article.mapper';
 
 @Injectable()
 export class ArticleRepository implements IArticleRepository {
   constructor(
     @InjectRepository(ArticleEntity)
-    private readonly articleRepository: Repository<ArticleEntity>,
+    private readonly repository: Repository<ArticleEntity>,
   ) {}
 
   async create(article: Article): Promise<Article> {
     const articleEntity = ArticleMapper.toEntity(article);
-    const entity = this.articleRepository.create(articleEntity);
-    const result = await this.articleRepository.save(entity);
+    const entity = this.repository.create(articleEntity);
+    const result = await this.repository.save(entity);
 
     return ArticleMapper.toDomain(result);
   }
 
   async getAll(): Promise<Article[]> {
-    const entities = await this.articleRepository.find({
+    const entities = await this.repository.find({
       relations: ['feed'],
     });
 
@@ -35,7 +34,7 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async getOneById(id: number): Promise<Article | null> {
-    const entity = await this.articleRepository
+    const entity = await this.repository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.feed', 'feed')
       .where('article.id = :id', { id })
@@ -47,7 +46,7 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async getArticlesByFeedId(feedId: number): Promise<Article[]> {
-    const entities = await this.articleRepository.find({
+    const entities = await this.repository.find({
       where: { feed: { id: feedId } },
       relations: ['feed'],
     });
@@ -56,7 +55,7 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async getOneByLink(link: string): Promise<Article | null> {
-    const entity = await this.articleRepository.findOne({
+    const entity = await this.repository.findOne({
       where: { link },
       relations: ['feed'],
     });
@@ -66,23 +65,20 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
-    const entities = await this.articleRepository
-      .createQueryBuilder()
-      .select('article')
-      .from(ArticleEntity, 'article')
+    const entities = await this.repository
+      .createQueryBuilder('a')
       .where((qb) => {
         const subQuery = qb
           .subQuery()
-          .select('task.articleId')
-          .from(TaskEntity, 'task')
-          .where('task.assignedAgentId = :agentId', { agentId })
-          .andWhere('task.type = :type', {
-            type: ActionType.ASSIGN_TO_COLLECTION,
+          .select('1')
+          .from(ArticleAnalysisEntity, 'aa')
+          .where('aa.articleId = a.id')
+          .andWhere('aa.agentId = :agentId', { agentId })
+          .andWhere('aa.status IN (:...statuses)', {
+            statuses: ['completed'],
           })
-          .andWhere('task.status = :status', { status: TaskStatus.COMPLETED })
           .getQuery();
-
-        return `article.id NOT IN ${subQuery}`;
+        return `NOT EXISTS ${subQuery}`;
       })
       .getMany();
 
@@ -92,17 +88,17 @@ export class ArticleRepository implements IArticleRepository {
   async update(article: Article): Promise<Article | null> {
     const articleEntity = ArticleMapper.toEntity(article);
 
-    await this.articleRepository.save(articleEntity);
+    await this.repository.save(articleEntity);
 
     return await this.getOneById(articleEntity.id);
   }
 
   async delete(id: number): Promise<void> {
-    await this.articleRepository.delete({ id });
+    await this.repository.delete({ id });
   }
 
   async deleteOldRSSArticles(olderThan: Date): Promise<void> {
-    await this.articleRepository.delete({
+    await this.repository.delete({
       publicationAt: LessThan(olderThan),
       sourceType: ArticleSourceType.RSS,
       isSaved: false,

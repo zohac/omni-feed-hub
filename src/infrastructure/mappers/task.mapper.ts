@@ -10,7 +10,7 @@ export class TaskMapper {
   static toDomain(entity: TaskEntity): Task {
     const domain = this.toPartialDomain(entity);
 
-    domain.assignAgent(AiAgentMapper.toDomain(entity.assignedAgent));
+    domain.assignedAgent = AiAgentMapper.toDomain(entity.assignedAgent);
 
     return domain;
   }

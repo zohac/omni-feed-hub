@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 
 import { Article } from '../../domain/entities/Article';
-import { ArticleCollection } from '../../domain/entities/article.collection';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
@@ -144,16 +143,15 @@ export class ArticleUseCases
   }
 
   async assignToCollection(
-    article: Article,
-    articleCollection: ArticleCollection,
+    articleId: number,
+    collectionId: number,
   ): Promise<void> {
-    if (undefined !== articleCollection.id) {
-      article.collection = await this.articleCollectionUseCases.getOneById(
-        articleCollection.id,
-      );
+    const article = await this.getOneById(articleId);
 
-      await this.repository.update(article);
-    }
+    article.collection =
+      await this.articleCollectionUseCases.getOneById(collectionId);
+
+    await this.repository.update(article);
   }
 
   async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {

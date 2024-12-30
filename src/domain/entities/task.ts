@@ -1,3 +1,5 @@
+// src/domain/entities/task.ts
+
 import { ActionType } from '../enums/action.type';
 import { TaskMode } from '../enums/task.mode';
 import { TaskStatus } from '../enums/task.status';
@@ -18,10 +20,6 @@ export class Task implements IEntity {
     public article: Article,
     public assignedAgent?: AiAgent,
   ) {}
-
-  assignAgent(agent: AiAgent) {
-    this.assignedAgent = agent;
-  }
 
   complete() {
     this.status = TaskStatus.COMPLETED;

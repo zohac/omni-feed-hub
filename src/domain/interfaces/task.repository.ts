@@ -5,5 +5,7 @@ import { Task } from '../entities/task';
 import { IRepository } from './repository';
 
 export interface ITaskRepository extends IRepository<Task> {
-  createTasks(tasks: Task[]): Promise<Task[]>;
+  update(task: Task): Promise<Task>;
+
+  getPendingTasks(): Promise<Task[]>;
 }

@@ -8,3 +8,4 @@ export * from './ai-configuration.entity';
 export * from './task.entity';
 export * from './action.entity';
 export * from './assign.to.collection.action.entity';
+export * from './article.analyse.entity';

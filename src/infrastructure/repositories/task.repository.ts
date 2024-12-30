@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Task } from '../../domain/entities/task';
+import { TaskStatus } from '../../domain/enums/task.status';
 import { ITaskRepository } from '../../domain/interfaces/task.repository';
 import { TaskEntity } from '../entities';
 import { TaskMapper } from '../mappers/task.mapper';
@@ -17,7 +18,7 @@ export class TaskRepository implements ITaskRepository {
   async getOneById(id: number): Promise<Task | null> {
     const entity = await this.repository.findOne({
       where: { id },
-      relations: ['assignedAgent'],
+      relations: ['assignedAgent', 'article'],
     });
     if (!entity) return null;
 
@@ -59,5 +60,14 @@ export class TaskRepository implements ITaskRepository {
     const results = this.repository.create(entities);
 
     return results.map((entity) => TaskMapper.toDomain(entity));
+  }
+
+  async getPendingTasks(): Promise<Task[]> {
+    const entities = await this.repository.find({
+      where: { status: TaskStatus.PENDING },
+      relations: ['assignedAgent'],
+    });
+
+    return entities.map((entity) => TaskMapper.toDomain(entity));
   }
 }

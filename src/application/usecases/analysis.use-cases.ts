@@ -4,14 +4,15 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { AiAgent } from '../../domain/entities/ai-agent';
 import { Article } from '../../domain/entities/Article';
+import { ArticleAnalysis } from '../../domain/entities/article.analyse';
 import { Task } from '../../domain/entities/task';
-import { ActionType } from '../../domain/enums/action.type';
 import { AiAgentRole } from '../../domain/enums/ai-agent.role';
+import { ArticleAnalysisStatus } from '../../domain/enums/article.analysis.status';
 import { TaskMode } from '../../domain/enums/task.mode';
-import { TaskStatus } from '../../domain/enums/task.status';
 import { IAiServiceFactory } from '../../domain/interfaces/ai-service.factory';
 import { ILogger } from '../../domain/interfaces/logger';
-import { ITaskRepository } from '../../domain/interfaces/task.repository';
+import { IRepository } from '../../domain/interfaces/repository';
+import { TaskOrchestrator } from '../orchestrators/task.orchestrator';
 
 import { AiAgentUseCases } from './ai-agent.use-cases';
 import { ArticleUseCases } from './article.use-cases';
@@ -21,12 +22,13 @@ export class AnalysisUseCases {
   constructor(
     @Inject('ILogger')
     private readonly logger: ILogger,
-    @Inject('IRepository<Task>')
-    private readonly repository: ITaskRepository,
+    @Inject('IRepository<ArticleAnalysis>')
+    private readonly analysisRepository: IRepository<ArticleAnalysis>,
     @Inject('IAiServiceFactory')
     private readonly aiServiceFactory: IAiServiceFactory,
     private readonly articleUseCases: ArticleUseCases,
     private readonly agentUseCases: AiAgentUseCases,
+    private readonly taskOrchestrator: TaskOrchestrator,
   ) {}
 
   async analysisOneArticleWithAgent(
@@ -40,7 +42,7 @@ export class AnalysisUseCases {
     const task = await this.analysis(agent, article);
     this.logger.log("Fin  de l'analyse d'un article.");
 
-    return await this.create(task);
+    return await this.taskOrchestrator.create(task);
   }
 
   async analysisAllByOneAgent(agent: AiAgent): Promise<Task[]> {
@@ -63,9 +65,14 @@ export class AnalysisUseCases {
       for (const article of articles) {
         const task = await this.analysis(agent, article);
         if (task) {
-          const result = await this.create(task);
+          const result = await this.taskOrchestrator.create(task);
 
           tasks.push(result);
+
+          // Exécuter immédiatement les tâches directes
+          if (TaskMode.DIRECT === result.mode) {
+            await this.taskOrchestrator.executeTaskDirectly(result);
+          }
         }
       }
     }
@@ -92,39 +99,36 @@ export class AnalysisUseCases {
     const aiService = this.aiServiceFactory.create(agent.provider);
 
     if (agent.role === AiAgentRole.ANALYSIS && aiService.analyzeArticle) {
+      const newAnalysis = new ArticleAnalysis(
+        undefined,
+        article,
+        agent,
+        ArticleAnalysisStatus.IN_PROGRESS,
+        null,
+        new Date(),
+      );
+      const analysis = await this.analysisRepository.create(newAnalysis);
+
       const isRelevant = await aiService.analyzeArticle(agent, article);
       this.logger.log(
         `Article "${article.title}" analysé par l'agent "${agent.name}" avec le fournisseur "${agent.provider}".`,
       );
 
+      let task: Task | null = null;
       if (isRelevant) {
         for (const action of agent.actions) {
-          if (ActionType.ASSIGN_TO_COLLECTION === action.type) {
-            return new Task(
-              undefined,
-              'name',
-              ActionType.ASSIGN_TO_COLLECTION,
-              TaskMode.DIRECT,
-              {
-                articleId: article.id,
-                collectionId: action.parameters.collection.id,
-              },
-              TaskStatus.PENDING,
-              new Date(),
-              article,
-              agent,
-            );
-          }
+          task = await this.taskOrchestrator.createNewTask(
+            action,
+            article,
+            agent,
+          );
         }
       }
+
+      analysis.status = ArticleAnalysisStatus.COMPLETED;
+      await this.analysisRepository.update(analysis);
+
+      return task;
     }
-  }
-
-  async create(task: Task): Promise<Task> {
-    return await this.repository.create(task);
-  }
-
-  async saveTasks(tasks: Task[]): Promise<Task[]> {
-    return await this.repository.createTasks(tasks);
   }
 }

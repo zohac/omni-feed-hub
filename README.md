@@ -203,17 +203,22 @@ omni-feed-hub/
 │   │   │   ├── article.dto.ts
 │   │   │   ├── article.state.dto.ts
 │   │   │   ├── article.tag.dto.ts
+│   │   │   ├── assign.action.to.agent.dto.ts
 │   │   │   ├── assign.to.collection.action.dto.ts
 │   │   │   ├── media.attachment.dto.ts
 │   │   │   ├── rss-feed.collection.dto.ts
 │   │   │   └── rss-feed.dto.ts
 │   │   ├── executor/
-│   │   │   └── action.executor.ts
+│   │   │   └── task.executor.ts
 │   │   ├── factories/
 │   │   │   ├── action.dto.factory.ts
-│   │   │   └── assign.action.to.agent.dto.factory.ts
+│   │   │   ├── assign.action.to.agent.dto.factory.ts
+│   │   │   └── command.factory.ts
+│   │   ├── orchestrators/
+│   │   │   └── task.orchestrator.ts
 │   │   ├── scheduler/
-│   │   │   └── parse.feed.scheduler.ts
+│   │   │   ├── parse.feed.scheduler.ts
+│   │   │   └── task.scheduler.ts
 │   │   └── usecases/
 │   │       ├── action.use-cases.ts
 │   │       ├── ai-agent.use-cases.ts
@@ -223,12 +228,14 @@ omni-feed-hub/
 │   │       ├── assign-actions-to-agent.use-cases.ts
 │   │       ├── parse.feed.use-cases.ts
 │   │       ├── rss-feed.collection.use-cases.ts
-│   │       └── rss-feed.use-cases.ts
+│   │       ├── rss-feed.use-cases.ts
+│   │       └── task.use-cases.ts
 │   ├── domain/
 │   │   ├── entities/
 │   │   │   ├── action.ts
 │   │   │   ├── ai-agent.ts
 │   │   │   ├── ai-configuration.ts
+│   │   │   ├── article.analyse.ts
 │   │   │   ├── article.collection.ts
 │   │   │   ├── article.ts
 │   │   │   ├── assign.to.collection.action.ts
@@ -240,11 +247,11 @@ omni-feed-hub/
 │   │   │   ├── action.type.ts
 │   │   │   ├── ai-agent.provider.ts
 │   │   │   ├── ai-agent.role.ts
+│   │   │   ├── article.analysis.status.ts
 │   │   │   ├── article.source.type.ts
 │   │   │   ├── task.mode.ts
 │   │   │   └── task.status.ts
 │   │   └── interfaces/
-│   │       ├── action.command.ts
 │   │       ├── action.repository.ts
 │   │       ├── ai-agent.repository.ts
 │   │       ├── ai-service.factory.ts
@@ -258,6 +265,7 @@ omni-feed-hub/
 │   │       ├── parser.output.ts
 │   │       ├── repository.ts
 │   │       ├── rss-parser.ts
+│   │       ├── task.command.ts
 │   │       ├── task.repository.ts
 │   │       └── usecases.ts
 │   ├── infrastructure/
@@ -270,6 +278,7 @@ omni-feed-hub/
 │   │   │   ├── action.entity.ts
 │   │   │   ├── ai-agent.entity.ts
 │   │   │   ├── ai-configuration.entity.ts
+│   │   │   ├── article.analyse.entity.ts
 │   │   │   ├── article.collection.entity.ts
 │   │   │   ├── article.entity.ts
 │   │   │   ├── assign.to.collection.action.entity.ts
@@ -286,6 +295,7 @@ omni-feed-hub/
 │   │   │   ├── action.mapper.ts
 │   │   │   ├── ai-agent.mapper.ts
 │   │   │   ├── ai-configuration.mapper.ts
+│   │   │   ├── article.analysis.mapper.ts
 │   │   │   ├── article.collection.mapper.ts
 │   │   │   ├── article.mapper.ts
 │   │   │   ├── media.attachment.mapper.ts
@@ -297,6 +307,7 @@ omni-feed-hub/
 │   │   ├── repositories/
 │   │   │   ├── action.repository.ts
 │   │   │   ├── ai-agent.repository.ts
+│   │   │   ├── article.analysis.repository.ts
 │   │   │   ├── article.collection.repository.ts
 │   │   │   ├── article.repository.ts
 │   │   │   ├── rss-feed.collection.repository.ts
@@ -332,6 +343,8 @@ omni-feed-hub/
 │   │       ├── create.action.dto.transform.pipe.ts
 │   │       ├── parse.positive.int.pipe.ts
 │   │       └── update.action.dto.transform.pipe.ts
+│   ├── utils
+│   │   └── string.utils.ts
 │   └── main.ts
 ├── test/
 │   ├── e2e/

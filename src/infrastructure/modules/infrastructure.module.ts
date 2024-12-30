@@ -13,9 +13,11 @@ import {
   RssFeedEntity,
   TaskEntity,
 } from '../entities';
+import { ArticleAnalysisEntity } from '../entities/article.analyse.entity';
 import { AiServiceFactory } from '../factories/ai-service.factory';
 import { ActionRepository } from '../repositories/action.repository';
 import { AiAgentRepository } from '../repositories/ai-agent.repository';
+import { ArticleAnalysisRepository } from '../repositories/article.analysis.repository';
 import { ArticleCollectionRepository } from '../repositories/article.collection.repository';
 import { ArticleRepository } from '../repositories/article.repository';
 import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection.repository';
@@ -34,6 +36,7 @@ import { RssParserService } from '../services/rss-parser.service';
       TaskEntity,
       ActionEntity,
       ActionEntity,
+      ArticleAnalysisEntity,
     ]),
   ],
   providers: [
@@ -74,6 +77,10 @@ import { RssParserService } from '../services/rss-parser.service';
       useClass: ActionRepository,
     },
     {
+      provide: 'IRepository<ArticleAnalysis>',
+      useClass: ArticleAnalysisRepository,
+    },
+    {
       provide: 'IAiServiceFactory',
       useClass: AiServiceFactory,
     },
@@ -89,6 +96,7 @@ import { RssParserService } from '../services/rss-parser.service';
     'IRepository<AiAgent>',
     'IRepository<Task>',
     'IRepository<Action>',
+    'IRepository<ArticleAnalysis>',
     'IAiServiceFactory',
   ],
 })
