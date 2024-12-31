@@ -2,7 +2,7 @@
 
 import { IBaseCollection } from '../interfaces/base.collection';
 
-import { Article } from './Article';
+import { Article } from './article';
 
 export class ArticleCollection implements IBaseCollection {
   constructor(

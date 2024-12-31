@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 
-import { Article } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/article';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ArticleAnalysisEntity, ArticleEntity } from '../entities';

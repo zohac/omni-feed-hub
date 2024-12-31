@@ -8,7 +8,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { Article } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/article';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';

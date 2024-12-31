@@ -2,7 +2,7 @@
 
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-import { Action } from '../../domain/entities/Action';
+import { Action } from '../../domain/entities/action';
 import { AssignToCollectionAction } from '../../domain/entities/assign.to.collection.action';
 import { ActionType } from '../../domain/enums/action.type';
 import { ActionEntity, AssignToCollectionActionEntity } from '../entities';

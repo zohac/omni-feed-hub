@@ -179,6 +179,77 @@ This project includes unit and E2E tests to ensure code reliability.
     pnpm test:cov
     ```
 
+## Getting Started (with Docker)
+
+### Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- **Docker**: For containerization
+- **Docker Compose**: To orchestrate services
+- **pnpm:** For dependency management (inside the container)
+- **Node.js:** Version 20.x or higher (optional for local development)
+
+### Docker Setup
+
+#### 1. Development Setup
+
+To start the development environment with Docker:
+
+```bash
+docker compose -f docker-compose.dev.yaml up
+```
+
+This will start the development server, automatically reload on file changes, and map the local project files to the
+container.
+
+#### 2. Running Tests in Docker
+
+Run unit and E2E tests:
+
+```bash
+docker compose -f docker-compose.dev.yaml run app env NODE_ENV=test pnpm test
+```
+
+Run tests with coverage:
+
+```bash
+docker compose -f docker-compose.dev.yaml run app env NODE_ENV=test pnpm test:cov
+```
+
+The coverage report will be generated in the ./coverage directory.
+Note: If you encounter permission issues with the coverage directory, update the ownership by running:
+
+```bash
+sudo chown -R $USER:$USER ./coverage
+```
+
+#### 3. Build for Production
+
+To build and run the application for production:
+
+```bash
+docker compose -f docker-compose.prod.yaml up --build
+```
+
+### Docker Compose Configuration
+
+* docker-compose.dev.yaml – Development environment with live reload and volume mounting.
+* docker-compose.prod.yaml – Production environment for optimized builds.
+* Dockerfile.dev – Builds the development container, installs dependencies, and starts the application in watch mode.
+
+### Testing
+
+The project supports comprehensive unit and end-to-end (E2E) tests, executed via Docker.
+
+Run Tests inside Docker:
+
+```bash
+docker compose -f docker-compose.dev.yaml run app env NODE_ENV=test pnpm test:cov
+```
+
+The report is accessible in the ./coverage directory.
+
 ## API Documentation
 
 The API is documented using Swagger. Once the server is running, you can access the interactive API documentation at:

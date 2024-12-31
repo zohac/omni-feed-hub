@@ -7,13 +7,13 @@ import { NestLoggerAdapter } from '../adapters/nest-logger.adapter';
 import {
   ActionEntity,
   AiAgentEntity,
+  ArticleAnalysisEntity,
   ArticleCollectionEntity,
   ArticleEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
   TaskEntity,
 } from '../entities';
-import { ArticleAnalysisEntity } from '../entities/article.analyse.entity';
 import { AiServiceFactory } from '../factories/ai-service.factory';
 import { ActionRepository } from '../repositories/action.repository';
 import { AiAgentRepository } from '../repositories/ai-agent.repository';

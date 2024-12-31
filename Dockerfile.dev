@@ -1,0 +1,23 @@
+# Utilise l'image Node LTS avec pnpm
+FROM node:22.12.0
+
+# Installer pnpm globalement
+RUN npm install -g pnpm
+
+# Définir le répertoire de travail
+WORKDIR /usr/src/app
+
+# Copier uniquement package.json et pnpm-lock pour accélérer le cache Docker
+COPY package.json pnpm-lock.yaml ./
+
+# Installer les dépendances
+RUN pnpm install
+
+# Monter le reste du projet (code source)
+COPY . .
+
+# Exposer le port de développement
+EXPOSE 3000
+
+# Commande de démarrage en mode dev
+CMD ["pnpm", "start:dev"]

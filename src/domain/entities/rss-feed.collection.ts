@@ -1,4 +1,5 @@
 // src/domain/entities/RssFeedCollection.ts
+
 import { IBaseCollection } from '../interfaces/base.collection';
 
 import { RssFeed } from './rss-feed';

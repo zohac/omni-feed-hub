@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Action } from '../../domain/entities/Action';
+import { Action } from '../../domain/entities/action';
 import { IActionRepository } from '../../domain/interfaces/action.repository';
 import { ActionEntity } from '../entities';
 import { ActionMapper } from '../mappers/action.mapper';

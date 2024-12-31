@@ -3,7 +3,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { AiAgent } from '../../domain/entities/ai-agent';
-import { Article } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/article';
 import { ArticleAnalysis } from '../../domain/entities/article.analyse';
 import { Task } from '../../domain/entities/task';
 import { AiAgentRole } from '../../domain/enums/ai-agent.role';

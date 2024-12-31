@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { ArticleAnalysis } from '../../domain/entities/article.analyse';
 import { IRepository } from '../../domain/interfaces/repository';
-import { ArticleAnalysisEntity } from '../entities/article.analyse.entity';
+import { ArticleAnalysisEntity } from '../entities';
 import { ArticleAnalysisMapper } from '../mappers/article.analysis.mapper';
 
 @Injectable()

@@ -1,7 +1,7 @@
 // src/infrastructure/mappers/article.collection.mapper.ts
 
 import { ArticleAnalysis } from '../../domain/entities/article.analyse';
-import { ArticleAnalysisEntity } from '../entities/article.analyse.entity';
+import { ArticleAnalysisEntity } from '../entities';
 
 import { AiAgentMapper } from './ai-agent.mapper';
 import { ArticleMapper } from './article.mapper';

@@ -2,7 +2,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Article } from '../../domain/entities/Article';
+import { Article } from '../../domain/entities/article';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';

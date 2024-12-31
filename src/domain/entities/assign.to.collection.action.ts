@@ -2,7 +2,7 @@
 
 import { ActionType } from '../enums/action.type';
 
-import { IBaseAction } from './Action';
+import { IBaseAction } from './action';
 import { ArticleCollection } from './article.collection';
 
 export class AssignToCollectionAction implements IBaseAction {
