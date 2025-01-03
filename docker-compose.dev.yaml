@@ -17,3 +17,12 @@ services:
     # Ajout pour les tests
     extra_hosts:
       - "localhost:host-gateway"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: omni-feed-redis
+    restart: always
+    ports:
+      - "6379:6379"

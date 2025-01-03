@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 
 import { ArticleAnalysisStatus } from '../../domain/enums/article.analysis.status';
@@ -14,6 +15,7 @@ import { AiAgentEntity } from './ai-agent.entity';
 import { ArticleEntity } from './article.entity';
 
 @Entity('article_analysis')
+@Unique(['agent', 'article'])
 export class ArticleAnalysisEntity {
   @PrimaryGeneratedColumn()
   id: number;

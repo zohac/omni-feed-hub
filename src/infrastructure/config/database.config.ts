@@ -36,4 +36,9 @@ const DATABASE = () => {
   throw new Error('Unknown database configuration, check your ".env" file');
 };
 
+export const redisConfig = {
+  host: process.env.REDIS_HOST || 'redis',
+  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+};
+
 export default registerAs('database', () => DATABASE());

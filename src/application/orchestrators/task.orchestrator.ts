@@ -25,7 +25,7 @@ export class TaskOrchestrator {
 
   async executeTaskDirectly(task: Task): Promise<void> {
     // Lancer immédiatement la tâche directe
-    this.logger.log(`Exécution immédiate de la tâche ${task.id}`);
+    this.logger.log(`Immediate execution of the task : ${task.id}`);
     await this.taskExecutor.execute([task]);
   }
 

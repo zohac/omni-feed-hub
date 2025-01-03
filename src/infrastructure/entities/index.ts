@@ -9,3 +9,5 @@ export * from './task.entity';
 export * from './action.entity';
 export * from './assign.to.collection.action.entity';
 export * from './article.analyse.entity';
+export * from './agent.workflow.entity';
+export * from './agent.workflow.step.entity';

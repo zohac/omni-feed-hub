@@ -38,16 +38,16 @@ export class AnalysisUseCases {
     const article = await this.articleUseCases.getOneById(articleId);
     const agent = await this.agentUseCases.getOneById(agentId);
 
-    this.logger.log("Début de l'analyse d'un article.");
+    this.logger.log('Start of article analysis.');
     const task = await this.analysis(agent, article);
-    this.logger.log("Fin  de l'analyse d'un article.");
+    this.logger.log('End of article analysis.');
 
     return await this.taskOrchestrator.create(task);
   }
 
   async analysisAllByOneAgent(agent: AiAgent): Promise<Task[]> {
     this.logger.log(
-      `Début de l'analyse de tous les articles par l'agent : ${agent.name}.`,
+      `Start of the analysis of all articles by the agent : ${agent.name}.`,
     );
 
     let tasks: Task[] = [];
@@ -59,7 +59,7 @@ export class AnalysisUseCases {
 
       if (articles.length === 0)
         this.logger.log(
-          `Aucun nouvel article a analyser pour l'agent : ${agent.name}.`,
+          `No new articles to analyze for the agent : ${agent.name}.`,
         );
 
       for (const article of articles) {
@@ -76,9 +76,7 @@ export class AnalysisUseCases {
         }
       }
     }
-    this.logger.log(
-      `Fin  de l'analyse des articles par l'agent : ${agent.name}.`,
-    );
+    this.logger.log(`End of article analysis by the agent : ${agent.name}.`);
 
     return tasks;
   }
@@ -111,7 +109,7 @@ export class AnalysisUseCases {
 
       const isRelevant = await aiService.analyzeArticle(agent, article);
       this.logger.log(
-        `Article "${article.title}" analysé par l'agent "${agent.name}" avec le fournisseur "${agent.provider}".`,
+        `Article "${article.title}" analyzed by agent "${agent.name}" with provider "${agent.provider}".`,
       );
 
       let task: Task | null = null;
@@ -126,6 +124,7 @@ export class AnalysisUseCases {
       }
 
       analysis.status = ArticleAnalysisStatus.COMPLETED;
+      analysis.result = String(isRelevant);
       await this.analysisRepository.update(analysis);
 
       return task;

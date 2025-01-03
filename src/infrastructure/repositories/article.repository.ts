@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 
 import { Article } from '../../domain/entities/article';
+import { ArticleAnalysisStatus } from '../../domain/enums/article.analysis.status';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ArticleAnalysisEntity, ArticleEntity } from '../entities';
@@ -27,18 +28,17 @@ export class ArticleRepository implements IArticleRepository {
 
   async getAll(): Promise<Article[]> {
     const entities = await this.repository.find({
-      relations: ['feed'],
+      relations: ['feed', 'collection'],
     });
 
     return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 
   async getOneById(id: number): Promise<Article | null> {
-    const entity = await this.repository
-      .createQueryBuilder('article')
-      .leftJoinAndSelect('article.feed', 'feed')
-      .where('article.id = :id', { id })
-      .getOne();
+    const entity = await this.repository.findOne({
+      where: { id },
+      relations: ['feed', 'collection'],
+    });
 
     if (!entity) return null;
 
@@ -75,7 +75,10 @@ export class ArticleRepository implements IArticleRepository {
           .where('aa.articleId = a.id')
           .andWhere('aa.agentId = :agentId', { agentId })
           .andWhere('aa.status IN (:...statuses)', {
-            statuses: ['completed'],
+            statuses: [
+              ArticleAnalysisStatus.COMPLETED,
+              ArticleAnalysisStatus.PENDING,
+            ],
           })
           .getQuery();
         return `NOT EXISTS ${subQuery}`;

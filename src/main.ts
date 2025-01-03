@@ -7,6 +7,16 @@ import { AppModule } from './presentation/modules/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Configuration CORS pour autoriser localhost:3001
+  app.enableCors({
+    origin: 'http://localhost:3001', // Autorise cette origine uniquement
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+    preflightContinue: false, // Répond automatiquement aux requêtes OPTIONS
+    optionsSuccessStatus: 204, // Réponse pour les requêtes OPTIONS
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

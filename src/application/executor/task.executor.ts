@@ -49,7 +49,7 @@ export class TaskExecutor {
             }
             // Gérez d'autres types d'actions
             default:
-              throw new Error(`Type d'action inconnu: ${task.type}`);
+              throw new Error(`Unknown action type : ${task.type}`);
           }
           await command.execute();
 

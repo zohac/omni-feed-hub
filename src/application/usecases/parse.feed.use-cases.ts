@@ -59,12 +59,12 @@ export class ParseFeedUseCases {
           await this.repository.create(article);
         }
       }
-      this.logger.log(`Flux traité avec succès : ${feed.title}`);
+      this.logger.log(`Feed processed successfully : ${feed.title}`);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
       this.logger.error(
-        `Erreur lors du parsing du flux RSS "${feed.title}":`,
+        `Error during RSS feed parsing : "${feed.title}":`,
         errorMessage,
       );
     }

@@ -1,6 +1,7 @@
 import { Article } from '../../domain/entities/article';
 import { ArticleEntity } from '../entities';
 
+import { ArticleCollectionMapper } from './article.collection.mapper';
 import { MediaAttachmentMapper } from './media.attachment.mapper';
 import { RssFeedMapper } from './rss-feed.mapper';
 
@@ -22,6 +23,10 @@ export class ArticleMapper {
     }
 
     domain.metadata = entity.metadata;
+
+    if (undefined !== entity.collection && null !== entity.collection) {
+      domain.collection = ArticleCollectionMapper.toDomain(entity.collection);
+    }
 
     return domain;
   }
@@ -58,6 +63,12 @@ export class ArticleMapper {
     }
 
     entity.metadata = domain.metadata;
+
+    if (undefined !== domain.collection) {
+      entity.collection = ArticleCollectionMapper.toPartialEntity(
+        domain.collection,
+      );
+    }
 
     return entity;
   }
