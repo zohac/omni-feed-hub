@@ -34,11 +34,10 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async getOneById(id: number): Promise<Article | null> {
-    const entity = await this.repository
-      .createQueryBuilder('article')
-      .leftJoinAndSelect('article.feed', 'feed')
-      .where('article.id = :id', { id })
-      .getOne();
+    const entity = await this.repository.findOne({
+      where: { id },
+      relations: ['feed', 'mediaAttachments'],
+    });
 
     if (!entity) return null;
 
@@ -57,7 +56,7 @@ export class ArticleRepository implements IArticleRepository {
   async getOneByLink(link: string): Promise<Article | null> {
     const entity = await this.repository.findOne({
       where: { link },
-      relations: ['feed'],
+      relations: ['feed', 'mediaAttachments'],
     });
     if (!entity) return null;
 

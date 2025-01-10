@@ -17,7 +17,7 @@ export class RssFeedRepository implements IRepository<RssFeed> {
   async getOneById(id: number): Promise<RssFeed | null> {
     const entity = await this.repository.findOne({
       where: { id },
-      relations: ['collection'],
+      relations: ['collection', 'articles'],
     });
     if (!entity) return null;
 
