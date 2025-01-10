@@ -3,6 +3,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { AiAgent } from '../../domain/entities/ai-agent';
+import { AiServiceAnalysisResponse } from '../../domain/entities/ai-service.analysis.response';
 import { Article } from '../../domain/entities/article';
 import { IAiService } from '../../domain/interfaces/ai-service';
 import { StringUtils } from '../../utils/string.utils';
@@ -11,7 +12,10 @@ import { StringUtils } from '../../utils/string.utils';
 export class OllamaService implements IAiService {
   constructor(private readonly baseUrl: string) {}
 
-  async analyzeArticle(agent: AiAgent, article: Article): Promise<boolean> {
+  async analyzeArticle(
+    agent: AiAgent,
+    article: Article,
+  ): Promise<AiServiceAnalysisResponse> {
     const prompt = StringUtils.replacePlaceholders(agent.configuration.prompt, {
       title: article.title ?? '',
       description: article.description ?? '',
@@ -41,7 +45,15 @@ export class OllamaService implements IAiService {
     const data = await response.json();
     const result = data.response.toLowerCase().trim();
 
-    return result === 'true';
+    const analysisResponse: AiServiceAnalysisResponse = {
+      isRelevant: undefined,
+      rawResponse: String(result),
+    };
+
+    if (result === 'true') analysisResponse.isRelevant = true;
+    else if (result === 'false') analysisResponse.isRelevant = false;
+
+    return analysisResponse;
   }
 
   async generateContent(agent: AiAgent, article: Article): Promise<string> {
