@@ -33,6 +33,7 @@ export class ArticleAnalysisMapper {
     entity.article = ArticleMapper.toPartialEntity(domain.article);
     entity.agent = AiAgentMapper.toEntity(domain.agent);
     entity.status = domain.status;
+    entity.result = domain.result;
     entity.createdAt = domain.createdAt;
     entity.result = domain.result;
 

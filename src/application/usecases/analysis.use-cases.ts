@@ -107,13 +107,13 @@ export class AnalysisUseCases {
       );
       const analysis = await this.analysisRepository.create(newAnalysis);
 
-      const isRelevant = await aiService.analyzeArticle(agent, article);
+      const response = await aiService.analyzeArticle(agent, article);
       this.logger.log(
         `Article "${article.title}" analyzed by agent "${agent.name}" with provider "${agent.provider}".`,
       );
 
       let task: Task | null = null;
-      if (isRelevant) {
+      if (response.isRelevant) {
         for (const action of agent.actions) {
           task = await this.taskOrchestrator.createNewTask(
             action,
@@ -123,8 +123,14 @@ export class AnalysisUseCases {
         }
       }
 
+      analysis.result = String(response.isRelevant);
       analysis.status = ArticleAnalysisStatus.COMPLETED;
-      analysis.result = String(isRelevant);
+
+      if (undefined === response.isRelevant) {
+        analysis.result = response.rawResponse;
+        analysis.status = ArticleAnalysisStatus.RETRY;
+      }
+
       await this.analysisRepository.update(analysis);
 
       return task;

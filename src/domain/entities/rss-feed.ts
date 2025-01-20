@@ -2,6 +2,7 @@
 
 import { IEntity } from '../interfaces/entity';
 
+import { Article } from './article';
 import { RssFeedCollection } from './rss-feed.collection';
 
 export class RssFeed implements IEntity {
@@ -11,5 +12,6 @@ export class RssFeed implements IEntity {
     public url: string,
     public description?: string,
     public collection?: RssFeedCollection,
+    public articles?: Article[],
   ) {}
 }

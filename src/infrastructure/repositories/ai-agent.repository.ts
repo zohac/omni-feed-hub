@@ -18,7 +18,10 @@ export class AiAgentRepository implements IAiAgentRepository {
   ) {}
 
   async getAll(): Promise<AiAgent[]> {
-    const entities = await this.repository.find();
+    const entities = await this.repository.find({
+      relations: ['configuration'],
+    });
+
     return entities.map((entity) => AiAgentMapper.toDomain(entity));
   }
 

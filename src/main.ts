@@ -25,6 +25,15 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+    preflightContinue: false, // Répond automatiquement aux requêtes OPTIONS
+    optionsSuccessStatus: 204, // Réponse pour les requêtes OPTIONS
+  });
+
   // Add "/api" before all routes
   app.setGlobalPrefix('api');
 

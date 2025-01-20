@@ -1,4 +1,4 @@
-// src/infrastructure/entities/AIConfigurationEntity.ts
+// src/infrastructure/entities/ai-configuration.entity.ts
 
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -16,6 +16,6 @@ export class AiConfigurationEntity {
   @Column()
   stream!: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   temperature?: number;
 }

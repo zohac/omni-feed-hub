@@ -3,6 +3,7 @@
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { RssFeedEntity } from '../entities';
 
+import { ArticleMapper } from './article.mapper';
 import { RssFeedCollectionMapper } from './rss-feed.collection.mapper';
 
 export class RssFeedMapper {
@@ -15,6 +16,12 @@ export class RssFeedMapper {
       domain.collection = RssFeedCollectionMapper.toPartialDomain(
         entity.collection,
       );
+    }
+
+    if (undefined !== entity.articles && null !== entity.articles) {
+      domain.articles = entity.articles.map((article) => {
+        return ArticleMapper.toDomain(article);
+      });
     }
 
     return domain;

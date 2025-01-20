@@ -54,6 +54,11 @@ export class RssParserService implements IRssParser {
       if (item.contentSnippet) itemParser.contentSnippet = item.contentSnippet;
       if (item.enclosure) itemParser.enclosure = item.enclosure;
 
+      if (item['content:encoded']) {
+        if (item['content:encoded'].length > itemParser.content.length)
+          itemParser.content = item['content:encoded'];
+      }
+
       if (item['media:content']) {
         const mediaContent = Array.isArray(item['media:content'])
           ? item['media:content']

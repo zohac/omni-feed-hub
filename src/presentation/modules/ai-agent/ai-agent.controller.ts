@@ -104,7 +104,7 @@ export class AiAgentController {
   @ApiResponse({
     status: 409,
     description:
-      'An action already exists for agent ID : {{agentId}}., and collection ID : {{collectionId}}.',
+      'An action already exists for agent ID : {{agentId}}, and collection ID : {{collectionId}}.',
   })
   @Post('/:id/actions')
   @UsePipes(AssignActionToAgentDtoTransformPipe)

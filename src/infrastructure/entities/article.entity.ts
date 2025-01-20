@@ -51,7 +51,8 @@ export class ArticleEntity {
   @ManyToOne(() => RssFeedEntity, {
     cascade: true,
     eager: true,
-    onDelete: 'CASCADE',
+    nullable: true,
+    onDelete: 'SET NULL',
   })
   feed?: RssFeedEntity;
 

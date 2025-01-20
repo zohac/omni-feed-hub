@@ -1,7 +1,7 @@
 // src/infrastructure/mappers/AIConfigurationMapper.ts
 
 import { AiConfiguration } from '../../domain/entities/ai-configuration';
-import { AiConfigurationEntity } from '../entities/ai-configuration.entity';
+import { AiConfigurationEntity } from '../entities';
 
 export class AiConfigurationMapper {
   static toDomain(entity: AiConfigurationEntity): AiConfiguration {

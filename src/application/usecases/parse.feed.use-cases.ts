@@ -9,6 +9,7 @@ import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ItemParser } from '../../domain/interfaces/item.parser';
 import { ILogger } from '../../domain/interfaces/logger';
+import { RssFeedInfo } from '../../domain/interfaces/rss-feed.infos';
 import { IRssParser } from '../../domain/interfaces/rss-parser';
 
 @Injectable()
@@ -28,8 +29,14 @@ export class ParseFeedUseCases {
 
       for (const item of parsedFeed.items) {
         let articleExist: boolean = false;
-        if (item.link)
-          articleExist = !!(await this.repository.getOneByLink(item.link));
+        if (item.link) {
+          const article = await this.repository.getOneByLink(item.link);
+
+          if (article) articleExist = true;
+
+          article.feed = feed;
+          await this.repository.update(article);
+        }
 
         if (!articleExist) {
           const images = this.extractImages(item);
@@ -61,12 +68,7 @@ export class ParseFeedUseCases {
       }
       this.logger.log(`Feed processed successfully : ${feed.title}`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      this.logger.error(
-        `Error during RSS feed parsing : "${feed.title}":`,
-        errorMessage,
-      );
+      this.catchError(error, feed.title);
     }
   }
 
@@ -93,5 +95,28 @@ export class ParseFeedUseCases {
     }
 
     return images;
+  }
+
+  async getFeedInfo(url: string): Promise<RssFeedInfo> {
+    try {
+      const parsedFeed = await this.rssParser.parseURL(url);
+
+      return {
+        title: parsedFeed.title,
+        description: parsedFeed.description,
+        link: parsedFeed.link,
+        image: parsedFeed.image,
+      };
+    } catch (error) {
+      this.catchError(error, url);
+    }
+  }
+
+  private catchError(error: Error, text: string) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    this.logger.error(
+      `Error during RSS feed parsing : "${text}":`,
+      errorMessage,
+    );
   }
 }

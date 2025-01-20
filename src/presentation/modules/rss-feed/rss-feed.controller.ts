@@ -14,9 +14,11 @@ import {
   CreateRssFeedDto,
   UpdateRssFeedDto,
 } from '../../../application/dtos/rss-feed.dto';
+import { RssFeedInfosDto } from '../../../application/dtos/rss-feed.infos.dto';
 import { ParseFeedUseCases } from '../../../application/usecases/parse.feed.use-cases';
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { RssFeed } from '../../../domain/entities/rss-feed';
+import { RssFeedInfo } from '../../../domain/interfaces/rss-feed.infos';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
 
 @Controller('feeds')
@@ -77,5 +79,10 @@ export class RssFeedController {
   async parseFeed(@Param('id', ParsePositiveIntPipe) id: number) {
     const feed = await this.useCase.getOneById(id);
     return await this.parseFeedUseCase.execute(feed);
+  }
+
+  @Post('/infos')
+  async feedInfos(@Body() dto: RssFeedInfosDto): Promise<RssFeedInfo> {
+    return await this.useCase.getFeedInfo(dto);
   }
 }
