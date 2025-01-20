@@ -126,11 +126,13 @@ export class AnalysisUseCases {
       }
 
       analysis.result = String(response.isRelevant);
+      analysis.status = ArticleAnalysisStatus.COMPLETED;
+
       if (undefined === response.isRelevant) {
         analysis.result = response.rawResponse;
+        analysis.status = ArticleAnalysisStatus.RETRY;
       }
 
-      analysis.status = ArticleAnalysisStatus.COMPLETED;
       await this.analysisRepository.update(analysis);
 
       return task;

@@ -4,8 +4,10 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { IRepository } from '../../domain/interfaces/repository';
+import { RssFeedInfo } from '../../domain/interfaces/rss-feed.infos';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateRssFeedDto, UpdateRssFeedDto } from '../dtos/rss-feed.dto';
+import { RssFeedInfosDto } from '../dtos/rss-feed.infos.dto';
 
 import { AnalysisUseCases } from './analysis.use-cases';
 import { ParseFeedUseCases } from './parse.feed.use-cases';
@@ -47,7 +49,6 @@ export class RssFeedUseCases
     const createdFeed = await this.repository.create(feed);
 
     await this.parseFeedUseCase.execute(createdFeed);
-    await this.analysisUseCases.analysisAll();
 
     return createdFeed;
   }
@@ -89,5 +90,9 @@ export class RssFeedUseCases
     const feed = await this.getOneById(id);
 
     await this.repository.delete(feed.id);
+  }
+
+  async getFeedInfo(dto: RssFeedInfosDto): Promise<RssFeedInfo> {
+    return await this.parseFeedUseCase.getFeedInfo(dto.url);
   }
 }
