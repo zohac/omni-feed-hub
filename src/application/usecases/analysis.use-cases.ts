@@ -54,7 +54,7 @@ export class AnalysisUseCases {
 
     if (undefined !== agent.id) {
       const articles = await this.articleUseCases.getUnanalyzedArticlesByAgent(
-        agent.id,
+        agent.name,
       );
 
       if (articles.length === 0)
@@ -100,9 +100,8 @@ export class AnalysisUseCases {
       const newAnalysis = new ArticleAnalysis(
         undefined,
         article,
-        agent,
+        agent.name,
         ArticleAnalysisStatus.IN_PROGRESS,
-        null,
         new Date(),
       );
       const analysis = await this.analysisRepository.create(newAnalysis);
@@ -135,5 +134,19 @@ export class AnalysisUseCases {
 
       return task;
     }
+  }
+
+  async articleAnalysedBy(articleId: number, agentName: string): Promise<void> {
+    const article = await this.articleUseCases.getOneById(articleId);
+
+    const analysis = new ArticleAnalysis(
+      undefined,
+      article,
+      agentName,
+      ArticleAnalysisStatus.COMPLETED,
+      new Date()
+    );
+
+    await this.analysisRepository.create(analysis);
   }
 }

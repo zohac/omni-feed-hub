@@ -22,7 +22,7 @@ export class Article implements IEntity {
     public link?: string,
     public description?: string,
     public content?: string,
-    public tags?: { id: string; label: string }[],
+    public tags?: string[],
     public mediaAttachments?: MediaAttachment[], // Fichiers multimédias
     public metadata?: Record<string, string>, // GUID, auteur, etc.
     public collection?: ArticleCollection,

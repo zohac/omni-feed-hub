@@ -89,4 +89,9 @@ export class ArticleController {
   async deleteArticle(@Param('id', ParsePositiveIntPipe) id: number) {
     return await this.useCase.delete(id);
   }
+
+  @Get('/unanalysed/:agent')
+  async getUnanalysedArticleByAgent(@Param('agent') agent: string): Promise<Article[]> {
+    return this.useCase.getUnanalyzedArticlesByAgent(agent);
+  }
 }

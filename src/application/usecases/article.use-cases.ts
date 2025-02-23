@@ -16,6 +16,7 @@ import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateArticleDto, UpdateArticleDto } from '../dtos/article.dto';
 
 import { ArticleCollectionUseCases } from './article.collection.use-cases';
+import { WebScraperUseCase } from './web-scraper.use-cases';
 
 @Injectable()
 export class ArticleUseCases
@@ -25,6 +26,7 @@ export class ArticleUseCases
     @Inject('IRepository<Article>')
     private readonly repository: IArticleRepository,
     private readonly articleCollectionUseCases: ArticleCollectionUseCases,
+    private readonly scraperUseCases: WebScraperUseCase,
   ) {}
 
   async create(articleDTO: CreateArticleDto): Promise<Article> {
@@ -73,11 +75,15 @@ export class ArticleUseCases
     }
 
     // Gestion des Tags
+    article.tags = [];
     if (articleDTO.tags) {
-      article.tags = articleDTO.tags.map((tag) => ({
-        id: tag.id,
-        label: tag.label,
-      }));
+      console.log(articleDTO.tags);
+      article.tags = articleDTO.tags;
+
+      if (articleDTO.tags.length > 0) {
+        const content = await this.scraperUseCases.scrape(articleDTO.link)
+        console.log(content);
+      }
     }
 
     // Gestion des Metadata
@@ -120,6 +126,15 @@ export class ArticleUseCases
       article.state.isArchived = articleDto?.state.isArchived;
     if (undefined !== articleDto.state?.isSaved)
       article.state.isSaved = articleDto.state.isSaved;
+    if (undefined !== articleDto?.tags) {
+      article.tags = articleDto.tags;
+
+      if (articleDto.tags.length > 0) {
+        const content = await this.scraperUseCases.scrape(article.link)
+
+        if (content) article.content = content;
+      }
+    }
 
     const updatedArticle = await this.repository.update(article);
     if (!updatedArticle) {
@@ -154,8 +169,8 @@ export class ArticleUseCases
     await this.repository.update(article);
   }
 
-  async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
-    return this.repository.getUnanalyzedArticlesByAgent(agentId);
+  async getUnanalyzedArticlesByAgent(agentName: string): Promise<Article[]> {
+    return this.repository.getUnanalyzedArticlesByAgent(agentName);
   }
 
   private updateManualArticle(article: Article, articleDto: UpdateArticleDto) {

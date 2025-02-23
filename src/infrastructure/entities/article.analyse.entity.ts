@@ -11,7 +11,6 @@ import {
 
 import { ArticleAnalysisStatus } from '../../domain/enums/article.analysis.status';
 
-import { AiAgentEntity } from './ai-agent.entity';
 import { ArticleEntity } from './article.entity';
 
 @Entity('article_analysis')
@@ -23,8 +22,8 @@ export class ArticleAnalysisEntity {
   @ManyToOne(() => ArticleEntity)
   article: ArticleEntity;
 
-  @ManyToOne(() => AiAgentEntity)
-  agent: AiAgentEntity;
+  @Column()
+  agent: string;
 
   @Column({
     enum: ArticleAnalysisStatus,

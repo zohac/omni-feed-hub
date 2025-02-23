@@ -12,7 +12,6 @@ import {
 } from 'class-validator';
 
 import { ArticleStateDto } from './article.state.dto';
-import { ArticleTagDto } from './article.tag.dto';
 import { MediaAttachmentDto } from './media.attachement.dto';
 
 export class CreateArticleDto {
@@ -69,13 +68,12 @@ export class CreateArticleDto {
 
   @ApiPropertyOptional({
     description: 'Tags associated with the article.',
-    type: [ArticleTagDto],
+    example: ['tech', 'ai', 'news'],
   })
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ArticleTagDto)
-  tags?: ArticleTagDto[];
+  @IsString({ each: true }) // Vérifie que chaque élément est une string
+  tags?: string[];
 
   @ApiPropertyOptional({
     description: 'Metadata associated with the article.',

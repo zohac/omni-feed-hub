@@ -24,10 +24,10 @@ export class AgentWorkflowStepEntity {
   @Column({ default: 'pending' })
   status: AgentWorkflowStatus;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   inputData: Record<string, any>;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   outputData: Record<string, any>;
 
   @ManyToOne(() => AgentWorkflowEntity, (workflow) => workflow.steps)

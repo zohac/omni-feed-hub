@@ -33,7 +33,7 @@ export class ArticleEntity {
   @Column({ nullable: true })
   publicationAt: Date | null;
 
-  @Column({ enum: ArticleSourceType })
+  @Column({ type: 'enum', enum: ArticleSourceType, default: ArticleSourceType.RSS })
   sourceType: ArticleSourceType;
 
   @Column({ type: 'boolean', default: false })
@@ -65,8 +65,8 @@ export class ArticleEntity {
   @Column({ type: 'text', nullable: true })
   content?: string;
 
-  @Column({ type: 'json', nullable: true })
-  tags?: { id: string; label: string }[];
+  @Column({ type: 'jsonb', nullable: false, default: () => "'[]'" })
+  tags: string[];
 
   @OneToMany(
     () => MediaAttachmentEntity,
@@ -78,7 +78,7 @@ export class ArticleEntity {
   )
   mediaAttachments: MediaAttachmentEntity[];
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, string>;
 
   @ManyToOne(() => ArticleCollectionEntity, (entity) => entity.articles, {

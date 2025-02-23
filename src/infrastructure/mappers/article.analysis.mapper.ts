@@ -3,7 +3,6 @@
 import { ArticleAnalysis } from '../../domain/entities/article.analyse';
 import { ArticleAnalysisEntity } from '../entities';
 
-import { AiAgentMapper } from './ai-agent.mapper';
 import { ArticleMapper } from './article.mapper';
 
 export class ArticleAnalysisMapper {
@@ -15,9 +14,8 @@ export class ArticleAnalysisMapper {
     return new ArticleAnalysis(
       entity.id,
       ArticleMapper.toPartialDomain(entity.article),
-      AiAgentMapper.toDomain(entity.agent),
+      entity.agent,
       entity.status,
-      entity.result,
       entity.createdAt,
     );
   }
@@ -31,7 +29,7 @@ export class ArticleAnalysisMapper {
 
     if (undefined !== domain.id) entity.id = domain.id;
     entity.article = ArticleMapper.toPartialEntity(domain.article);
-    entity.agent = AiAgentMapper.toEntity(domain.agent);
+    entity.agent = domain.agent;
     entity.status = domain.status;
     entity.result = domain.result;
     entity.createdAt = domain.createdAt;

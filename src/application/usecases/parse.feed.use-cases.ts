@@ -32,10 +32,12 @@ export class ParseFeedUseCases {
         if (item.link) {
           const article = await this.repository.getOneByLink(item.link);
 
-          if (article) articleExist = true;
+          if (article) {
+            articleExist = true;
 
-          article.feed = feed;
-          await this.repository.update(article);
+            article.feed = feed;
+            await this.repository.update(article);
+          }
         }
 
         if (!articleExist) {
@@ -58,7 +60,7 @@ export class ParseFeedUseCases {
             item.link ?? '',
             item.contentSnippet ?? '', // description
             item.content ?? '', // content
-            undefined, // tags
+            [], // tags
             images,
             { guid: item.guid, creator: item.creator }, // metadata
           );
@@ -68,7 +70,8 @@ export class ParseFeedUseCases {
       }
       this.logger.log(`Feed processed successfully : ${feed.title}`);
     } catch (error) {
-      this.catchError(error, feed.title);
+      const err = error instanceof Error ? error : new Error(String(error));
+      this.catchError(err, feed.title);
     }
   }
 
@@ -108,7 +111,8 @@ export class ParseFeedUseCases {
         image: parsedFeed.image,
       };
     } catch (error) {
-      this.catchError(error, url);
+      const err = error instanceof Error ? error : new Error(String(error));
+      this.catchError(err, url);
     }
   }
 

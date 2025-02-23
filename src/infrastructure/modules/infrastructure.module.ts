@@ -24,6 +24,7 @@ import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection
 import { RssFeedRepository } from '../repositories/rss-feed.repository';
 import { TaskRepository } from '../repositories/task.repository';
 import { RssParserService } from '../services/rss-parser.service';
+import { WebScraperService } from '../services/web-scraper.service';
 
 @Module({
   imports: [
@@ -84,6 +85,10 @@ import { RssParserService } from '../services/rss-parser.service';
       provide: 'IAiServiceFactory',
       useClass: AiServiceFactory,
     },
+    {
+      provide: 'IWebScraper',
+      useClass: WebScraperService,
+    },
   ],
   exports: [
     TypeOrmModule,
@@ -98,6 +103,7 @@ import { RssParserService } from '../services/rss-parser.service';
     'IRepository<Action>',
     'IRepository<ArticleAnalysis>',
     'IAiServiceFactory',
+    'IWebScraper'
   ],
 })
 export class InfrastructureModule {}

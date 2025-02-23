@@ -9,7 +9,7 @@ export interface IArticleRepository extends IRepository<Article> {
 
   getOneByLink(link: string): Promise<Article | null>;
 
-  getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]>;
+  getUnanalyzedArticlesByAgent(agentName: string): Promise<Article[]>;
 
   deleteOldRSSArticles(olderThan: Date): Promise<void>;
 }

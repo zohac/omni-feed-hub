@@ -9,7 +9,7 @@ async function bootstrap() {
 
   // Configuration CORS pour autoriser localhost:3001
   app.enableCors({
-    origin: 'http://localhost:3001', // Autorise cette origine uniquement
+    origin: ['http://localhost:3001', 'http://127.0.0.1:7860', 'http://127.0.0.1:5678', 'http://localhost:5678'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
@@ -24,15 +24,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
-  app.enableCors({
-    origin: 'http://localhost:3001',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization',
-    credentials: true,
-    preflightContinue: false, // Répond automatiquement aux requêtes OPTIONS
-    optionsSuccessStatus: 204, // Réponse pour les requêtes OPTIONS
-  });
 
   // Add "/api" before all routes
   app.setGlobalPrefix('api');

@@ -37,7 +37,7 @@ export class TaskEntity {
   })
   status: TaskStatus;
 
-  @Column({ type: 'json' }) // Utilisation de jsonb pour stocker le payload
+  @Column({ type: 'jsonb' }) // Utilisation de jsonb pour stocker le payload
   payload: Record<string, string | number>;
 
   @CreateDateColumn()

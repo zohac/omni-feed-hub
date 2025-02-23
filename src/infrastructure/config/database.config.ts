@@ -1,3 +1,5 @@
+// src/infrastructure/config/database.config.ts
+
 import { registerAs } from '@nestjs/config';
 
 import * as Entities from '../entities';
@@ -18,22 +20,27 @@ export const TEST = NODE_ENV === 'test';
 export const PRODUCTION = NODE_ENV === 'production';
 
 enum DatabaseType {
-  SQLITE = 'sqlite',
+  POSTGRES = 'postgres',
 }
 
 // Configuration de la base de données
 const DATABASE = () => {
-  if (DatabaseType.SQLITE === process.env.DATABASE_TYPE) {
-    return {
-      type: process.env.DATABASE_TYPE as DatabaseType,
-      database: process.env.DATABASE_PATH ?? './rss-feeds.sqlite',
-      synchronize: TEST || DEVELOPMENT, // Toujours synchroniser en test
-      logging: DEVELOPMENT && !TEST, // Activer le logging en développement mais pas en test
-      entities: getAllEntities(),
-    };
+  if (process.env.DATABASE_TYPE !== DatabaseType.POSTGRES) {
+    throw new Error('Only PostgreSQL is supported. Check your ".env" file.');
   }
 
-  throw new Error('Unknown database configuration, check your ".env" file');
+  return {
+    type: 'postgres',
+    host: process.env.DATABASE_HOST,
+    port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
+    synchronize: TEST || DEVELOPMENT, // Toujours synchroniser en test
+    logging: DEVELOPMENT && !TEST, // Activer le logging en développement mais pas en test
+    entities: getAllEntities(),
+    migrations: ['src/infrastructure/migrations/*.ts'],
+  };
 };
 
 export const redisConfig = {

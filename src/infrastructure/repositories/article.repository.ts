@@ -64,7 +64,7 @@ export class ArticleRepository implements IArticleRepository {
     return ArticleMapper.toDomain(entity);
   }
 
-  async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
+  async getUnanalyzedArticlesByAgent(agentName: string): Promise<Article[]> {
     const entities = await this.repository
       .createQueryBuilder('a')
       .where((qb) => {
@@ -73,7 +73,7 @@ export class ArticleRepository implements IArticleRepository {
           .select('1')
           .from(ArticleAnalysisEntity, 'aa')
           .where('aa.articleId = a.id')
-          .andWhere('aa.agentId = :agentId', { agentId })
+          .andWhere('aa.agent = :agent', { agent: agentName })
           .andWhere('aa.status IN (:...statuses)', {
             statuses: [
               ArticleAnalysisStatus.COMPLETED,
