@@ -1,0 +1,341 @@
+{
+  "name": "Classifier - AI Articles",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "f5e1031f-c516-4dd2-99db-394ca45c346a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "=http://app:3000/api/articles/unanalysed/{{ $('Edit Fields').item.json.agent_name }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "d7469227-4f1b-4485-94dc-b75e54fdd3c0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ],
+      "id": "7ef6f0d7-7b1d-420c-92f6-a1913785977f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_subject }}**.\n\n### Input:\n- Title: {{ $('Loop Over Items').item.json.title }}\n- Content: {{ $('Loop Over Items').item.json.description }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "={{ $('Edit Fields').item.json.classifier_tag }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        720,
+        80
+      ],
+      "id": "22103164-c6b3-41d6-b722-f0e0bd221a99",
+      "name": "Text Classifier",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        720,
+        400
+      ],
+      "id": "50947e83-5781-40fb-9146-7ddc2d9b3c8a",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "7wQbh0FGHVdpGCkr",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "273c1ccf-93c3-4b9b-977e-28385e68e21d",
+              "name": "classifier_subject",
+              "value": "Artificial intelligence, AI, Machine Learning, Deep Learning, language models, LLM, neural networks, computer vision, natural language processing, NLP, conversational agents, chatbots, intelligent automation, generative AI, AI ethics, AI regulation, industrial applications of AI, artificial intelligence in healthcare, artificial intelligence and creativity, artificial intelligence and related topics",
+              "type": "string"
+            },
+            {
+              "id": "7d937381-29b0-4069-9f64-16a5c654ae27",
+              "name": "classifier_tag",
+              "value": "Artificial intelligence",
+              "type": "string"
+            },
+            {
+              "id": "5c33560b-bc8d-4165-a1dc-3b4dc8a0e7af",
+              "name": "agent_name",
+              "value": "classifier_AI",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f3884b79-61a4-41ea-b35b-cc6596b2c9b5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1480468-a8a0-407b-a23f-9363f6dbbce1",
+              "leftValue": "={{$('Text Classifier').item.json.isEmpty()}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        80
+      ],
+      "id": "3a1529d1-e9fe-445c-8f17-b69e8ef28aa0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($('Loop Over Items').first().json.tags);\nconsole.log($('Edit Fields').first().json.classifier_tag);\n\nlet tab = $('Loop Over Items').first().json.tags;\nlet value = $('Edit Fields').first().json.classifier_tag;\n\nif (tab.indexOf(value) === -1) {\n  tab.push(value);\n}\n\nreturn [\n  {\n    json: { tags: JSON.stringify(tab) }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        180
+      ],
+      "id": "541b1e0e-ac69-47cf-be4a-a73249074862",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://app:3000/api/analysis/{{ $('Loop Over Items').item.json.id }}/analysed/{{ $('Edit Fields').item.json.agent_name }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        -120
+      ],
+      "id": "10cb65e3-0f6a-4559-843a-d868a31f6561",
+      "name": "Save Analysis",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://app:3000/api/articles/{{ $('Loop Over Items').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $('Code').item.json.tags }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        180
+      ],
+      "id": "796f0304-47e3-4470-aa5d-c519e3d6e089",
+      "name": "Save Tag"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Save Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Tag": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "52debd1c-3717-459a-8fa1-927ccee0c3fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83ee9c1d9815d10ebbe9538d3f36cc15f803fc88dab8df02e2d9a2b6f457cb51"
+  },
+  "id": "zQbbRzRTV7lZo8EO",
+  "tags": []
+}

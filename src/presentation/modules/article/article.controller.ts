@@ -6,9 +6,9 @@ import {
   HttpCode,
   Param,
   Post,
-  Put,
+  Put, Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 import {
   CreateArticleDto,
@@ -30,6 +30,15 @@ export class ArticleController {
   @Get()
   async getAllArticles(): Promise<Article[]> {
     return await this.useCase.getAll();
+  }
+
+  @ApiOperation({ summary: 'Récupérer les articles par tag' })
+  @ApiQuery({ name: 'tag', type: String, required: true, description: 'Le tag à rechercher' })
+  @ApiResponse({ status: 200, description: 'Liste des articles trouvés', type: [Article] })
+  @ApiResponse({ status: 400, description: 'Requête invalide (tag manquant)' })
+  @Get('/by-tag')
+  async getArticlesByTag(@Query('tag') tag: string): Promise<Article[]> {
+    return this.useCase.getArticlesByTag(tag);
   }
 
   @ApiOperation({ summary: 'Get a single article by its ID' })

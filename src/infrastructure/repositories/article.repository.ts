@@ -107,4 +107,12 @@ export class ArticleRepository implements IArticleRepository {
       isSaved: false,
     });
   }
+
+  async getByTag(tag: string): Promise<Article[]> {
+    const entities = await this.repository.createQueryBuilder('article')
+      .where(`article.tags @> :tag`, { tag: JSON.stringify([tag]) }) // PostgreSQL JSONB contains
+      .getMany();
+
+    return entities.map((entity) => ArticleMapper.toDomain(entity))
+  }
 }

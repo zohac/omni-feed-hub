@@ -1,0 +1,668 @@
+{
+  "name": "Classifier - TOFU, MOFU, BOFU",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "59ac2cea-81d3-4534-9688-fe9a697073a8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ],
+      "id": "39780f9f-0dc6-4cd4-9fbf-a0f3dc3ed3c5",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        20,
+        740
+      ],
+      "id": "63d97a00-15fd-4b3a-8c22-4fbb537de6fb",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "7wQbh0FGHVdpGCkr",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1b95dcb9-dcf9-4d50-86a0-d9dbc6f60c52",
+              "name": "agent_name",
+              "value": "classifier_tmbofu",
+              "type": "string"
+            },
+            {
+              "id": "7d937381-29b0-4069-9f64-16a5c654ae27",
+              "name": "classifier_tag",
+              "value": "Artificial intelligence",
+              "type": "string"
+            },
+            {
+              "id": "a502852a-cbc8-4ea5-9f0f-179aebdfa57b",
+              "name": "classifier_tofu",
+              "value": "TOFU (Top of Funnel) - Contenu de sensibilisation\nObjectif : Attirer une audience large, vulgariser les concepts et éveiller la curiosité\n\nCritères de classification :\n- Contenu grand public ou accessible à un large public\n- Titre et/ou introduction orientés découverte ou introduction à un sujet\n- Présence de termes génériques comme : Introduction à, Comprendre, Débuter avec, Comment fonctionne…\n- Articles de tendances, études de marché, actualités du secteur (ex. \"Les 5 grandes innovations IA de 2024\")\n- Tutos basiques ou guides pour débutants (ex. \"Premiers pas avec ComfyUI\")\n- Formats populaires : listicles, storytelling, vulgarisation, posts inspirationnels\n\nExclusions :\n- Contenus trop techniques ou destinés à un public expert\n- Cas d’usage détaillés ou études de cas approfondies",
+              "type": "string"
+            },
+            {
+              "id": "224ef0a3-0088-4f98-86e0-5cfe4d247c44",
+              "name": "classifier_tofu_tag",
+              "value": "tofu",
+              "type": "string"
+            },
+            {
+              "id": "4944562a-66c0-4804-9e86-28e218536901",
+              "name": "classifier_mofu",
+              "value": "MOFU (Middle of Funnel) - Contenu d’engagement\nObjectif : Approfondir la relation avec une audience intéressée, lui apporter une réelle valeur\n\nCritères de classification :\n- Contenu apportant des conseils concrets, techniques ou applicables\n- Présence de termes comme : Guide avancé, Techniques, Études de cas, Benchmark, Comparaison, Optimisation…\n- Explications détaillées de concepts ou méthodologies avancées (ex. \"Comment utiliser les LoRA pour affiner un modèle IA\")\n- Analyses comparatives (ex. \"ComfyUI vs Automatic1111 : lequel choisir ?\")\n- Retours d’expérience concrets avec démonstrations et résultats (ex. \"J’ai testé cet outil IA pendant 1 mois, voici mes résultats\")\n- Contenus interactifs encourageant l’échange : sondages, discussions, Q&A\n\nExclusions :\n- Contenu trop basique ou orienté uniquement découverte\n- Contenu purement promotionnel ou avec un appel à l’action direct vers une offre payante",
+              "type": "string"
+            },
+            {
+              "id": "62c98f01-fac6-413c-bf40-4d5d6fbf30ef",
+              "name": "classifier_mofu_tag",
+              "value": "mofu",
+              "type": "string"
+            },
+            {
+              "id": "8453eee3-03fa-43d7-a189-256c7625d4e2",
+              "name": "classifier_bofu",
+              "value": "BOFU (Bottom of Funnel) - Contenu de conversion\nObjectif : Transformer l’audience engagée en clients ou abonnés\n\nCritères de classification pour l’IA :\n- Contenu axé sur la prise de décision et l’action\n- Présence de termes comme : Démonstration, Témoignages, Formation, Coaching, Offre exclusive, Acheter, Télécharger, Rejoindre…\n- Présentation d’un produit/service avec une incitation claire à l’action (ex. \"Découvrez ma formation sur ComfyUI et boostez votre workflow\")\n- Témoignages et études de cas montrant un avant/après (ex. \"Comment ce freelance a triplé sa productivité avec mon outil IA\")\n- Démonstrations produit avec liens d’inscription ou d’achat\n- Contenus exclusifs réservés aux abonnés ou clients (ex. \"Accédez à mes workflows premium avec cette offre spéciale\")\n\nExclusions :\n- Contenu purement informatif sans appel à l’action\n- Explications trop générales sans valeur immédiate pour une conversion",
+              "type": "string"
+            },
+            {
+              "id": "0200137c-71c7-43ca-93fd-b50043e31f3e",
+              "name": "classifier_mofu_tag",
+              "value": "bofu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d41141cf-cb16-4706-8ec0-8e097adc1fe7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1480468-a8a0-407b-a23f-9363f6dbbce1",
+              "leftValue": "={{$('Text Classifier TOFU').item.json.isEmpty()}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        80
+      ],
+      "id": "4d3df2af-69ae-48f3-b83b-deb80521c6ec",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($('Loop Over Items').first().json.tags);\nconsole.log($('Edit Fields').first().json.classifier_tofu_tag);\n\nlet tab = $('Loop Over Items').first().json.tags;\nlet value = $('Edit Fields').first().json.classifier_tofu_tag;\n\nif (tab.indexOf(value) === -1) {\n  tab.push(value);\n}\n\nreturn [\n  {\n    json: { tags: JSON.stringify(tab) }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        180
+      ],
+      "id": "a5ed749e-3a7e-40dd-8682-32cd6f738982",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://app:3000/api/analysis/{{ $('Loop Over Items').item.json.id }}/analysed/{{ $('Edit Fields').item.json.agent_name }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        -20
+      ],
+      "id": "20248ba2-c39e-4e0d-9918-28ab49003aed",
+      "name": "Save Analysis",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=http://app:3000/api/articles/by-tag?tag={{ $('Edit Fields').item.json.classifier_tag }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "c6045144-ec39-488a-9d99-1a37a2a90911",
+      "name": "Get Articles By Tag Name"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1480468-a8a0-407b-a23f-9363f6dbbce1",
+              "leftValue": "={{$('Text Classifier MOFU').item.json.isEmpty()}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        440
+      ],
+      "id": "c70a1217-dc4e-451a-8c8f-d21fccbe145c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($('Loop Over Items').first().json.tags);\nconsole.log($('Edit Fields').first().json.classifier_mofu_tag);\n\nlet tab = $('Loop Over Items').first().json.tags;\nlet value = $('Edit Fields').first().json.classifier_mofu_tag;\n\nif (tab.indexOf(value) === -1) {\n  tab.push(value);\n}\n\nreturn [\n  {\n    json: { tags: JSON.stringify(tab) }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        520
+      ],
+      "id": "aa7d2048-d342-4451-bd07-b30b97c56375",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1480468-a8a0-407b-a23f-9363f6dbbce1",
+              "leftValue": "={{$('Text Classifier BOFU').item.json.isEmpty()}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        800
+      ],
+      "id": "6e65bc49-53f5-468e-8c2b-33b06f395cf1",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($('Loop Over Items').first().json.tags);\nconsole.log($('Edit Fields').first().json.classifier_bofu_tag);\n\nlet tab = $('Loop Over Items').first().json.tags;\nlet value = $('Edit Fields').first().json.classifier_bofu_tag;\n\nif (tab.indexOf(value) === -1) {\n  tab.push(value);\n}\n\nreturn [\n  {\n    json: { tags: JSON.stringify(tab) }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        880
+      ],
+      "id": "b735d6f6-680a-4f13-bf0d-907cd25304f0",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://app:3000/api/articles/{{ $('Loop Over Items').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $('Code').item.json.tags }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        180
+      ],
+      "id": "fb97dddb-ac42-4717-801d-579e418107db",
+      "name": "Save Tag MOFU"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://app:3000/api/articles/{{ $('Loop Over Items').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $('Code1').item.json.tags }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        520
+      ],
+      "id": "2639a1bf-7fd8-4fc8-8557-114a4935e586",
+      "name": "Save Tag BOFU"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://app:3000/api/articles/{{ $('Loop Over Items').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $('Code2').item.json.tags }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        880
+      ],
+      "id": "6d80df01-4fe2-41bd-aa7c-8561ece7ce5c",
+      "name": "Save Tag BOFU1"
+    },
+    {
+      "parameters": {
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_tofu }}**.\n\n### Input:\n- Title: {{ $('Loop Over Items').item.json.title }}\n- Content: {{ $('Loop Over Items').item.json.description }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "={{ $('Edit Fields').item.json.classifier_tag }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        720,
+        80
+      ],
+      "id": "32df6a5b-895a-4926-a85f-4dd05666229d",
+      "name": "Text Classifier TOFU",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_mofu }}**.\n\n### Input:\n- Title: {{ $('Loop Over Items').item.json.title }}\n- Content: {{ $('Loop Over Items').item.json.description }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "={{ $('Edit Fields').item.json.classifier_tag }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        720,
+        440
+      ],
+      "id": "a63119a7-ec48-4d78-9dd0-8f1c77efb1fd",
+      "name": "Text Classifier MOFU",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_mofu }}**.\n\n### Input:\n- Title: {{ $('Loop Over Items').item.json.title }}\n- Content: {{ $('Loop Over Items').item.json.description }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "={{ $('Edit Fields').item.json.classifier_tag }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        720,
+        800
+      ],
+      "id": "2803e2a9-1275-4427-bcee-99b4ecb32b9f",
+      "name": "Text Classifier BOFU",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Text Classifier TOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier TOFU",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier MOFU",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier BOFU",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get Articles By Tag Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Classifier MOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Save Tag MOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Articles By Tag Name": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Save Tag BOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Classifier BOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Save Tag BOFU1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Tag MOFU": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Tag BOFU": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Tag BOFU1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier TOFU": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier MOFU": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier BOFU": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "53fb5a3f-ced9-415d-9376-d68bd66c8e1b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83ee9c1d9815d10ebbe9538d3f36cc15f803fc88dab8df02e2d9a2b6f457cb51"
+  },
+  "id": "cfDbfa1YQ4raJro5",
+  "tags": []
+}

@@ -12,4 +12,6 @@ export interface IArticleRepository extends IRepository<Article> {
   getUnanalyzedArticlesByAgent(agentName: string): Promise<Article[]>;
 
   deleteOldRSSArticles(olderThan: Date): Promise<void>;
+
+  getByTag(tag: string): Promise<Article[]>;
 }

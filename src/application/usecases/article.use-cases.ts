@@ -184,4 +184,8 @@ export class ArticleUseCases
         article.content = articleDto.content;
     }
   }
+
+  async getArticlesByTag(tag: string): Promise<Article[]> {
+    return this.repository.getByTag(tag);
+  }
 }
