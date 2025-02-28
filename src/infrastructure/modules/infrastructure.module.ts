@@ -10,6 +10,7 @@ import {
   ArticleAnalysisEntity,
   ArticleCollectionEntity,
   ArticleEntity,
+  PostEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
   TaskEntity,
@@ -20,6 +21,7 @@ import { AiAgentRepository } from '../repositories/ai-agent.repository';
 import { ArticleAnalysisRepository } from '../repositories/article.analysis.repository';
 import { ArticleCollectionRepository } from '../repositories/article.collection.repository';
 import { ArticleRepository } from '../repositories/article.repository';
+import { PostRepository } from '../repositories/post.repository';
 import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection.repository';
 import { RssFeedRepository } from '../repositories/rss-feed.repository';
 import { TaskRepository } from '../repositories/task.repository';
@@ -38,6 +40,7 @@ import { WebScraperService } from '../services/web-scraper.service';
       ActionEntity,
       ActionEntity,
       ArticleAnalysisEntity,
+      PostEntity,
     ]),
   ],
   providers: [
@@ -82,6 +85,10 @@ import { WebScraperService } from '../services/web-scraper.service';
       useClass: ArticleAnalysisRepository,
     },
     {
+      provide: 'IRepository<Post>',
+      useClass: PostRepository,
+    },
+    {
       provide: 'IAiServiceFactory',
       useClass: AiServiceFactory,
     },
@@ -102,8 +109,9 @@ import { WebScraperService } from '../services/web-scraper.service';
     'IRepository<Task>',
     'IRepository<Action>',
     'IRepository<ArticleAnalysis>',
+    'IRepository<Post>',
     'IAiServiceFactory',
-    'IWebScraper'
+    'IWebScraper',
   ],
 })
 export class InfrastructureModule {}

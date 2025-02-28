@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
+import { PostEntity } from './post.entity';
 
 @Entity('media_attachment')
 export class MediaAttachmentEntity {
@@ -26,7 +27,12 @@ export class MediaAttachmentEntity {
   title?: string;
 
   @ManyToOne(() => ArticleEntity, (article) => article.mediaAttachments, {
-    onDelete: 'CASCADE', // Supprime les MediaAttachments si l'article est supprimé
+    onDelete: 'CASCADE',
   })
   article: ArticleEntity;
+
+  @ManyToOne(() => PostEntity, (post) => post.attachments, {
+    onDelete: 'CASCADE',
+  })
+  post: PostEntity;
 }

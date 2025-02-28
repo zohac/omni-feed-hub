@@ -144,7 +144,7 @@ export class AnalysisUseCases {
       article,
       agentName,
       ArticleAnalysisStatus.COMPLETED,
-      new Date()
+      new Date(),
     );
 
     await this.analysisRepository.create(analysis);

@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+
 import * as Entities from '../entities';
 
 export const AppDataSource = new DataSource({
@@ -8,7 +9,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  synchronize: false, // Désactivé pour éviter les erreurs
+  synchronize: true, // Désactivé pour éviter les erreurs
   logging: true,
   entities: Object.values(Entities),
   migrations: ['src/infrastructure/migrations/*.ts'],

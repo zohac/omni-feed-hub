@@ -1,15 +1,16 @@
-import axios from 'axios';
-import { CheerioAPI } from 'cheerio';
-import * as cheerio from 'cheerio';
 import { Inject, Injectable } from '@nestjs/common';
-import { IWebScraper } from 'src/domain/interfaces/web-scraper';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { CheerioAPI } from 'cheerio';
+
 import { ILogger } from 'src/domain/interfaces/logger';
+import { IWebScraper } from 'src/domain/interfaces/web-scraper';
 
 @Injectable()
 export class WebScraperService implements IWebScraper {
   constructor(
     @Inject('ILogger')
-    private readonly logger: ILogger
+    private readonly logger: ILogger,
   ) {}
 
   async scrape(url: string): Promise<string | null> {
@@ -24,7 +25,9 @@ export class WebScraperService implements IWebScraper {
 
       // 2️⃣ If <article> is empty, search alternatives
       if (!content) {
-        this.logger.warn(`No <article> tag found, searching for alternative content.`);
+        this.logger.warn(
+          `No <article> tag found, searching for alternative content.`,
+        );
         content = this.extractMainContent($);
       }
 
@@ -68,7 +71,9 @@ export class WebScraperService implements IWebScraper {
     if (!bestContent) {
       this.logger.warn(`No suitable content block found.`);
     } else {
-      this.logger.log(`Extracted content from <${bestContent.slice(0, 30)}...>`);
+      this.logger.log(
+        `Extracted content from <${bestContent.slice(0, 30)}...>`,
+      );
     }
 
     return bestContent;

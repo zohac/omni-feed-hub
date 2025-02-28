@@ -27,7 +27,17 @@ export class ParseFeedUseCases {
     try {
       const parsedFeed = await this.rssParser.parseURL(feed.url);
 
+      // Définir la date limite (un mois avant aujourd'hui)
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
       for (const item of parsedFeed.items) {
+        // Vérifier que l'article est récent
+        const articleDate = item.pubDate ? new Date(item.pubDate) : new Date();
+        if (articleDate < oneMonthAgo) {
+          continue; // Ignorer les articles trop anciens
+        }
+
         let articleExist: boolean = false;
         if (item.link) {
           const article = await this.repository.getOneByLink(item.link);
@@ -48,7 +58,7 @@ export class ParseFeedUseCases {
             item.title ?? 'No title',
             null,
             null,
-            item.pubDate ? new Date(item.pubDate) : new Date(),
+            articleDate,
             ArticleSourceType.RSS,
             {
               isRead: false, // isRead

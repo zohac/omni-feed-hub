@@ -2,11 +2,11 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
+import { ArticleFilterDto } from '../../application/dtos/article.filter.dto';
 import { Article } from '../../domain/entities/article';
 import { ArticleAnalysisStatus } from '../../domain/enums/article.analysis.status';
-import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ArticleAnalysisEntity, ArticleEntity } from '../entities';
 import { ArticleMapper } from '../mappers/article.mapper';
@@ -101,18 +101,65 @@ export class ArticleRepository implements IArticleRepository {
   }
 
   async deleteOldRSSArticles(olderThan: Date): Promise<void> {
-    await this.repository.delete({
-      publicationAt: LessThan(olderThan),
-      sourceType: ArticleSourceType.RSS,
-      isSaved: false,
-    });
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(ArticleEntity)
+      .where('publicationAt < :olderThan', { olderThan })
+      .andWhere('isSaved = :isSaved', { isSaved: false })
+      .andWhere('isArchived = :isArchived', { isArchived: false })
+      .andWhere('isFavorite = :isFavorite', { isFavorite: false })
+      .execute();
   }
 
-  async getByTag(tag: string): Promise<Article[]> {
-    const entities = await this.repository.createQueryBuilder('article')
-      .where(`article.tags @> :tag`, { tag: JSON.stringify([tag]) }) // PostgreSQL JSONB contains
+  async getByTag(params: ArticleFilterDto): Promise<Article[]> {
+    const { tag, limit, sortPublicationAt } = params;
+
+    const qb = this.repository
+      .createQueryBuilder('a')
+      .where('a.tags @> :tag', { tag: JSON.stringify([tag]) })
+      .andWhere('a.post IS NULL');
+
+    // Optionnel: Gestion du tri
+    // On trie par date de création (createdAt) si sortDirection est fourni
+    if (sortPublicationAt) {
+      qb.orderBy('a.publicationAt', sortPublicationAt);
+    }
+
+    // Optionnel: Limiter le nombre de résultats
+    if (limit) {
+      qb.take(limit);
+    }
+
+    const entities = await qb.getMany();
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
+  }
+
+  async getUnanalyzedArticlesByAgentWithTag(
+    agentName: string,
+    tag: string,
+  ): Promise<Article[]> {
+    const entities = await this.repository
+      .createQueryBuilder('a')
+      .where(`a.tags @> :tag`, { tag: JSON.stringify([tag]) })
+      .andWhere((qb) => {
+        const subQuery = qb
+          .subQuery()
+          .select('1')
+          .from(ArticleAnalysisEntity, 'aa')
+          .where('aa.articleId = a.id')
+          .andWhere('aa.agent = :agent', { agent: agentName })
+          .andWhere('aa.status IN (:...statuses)', {
+            statuses: [
+              ArticleAnalysisStatus.COMPLETED,
+              ArticleAnalysisStatus.PENDING,
+            ],
+          })
+          .getQuery();
+        return `NOT EXISTS ${subQuery}`;
+      })
       .getMany();
 
-    return entities.map((entity) => ArticleMapper.toDomain(entity))
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 }

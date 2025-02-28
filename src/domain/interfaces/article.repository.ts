@@ -1,5 +1,7 @@
 // /src/domain/interfaces/IArticleRepository.ts
 
+import { ArticleFilterDto } from 'src/application/dtos/article.filter.dto';
+
 import { Article } from '../entities/article';
 
 import { IRepository } from './repository';
@@ -13,5 +15,10 @@ export interface IArticleRepository extends IRepository<Article> {
 
   deleteOldRSSArticles(olderThan: Date): Promise<void>;
 
-  getByTag(tag: string): Promise<Article[]>;
+  getByTag(params: ArticleFilterDto): Promise<Article[]>;
+
+  getUnanalyzedArticlesByAgentWithTag(
+    agentName: string,
+    tag: string,
+  ): Promise<Article[]>;
 }

@@ -14,6 +14,7 @@ import { ArticleSourceType } from '../../domain/enums/article.source.type';
 import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateArticleDto, UpdateArticleDto } from '../dtos/article.dto';
+import { ArticleFilterDto } from '../dtos/article.filter.dto';
 
 import { ArticleCollectionUseCases } from './article.collection.use-cases';
 import { WebScraperUseCase } from './web-scraper.use-cases';
@@ -77,12 +78,10 @@ export class ArticleUseCases
     // Gestion des Tags
     article.tags = [];
     if (articleDTO.tags) {
-      console.log(articleDTO.tags);
       article.tags = articleDTO.tags;
 
       if (articleDTO.tags.length > 0) {
-        const content = await this.scraperUseCases.scrape(articleDTO.link)
-        console.log(content);
+        article.content = await this.scraperUseCases.scrape(articleDTO.link);
       }
     }
 
@@ -130,7 +129,7 @@ export class ArticleUseCases
       article.tags = articleDto.tags;
 
       if (articleDto.tags.length > 0) {
-        const content = await this.scraperUseCases.scrape(article.link)
+        const content = await this.scraperUseCases.scrape(article.link);
 
         if (content) article.content = content;
       }
@@ -185,7 +184,14 @@ export class ArticleUseCases
     }
   }
 
-  async getArticlesByTag(tag: string): Promise<Article[]> {
-    return this.repository.getByTag(tag);
+  async getArticlesByTag(params: ArticleFilterDto): Promise<Article[]> {
+    return this.repository.getByTag(params);
+  }
+
+  async getUnanalyzedArticlesByAgentWithTag(
+    agent: string,
+    tag: string,
+  ): Promise<Article[]> {
+    return this.repository.getUnanalyzedArticlesByAgentWithTag(agent, tag);
   }
 }

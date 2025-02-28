@@ -19,7 +19,9 @@ export class ArticleAnalysisEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ArticleEntity)
+  @ManyToOne(() => ArticleEntity, (article) => article.analyses, {
+    onDelete: 'CASCADE', // Supprime les analyses quand l'article est supprimé
+  })
   article: ArticleEntity;
 
   @Column()

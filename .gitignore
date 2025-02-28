@@ -64,5 +64,9 @@ coverage
 # Sonar Scanner
 .sonar
 sonar-project.properties
-!/n8n/
-!/.pnpm-store/
+
+#n8n
+/n8n
+
+#pnpm
+/.pnpm-store

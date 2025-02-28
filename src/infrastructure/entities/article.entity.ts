@@ -10,8 +10,10 @@ import {
 
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
 
+import { ArticleAnalysisEntity } from './article.analyse.entity';
 import { ArticleCollectionEntity } from './article.collection.entity';
 import { MediaAttachmentEntity } from './media.attachment.entity';
+import { PostEntity } from './post.entity';
 import { RssFeedCollectionEntity } from './rss-feed.collection.entity';
 import { RssFeedEntity } from './rss-feed.entity';
 import { TaskEntity } from './task.entity';
@@ -24,16 +26,20 @@ export class ArticleEntity {
   @Column()
   title: string;
 
-  @CreateDateColumn({ nullable: true })
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt: Date | null;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt: Date | null;
 
   @Column({ nullable: true })
   publicationAt: Date | null;
 
-  @Column({ type: 'enum', enum: ArticleSourceType, default: ArticleSourceType.RSS })
+  @Column({
+    type: 'enum',
+    enum: ArticleSourceType,
+    default: ArticleSourceType.RSS,
+  })
   sourceType: ArticleSourceType;
 
   @Column({ type: 'boolean', default: false })
@@ -89,4 +95,16 @@ export class ArticleEntity {
 
   @OneToMany(() => TaskEntity, (task) => task.article)
   tasks: TaskEntity[];
+
+  @ManyToOne(() => PostEntity, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  post?: PostEntity;
+
+  @OneToMany(() => ArticleAnalysisEntity, (analysis) => analysis.article, {
+    cascade: true,
+  })
+  analyses: ArticleAnalysisEntity[];
 }

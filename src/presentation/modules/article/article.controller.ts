@@ -6,14 +6,16 @@ import {
   HttpCode,
   Param,
   Post,
-  Put, Query,
+  Put,
+  Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import {
   CreateArticleDto,
   UpdateArticleDto,
 } from '../../../application/dtos/article.dto';
+import { ArticleFilterDto } from '../../../application/dtos/article.filter.dto';
 import { ArticleUseCases } from '../../../application/usecases/article.use-cases';
 import { Article } from '../../../domain/entities/article';
 import { ParsePositiveIntPipe } from '../../pipes/parse.positive.int.pipe';
@@ -32,13 +34,18 @@ export class ArticleController {
     return await this.useCase.getAll();
   }
 
-  @ApiOperation({ summary: 'Récupérer les articles par tag' })
-  @ApiQuery({ name: 'tag', type: String, required: true, description: 'Le tag à rechercher' })
-  @ApiResponse({ status: 200, description: 'Liste des articles trouvés', type: [Article] })
+  @ApiOperation({
+    summary: 'Récupérer les articles par tag (avec filtres optionnels)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Liste des articles trouvés',
+    type: [Article],
+  })
   @ApiResponse({ status: 400, description: 'Requête invalide (tag manquant)' })
   @Get('/by-tag')
-  async getArticlesByTag(@Query('tag') tag: string): Promise<Article[]> {
-    return this.useCase.getArticlesByTag(tag);
+  async getArticlesByTag(@Query() query: ArticleFilterDto): Promise<Article[]> {
+    return this.useCase.getArticlesByTag(query);
   }
 
   @ApiOperation({ summary: 'Get a single article by its ID' })
@@ -99,8 +106,18 @@ export class ArticleController {
     return await this.useCase.delete(id);
   }
 
+  @Get('/unanalysed/:agent/:tag')
+  async getUnanalysedArticleByAgentWithTag(
+    @Param('agent') agent: string,
+    @Param('tag') tag: string,
+  ): Promise<Article[]> {
+    return this.useCase.getUnanalyzedArticlesByAgentWithTag(agent, tag);
+  }
+
   @Get('/unanalysed/:agent')
-  async getUnanalysedArticleByAgent(@Param('agent') agent: string): Promise<Article[]> {
+  async getUnanalysedArticleByAgent(
+    @Param('agent') agent: string,
+  ): Promise<Article[]> {
     return this.useCase.getUnanalyzedArticlesByAgent(agent);
   }
 }

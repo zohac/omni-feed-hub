@@ -11,3 +11,4 @@ export * from './assign.to.collection.action.entity';
 export * from './article.analyse.entity';
 export * from './agent.workflow.entity';
 export * from './agent.workflow.step.entity';
+export * from './post.entity';

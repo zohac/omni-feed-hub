@@ -6,6 +6,7 @@ import { IEntity } from '../interfaces/entity';
 
 import { ArticleCollection } from './article.collection';
 import { MediaAttachment } from './media.attachment';
+import { Post } from './post';
 import { RssFeed } from './rss-feed';
 import { Task } from './task';
 
@@ -27,5 +28,6 @@ export class Article implements IEntity {
     public metadata?: Record<string, string>, // GUID, auteur, etc.
     public collection?: ArticleCollection,
     public tasks?: Task[],
+    public post?: Post,
   ) {}
 }
