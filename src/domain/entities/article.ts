@@ -30,4 +30,21 @@ export class Article implements IEntity {
     public tasks?: Task[],
     public post?: Post,
   ) {}
+
+  addTag(tag: string) {
+    if (this.tags && !this.tags.includes(tag)) {
+      this.tags.push(tag);
+    } else {
+      this.tags = [tag];
+    }
+  }
+
+  removeTag(tag: string): void {
+    if (this.tags) {
+      const index = this.tags.indexOf(tag);
+      if (index !== -1) {
+        this.tags.splice(index, 1);
+      }
+    }
+  }
 }

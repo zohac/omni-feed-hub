@@ -75,6 +75,11 @@ export class ParseFeedUseCases {
             { guid: item.guid, creator: item.creator }, // metadata
           );
 
+          if (item.videoId) {
+            article.addTag('video');
+            article.addTag('to-transcript');
+          }
+
           await this.repository.create(article);
         }
       }

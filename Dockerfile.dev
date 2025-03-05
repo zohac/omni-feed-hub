@@ -1,6 +1,8 @@
 # Utilise l'image Node LTS avec pnpm
 FROM node:22.12.0
 
+RUN apt-get update && apt-get install -y docker.io
+
 # Installer pnpm globalement
 RUN npm install -g pnpm
 

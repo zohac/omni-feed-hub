@@ -16,6 +16,7 @@ import { ArticleModule } from './article/article.module';
 import { PostModule } from './post/post.module';
 import { RssFeedCollectionModule } from './rss-feed-collection/rss-feed.collection.module';
 import { RssFeedModule } from './rss-feed/rss-feed.module';
+import { TranscriptionModule } from './transcription/transcription.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
     ActionModule,
     AnalysisModule,
     PostModule,
+    TranscriptionModule,
   ],
 })
 export class AppModule {}

@@ -80,8 +80,10 @@ export class ArticleUseCases
     if (articleDTO.tags) {
       article.tags = articleDTO.tags;
 
-      if (articleDTO.tags.length > 0) {
-        article.content = await this.scraperUseCases.scrape(articleDTO.link);
+      if (articleDTO.tags.length > 0 && !articleDTO.tags.includes('video')) {
+        const content = await this.scraperUseCases.scrape(articleDTO.link);
+
+        if (content) article.content = content;
       }
     }
 
@@ -128,20 +130,27 @@ export class ArticleUseCases
     if (undefined !== articleDto?.tags) {
       article.tags = articleDto.tags;
 
-      if (articleDto.tags.length > 0) {
+      if (articleDto.tags.length > 0 && !articleDto.tags.includes('video')) {
         const content = await this.scraperUseCases.scrape(article.link);
 
         if (content) article.content = content;
       }
     }
 
+    return await this.updateWithEntity(article);
+  }
+
+  async updateWithEntity(article: Article): Promise<Article> {
+    console.log(article);
     const updatedArticle = await this.repository.update(article);
     if (!updatedArticle) {
       throw new HttpException(
-        `Failed to update RSS Feed with ID ${id}. It may not exist.`,
+        `Failed to update the article with ID : ${article.id}. It may not exist.`,
         HttpStatus.NOT_FOUND,
       );
     }
+
+    console.log(updatedArticle);
 
     return updatedArticle;
   }
@@ -193,5 +202,9 @@ export class ArticleUseCases
     tag: string,
   ): Promise<Article[]> {
     return this.repository.getUnanalyzedArticlesByAgentWithTag(agent, tag);
+  }
+
+  async getArticlesWithVideoTagToTranscript(): Promise<Article[]> {
+    return this.repository.getArticlesWithVideoTagToTranscript();
   }
 }

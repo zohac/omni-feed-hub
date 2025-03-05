@@ -11,6 +11,7 @@ services:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
       - ./coverage:/usr/src/app/coverage
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - NODE_ENV=${NODE_ENV}
       - DATABASE_TYPE=${DATABASE_TYPE}

@@ -23,4 +23,6 @@ export interface ItemParser {
     length?: number;
     type?: string;
   };
+  videoId?: string;
+  channelId?: string;
 }

@@ -162,4 +162,14 @@ export class ArticleRepository implements IArticleRepository {
 
     return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
+
+  async getArticlesWithVideoTagToTranscript(): Promise<Article[]> {
+    const entities = await this.repository
+      .createQueryBuilder('a')
+      .where('a.tags @> :tag', { tag: JSON.stringify(['to-transcript']) })
+
+      .getMany();
+
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
+  }
 }

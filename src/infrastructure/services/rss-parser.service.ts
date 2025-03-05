@@ -11,7 +11,7 @@ import { IParserOutput } from '../../domain/interfaces/parser.output';
 export class RssParserService implements IRssParser {
   private readonly parser = new Parser({
     customFields: {
-      item: ['media:content'], // Extraction des balises media:content
+      item: ['media:content', 'media:group', 'yt:videoId', 'yt:channelId'],
     },
   });
 
@@ -28,35 +28,74 @@ export class RssParserService implements IRssParser {
 
     parserOutput.items = parsedFeed.items.map((item): ItemParser => {
       const itemParser: ItemParser = {
-        link: null,
-        guid: null,
-        title: null,
-        pubDate: null,
-        creator: null,
-        summary: null,
-        content: null,
-        isoDate: null,
-        categories: null,
-        contentSnippet: null,
+        link: item.link || null,
+        guid: item.guid || null,
+        title: item.title || null,
+        pubDate: item.pubDate || null,
+        creator: item.creator || null,
+        summary: item.summary || null,
+        content: item.content || null,
+        isoDate: item.isoDate || null,
+        categories: item.categories || null,
+        contentSnippet: item.contentSnippet || null,
         media: [],
-        enclosure: null,
+        enclosure: item.enclosure || null,
+        videoId: item['yt:videoId'] || null,
+        channelId: item['yt:channelId'] || null,
       };
 
-      if (item.link) itemParser.link = item.link;
-      if (item.guid) itemParser.guid = item.guid;
-      if (item.title) itemParser.title = item.title;
-      if (item.pubDate) itemParser.pubDate = item.pubDate;
-      if (item.creator) itemParser.creator = item.creator;
-      if (item.summary) itemParser.summary = item.summary;
-      if (item.content) itemParser.content = item.content;
-      if (item.isoDate) itemParser.isoDate = item.isoDate;
-      if (item.categories) itemParser.categories = item.categories;
-      if (item.contentSnippet) itemParser.contentSnippet = item.contentSnippet;
-      if (item.enclosure) itemParser.enclosure = item.enclosure;
+      if (item['media:group']) {
+        const mediaGroup = item['media:group'];
 
-      if (item['content:encoded']) {
-        if (item['content:encoded'].length > itemParser.content.length)
-          itemParser.content = item['content:encoded'];
+        // 📌 Extraction de la description enrichie
+        if (mediaGroup['media:description']) {
+          itemParser.contentSnippet = mediaGroup['media:description'];
+        }
+
+        // 📸 Extraction de la miniature
+        if (mediaGroup['media:thumbnail']) {
+          mediaGroup['media:thumbnail'].forEach((media) => {
+            const attributes = media['$'];
+
+            itemParser.media.push({
+              url: attributes.url,
+              type: 'image',
+              width: attributes.width
+                ? parseInt(attributes.width, 10)
+                : undefined,
+              height: attributes.height
+                ? parseInt(attributes.height, 10)
+                : undefined,
+            });
+          });
+        }
+
+        if (mediaGroup['media:content']) {
+          const mediaContent = Array.isArray(mediaGroup['media:content'])
+            ? mediaGroup['media:content']
+            : [mediaGroup['media:content']];
+
+          mediaContent.forEach((media) => {
+            const attributes = media['$']; // Récupérer les attributs dans $
+            if (attributes?.url) {
+              itemParser.media.push({
+                url: attributes.url,
+                type: attributes.type,
+                width: attributes.width
+                  ? parseInt(attributes.width, 10)
+                  : undefined,
+                height: attributes.height
+                  ? parseInt(attributes.height, 10)
+                  : undefined,
+              });
+            }
+          });
+        }
+
+        // 🎥 Extraction du lien vidéo (reconstruction propre)
+        if (itemParser.videoId) {
+          itemParser.link = `https://www.youtube.com/watch?v=${itemParser.videoId}`;
+        }
       }
 
       if (item['media:content']) {

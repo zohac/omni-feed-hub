@@ -21,4 +21,6 @@ export interface IArticleRepository extends IRepository<Article> {
     agentName: string,
     tag: string,
   ): Promise<Article[]>;
+
+  getArticlesWithVideoTagToTranscript(): Promise<Article[]>;
 }

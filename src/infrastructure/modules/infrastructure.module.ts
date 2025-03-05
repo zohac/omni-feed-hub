@@ -1,5 +1,6 @@
 // src/infrastructure/modules/infrastructure.module.ts
 
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -16,6 +17,7 @@ import {
   TaskEntity,
 } from '../entities';
 import { AiServiceFactory } from '../factories/ai-service.factory';
+import { BullQueueService } from '../queues/bull.queue.service';
 import { ActionRepository } from '../repositories/action.repository';
 import { AiAgentRepository } from '../repositories/ai-agent.repository';
 import { ArticleAnalysisRepository } from '../repositories/article.analysis.repository';
@@ -27,6 +29,7 @@ import { RssFeedRepository } from '../repositories/rss-feed.repository';
 import { TaskRepository } from '../repositories/task.repository';
 import { RssParserService } from '../services/rss-parser.service';
 import { WebScraperService } from '../services/web-scraper.service';
+import { Yt2docService } from '../services/yt2doc.service';
 
 @Module({
   imports: [
@@ -42,6 +45,9 @@ import { WebScraperService } from '../services/web-scraper.service';
       ArticleAnalysisEntity,
       PostEntity,
     ]),
+    BullModule.registerQueue({
+      name: 'transcription',
+    }),
   ],
   providers: [
     {
@@ -96,6 +102,11 @@ import { WebScraperService } from '../services/web-scraper.service';
       provide: 'IWebScraper',
       useClass: WebScraperService,
     },
+    {
+      provide: 'ITranscribeVideo',
+      useClass: Yt2docService,
+    },
+    BullQueueService,
   ],
   exports: [
     TypeOrmModule,
@@ -112,6 +123,8 @@ import { WebScraperService } from '../services/web-scraper.service';
     'IRepository<Post>',
     'IAiServiceFactory',
     'IWebScraper',
+    'ITranscribeVideo',
+    BullQueueService,
   ],
 })
 export class InfrastructureModule {}

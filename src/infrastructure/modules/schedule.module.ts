@@ -15,6 +15,8 @@ import { ArticleCollectionModule } from 'src/presentation/modules/article-collec
 import { ArticleModule } from 'src/presentation/modules/article/article.module';
 import { RssFeedCollectionModule } from 'src/presentation/modules/rss-feed-collection/rss-feed.collection.module';
 import { RssFeedModule } from 'src/presentation/modules/rss-feed/rss-feed.module';
+import { TranscriptionScheduler } from '../../application/scheduler/transcription.scheduler';
+import { TranscriptionModule } from '../../presentation/modules/transcription/transcription.module';
 
 import { InfrastructureModule } from './infrastructure.module';
 
@@ -27,6 +29,7 @@ import { InfrastructureModule } from './infrastructure.module';
     ArticleModule,
     ArticleCollectionModule,
     AiAgentModule,
+    TranscriptionModule,
   ],
   providers: [
     TaskScheduler,
@@ -38,6 +41,7 @@ import { InfrastructureModule } from './infrastructure.module';
     TaskOrchestrator,
     CommandFactory,
     DeleteOldArticlesScheduler,
+    TranscriptionScheduler,
   ],
   exports: [ParseFeedScheduler],
 })
