@@ -15,12 +15,14 @@ export interface IArticleRepository extends IRepository<Article> {
 
   deleteOldRSSArticles(olderThan: Date): Promise<void>;
 
-  getByTag(params: ArticleFilterDto): Promise<Article[]>;
-
   getUnanalyzedArticlesByAgentWithTag(
     agentName: string,
     tag: string,
   ): Promise<Article[]>;
 
   getArticlesWithVideoTagToTranscript(): Promise<Article[]>;
+
+  getAllArticlesWithParams(
+    params: ArticleFilterDto,
+  ): Promise<{ articles: Article[]; total: number; totalPages: number }>;
 }

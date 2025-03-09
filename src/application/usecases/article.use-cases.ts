@@ -141,7 +141,6 @@ export class ArticleUseCases
   }
 
   async updateWithEntity(article: Article): Promise<Article> {
-    console.log(article);
     const updatedArticle = await this.repository.update(article);
     if (!updatedArticle) {
       throw new HttpException(
@@ -149,8 +148,6 @@ export class ArticleUseCases
         HttpStatus.NOT_FOUND,
       );
     }
-
-    console.log(updatedArticle);
 
     return updatedArticle;
   }
@@ -193,10 +190,6 @@ export class ArticleUseCases
     }
   }
 
-  async getArticlesByTag(params: ArticleFilterDto): Promise<Article[]> {
-    return this.repository.getByTag(params);
-  }
-
   async getUnanalyzedArticlesByAgentWithTag(
     agent: string,
     tag: string,
@@ -206,5 +199,13 @@ export class ArticleUseCases
 
   async getArticlesWithVideoTagToTranscript(): Promise<Article[]> {
     return this.repository.getArticlesWithVideoTagToTranscript();
+  }
+
+  async getAllArticlesWithPagination(
+    params: ArticleFilterDto,
+  ): Promise<
+    Promise<{ articles: Article[]; total: number; totalPages: number }>
+  > {
+    return this.repository.getAllArticlesWithParams(params);
   }
 }

@@ -25,6 +25,7 @@ export class PostUseCases {
       dto.originalContent,
       dto.recommendation,
       dto.explanation,
+      new Date(),
       dto.scheduledAt || null,
       null,
       false,

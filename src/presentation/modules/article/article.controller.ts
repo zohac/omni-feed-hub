@@ -30,22 +30,10 @@ export class ArticleController {
     description: 'List of articles returned successfully.',
   })
   @Get()
-  async getAllArticles(): Promise<Article[]> {
-    return await this.useCase.getAll();
-  }
-
-  @ApiOperation({
-    summary: 'Récupérer les articles par tag (avec filtres optionnels)',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Liste des articles trouvés',
-    type: [Article],
-  })
-  @ApiResponse({ status: 400, description: 'Requête invalide (tag manquant)' })
-  @Get('/by-tag')
-  async getArticlesByTag(@Query() query: ArticleFilterDto): Promise<Article[]> {
-    return this.useCase.getArticlesByTag(query);
+  async getAllArticles(
+    @Query() query: ArticleFilterDto,
+  ): Promise<{ articles: Article[]; total: number; totalPages: number }> {
+    return await this.useCase.getAllArticlesWithPagination(query);
   }
 
   @ApiOperation({ summary: 'Get a single article by its ID' })

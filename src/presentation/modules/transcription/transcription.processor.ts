@@ -4,6 +4,7 @@ import { Job } from 'bull';
 
 import { TranscriptionUseCases } from 'src/application/usecases/transcription.use-cases';
 import { ILogger } from 'src/domain/interfaces/logger';
+
 import { ArticleUseCases } from '../../../application/usecases/article.use-cases';
 
 @Processor('transcription')

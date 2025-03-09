@@ -28,7 +28,8 @@ export class PostRepository implements IRepository<Post> {
     const entities = await this.repository.find({
       relations: ['articles'],
     });
-    return entities.map(PostMapper.toDomain);
+
+    return entities.map((entity) => PostMapper.toDomain(entity));
   }
 
   async getOneById(id: number): Promise<Post | null> {

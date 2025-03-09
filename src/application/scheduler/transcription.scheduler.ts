@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ILogger } from '../../domain/interfaces/logger';
 
+import { ILogger } from '../../domain/interfaces/logger';
 import { TranscriptionUseCases } from '../usecases/transcription.use-cases';
 
 @Injectable()

@@ -71,9 +71,6 @@ export class TranscriptionUseCases {
         const articleId: number = job.data.articleId;
         const article = await this.articleUseCases.getOneById(articleId);
 
-        console.log('JOB : ', job);
-        console.log('Transcription : ', transcription);
-
         article.content = transcription;
         article.removeTag('to-transcript');
         article.addTag('transcripted');

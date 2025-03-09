@@ -10,6 +10,7 @@ import {
 
 import { ArticleEntity } from './article.entity';
 import { RssFeedCollectionEntity } from './rss-feed.collection.entity';
+import { RssFeedStatsEntity } from './rss-feed.stats.entity';
 
 @Entity('rss_feed')
 export class RssFeedEntity {
@@ -37,4 +38,7 @@ export class RssFeedEntity {
 
   @OneToMany(() => ArticleEntity, (article) => article.feed)
   articles!: ArticleEntity[];
+
+  @OneToMany(() => RssFeedStatsEntity, (stats) => stats.feed)
+  stats?: RssFeedStatsEntity;
 }

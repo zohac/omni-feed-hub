@@ -12,3 +12,4 @@ export * from './article.analyse.entity';
 export * from './agent.workflow.entity';
 export * from './agent.workflow.step.entity';
 export * from './post.entity';
+export * from './rss-feed.stats.entity';

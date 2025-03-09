@@ -14,6 +14,7 @@ import {
   PostEntity,
   RssFeedCollectionEntity,
   RssFeedEntity,
+  RssFeedStatsEntity,
   TaskEntity,
 } from '../entities';
 import { AiServiceFactory } from '../factories/ai-service.factory';
@@ -26,6 +27,7 @@ import { ArticleRepository } from '../repositories/article.repository';
 import { PostRepository } from '../repositories/post.repository';
 import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection.repository';
 import { RssFeedRepository } from '../repositories/rss-feed.repository';
+import { RssFeedStatsRepository } from '../repositories/rss-feed.stats.repository';
 import { TaskRepository } from '../repositories/task.repository';
 import { RssParserService } from '../services/rss-parser.service';
 import { WebScraperService } from '../services/web-scraper.service';
@@ -44,6 +46,7 @@ import { Yt2docService } from '../services/yt2doc.service';
       ActionEntity,
       ArticleAnalysisEntity,
       PostEntity,
+      RssFeedStatsEntity,
     ]),
     BullModule.registerQueue({
       name: 'transcription',
@@ -95,6 +98,10 @@ import { Yt2docService } from '../services/yt2doc.service';
       useClass: PostRepository,
     },
     {
+      provide: 'IRepository<RssFeedStats>',
+      useClass: RssFeedStatsRepository,
+    },
+    {
       provide: 'IAiServiceFactory',
       useClass: AiServiceFactory,
     },
@@ -121,6 +128,7 @@ import { Yt2docService } from '../services/yt2doc.service';
     'IRepository<Action>',
     'IRepository<ArticleAnalysis>',
     'IRepository<Post>',
+    'IRepository<RssFeedStats>',
     'IAiServiceFactory',
     'IWebScraper',
     'ITranscribeVideo',

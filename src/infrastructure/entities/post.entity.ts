@@ -26,6 +26,9 @@ export class PostEntity {
   explanation: string;
 
   @Column({ type: 'timestamp', nullable: true })
+  createdAt: Date | null;
+
+  @Column({ type: 'timestamp', nullable: true })
   scheduledAt: Date | null;
 
   @Column({ type: 'timestamp', nullable: true })

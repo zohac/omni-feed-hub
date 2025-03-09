@@ -1,8 +1,8 @@
-// src/infrastructure/repositories/article.analysis.repository.ts
+// src/infrastructure/repositories/article.repository.ts
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 
 import { ArticleFilterDto } from '../../application/dtos/article.filter.dto';
 import { Article } from '../../domain/entities/article';
@@ -112,29 +112,6 @@ export class ArticleRepository implements IArticleRepository {
       .execute();
   }
 
-  async getByTag(params: ArticleFilterDto): Promise<Article[]> {
-    const { tag, limit, sortPublicationAt } = params;
-
-    const qb = this.repository
-      .createQueryBuilder('a')
-      .where('a.tags @> :tag', { tag: JSON.stringify([tag]) })
-      .andWhere('a.post IS NULL');
-
-    // Optionnel: Gestion du tri
-    // On trie par date de création (createdAt) si sortDirection est fourni
-    if (sortPublicationAt) {
-      qb.orderBy('a.publicationAt', sortPublicationAt);
-    }
-
-    // Optionnel: Limiter le nombre de résultats
-    if (limit) {
-      qb.take(limit);
-    }
-
-    const entities = await qb.getMany();
-    return entities.map((entity) => ArticleMapper.toDomain(entity));
-  }
-
   async getUnanalyzedArticlesByAgentWithTag(
     agentName: string,
     tag: string,
@@ -171,5 +148,55 @@ export class ArticleRepository implements IArticleRepository {
       .getMany();
 
     return entities.map((entity) => ArticleMapper.toDomain(entity));
+  }
+
+  async getAllArticlesWithParams(
+    params: ArticleFilterDto,
+  ): Promise<{ articles: Article[]; total: number; totalPages: number }> {
+    const qb = this.repository.createQueryBuilder('a');
+    this.applyOptions(qb, params);
+
+    // Inclure les relations feed
+    qb.leftJoinAndSelect('a.feed', 'feed');
+
+    const [entities, total] = await qb.getManyAndCount();
+
+    const totalPages = Math.ceil(total / params.limit);
+
+    return {
+      articles: entities.map((entity) => ArticleMapper.toDomain(entity)),
+      total,
+      totalPages,
+    };
+  }
+
+  private applyOptions(
+    qb: SelectQueryBuilder<ArticleEntity>,
+    options: ArticleFilterDto,
+  ) {
+    const { tag, page, sortPublicationAt, limit } = options;
+
+    if (tag) {
+      qb.where('a.tags @> :tag', { tag: JSON.stringify([tag]) }).andWhere(
+        'a.post IS NULL',
+      );
+    }
+
+    // Optionnel: Gestion du tri
+    // On trie par date de création (createdAt) si sortDirection est fourni
+    if (sortPublicationAt) {
+      qb.orderBy('a.publicationAt', sortPublicationAt);
+    }
+
+    // Optionnel: Limiter le nombre de résultats
+    if (limit) {
+      qb.take(limit);
+    }
+
+    // Optionnel: Pagination
+    if (page) {
+      const skip = (page - 1) * limit;
+      qb.skip(skip);
+    }
   }
 }

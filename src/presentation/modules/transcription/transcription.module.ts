@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { TranscriptionUseCases } from 'src/application/usecases/transcription.use-cases';
 import { InfrastructureModule } from 'src/infrastructure/modules/infrastructure.module';
 import { BullQueueService } from 'src/infrastructure/queues/bull.queue.service';
+
 import { ArticleModule } from '../article/article.module';
 
 import { TranscriptionController } from './transcription.controller';

@@ -13,6 +13,7 @@ export class Post implements IEntity {
     public originalContent: string,
     public recommendation: string,
     public explanation: string,
+    public createdAt: Date | null,
     public scheduledAt: Date | null,
     public publishedAt: Date | null,
     public published: boolean,

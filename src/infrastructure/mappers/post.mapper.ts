@@ -38,6 +38,7 @@ export class PostMapper {
       entity.originalContent,
       entity.recommendation,
       entity.explanation,
+      entity.createdAt,
       entity.scheduledAt,
       entity.publishedAt,
       entity.published,
@@ -77,6 +78,7 @@ export class PostMapper {
     entity.originalContent = domain.originalContent;
     entity.recommendation = domain.recommendation;
     entity.explanation = domain.explanation;
+    entity.createdAt = domain.createdAt;
     entity.scheduledAt = domain.scheduledAt;
     entity.publishedAt = domain.publishedAt;
     entity.published = domain.published;
