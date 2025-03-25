@@ -12,7 +12,7 @@ export class RssFeedStatsScheduler {
     private readonly useCases: RssFeedStatsUseCases,
   ) {}
 
-  @Cron(CronExpression.EVERY_6_HOURS)
+  @Cron(CronExpression.EVERY_HOUR)
   async handleTranscriptionSchedule() {
     this.logger.log('Sync Stats for all rss feed started...');
     await this.useCases.syncAllStats();

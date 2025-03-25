@@ -29,6 +29,7 @@ import { RssFeedCollectionRepository } from '../repositories/rss-feed.collection
 import { RssFeedRepository } from '../repositories/rss-feed.repository';
 import { RssFeedStatsRepository } from '../repositories/rss-feed.stats.repository';
 import { TaskRepository } from '../repositories/task.repository';
+import { HtmlToMdService } from '../services/html-to-md.service';
 import { RssParserService } from '../services/rss-parser.service';
 import { WebScraperService } from '../services/web-scraper.service';
 import { Yt2docService } from '../services/yt2doc.service';
@@ -114,6 +115,7 @@ import { Yt2docService } from '../services/yt2doc.service';
       useClass: Yt2docService,
     },
     BullQueueService,
+    HtmlToMdService,
   ],
   exports: [
     TypeOrmModule,
@@ -133,6 +135,7 @@ import { Yt2docService } from '../services/yt2doc.service';
     'IWebScraper',
     'ITranscribeVideo',
     BullQueueService,
+    HtmlToMdService,
   ],
 })
 export class InfrastructureModule {}

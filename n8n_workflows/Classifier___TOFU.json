@@ -1,0 +1,384 @@
+{
+  "name": "Classifier - TOFU",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "d7bd7a1f-699c-4b72-94bc-12b6aec82f1a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ],
+      "id": "9b7e9c1c-9e5c-4c15-9d13-45a75eadc764",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1b95dcb9-dcf9-4d50-86a0-d9dbc6f60c52",
+              "name": "agent_name",
+              "value": "classifier_tofu",
+              "type": "string"
+            },
+            {
+              "id": "7d937381-29b0-4069-9f64-16a5c654ae27",
+              "name": "classifier_tag",
+              "value": "Artificial intelligence",
+              "type": "string"
+            },
+            {
+              "id": "a502852a-cbc8-4ea5-9f0f-179aebdfa57b",
+              "name": "classifier_tofu",
+              "value": "Criteria for validating an article:\nVisual AI, Image Generative AI, Video Generative AI, Stable Diffusion, ComfyUI, Automatic1111, Midjourney, FLUX AI, AnimateDiff, Runway, LoRA, Checkpoint, CKPT, AI Workflow, Open-source Visual AI, text-to-image, text-to-video, image-to-image, image-to-video, video-to-video, upscaling, image upscale, video upscale, Why, Revolution, Trend, Simple, Easy, Beginner, Understand, Game changer, Quick, Efficient, Getting started, Start, Comparison, Difference, Explanation, Beginner guide, Pros, Cons, Alternatives, New, News, Visual AI tools, Key features;\n\nCriteria for rejecting an article:\nChatGPT, GPT-4, GPT, LLM, Prompt Engineering, Textual AI, LLama, Claude AI, Gemini, OpenAI API, Conversational AI;",
+              "type": "string"
+            },
+            {
+              "id": "224ef0a3-0088-4f98-86e0-5cfe4d247c44",
+              "name": "classifier_tofu_tag",
+              "value": "tofu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61069421-a52f-4c9a-8586-67503af42bec",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1480468-a8a0-407b-a23f-9363f6dbbce1",
+              "leftValue": "={{$('Text Classifier TOFU').item.json.isEmpty()}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        80
+      ],
+      "id": "e75e86e6-2bd7-46e3-98d6-7cc32f792606",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($('Loop Over Items').first().json.tags);\nconsole.log($('Edit Fields').first().json.classifier_tofu_tag);\n\nlet tab = $('Loop Over Items').first().json.tags;\nlet value = $('Edit Fields').first().json.classifier_tofu_tag;\n\nif (tab.indexOf(value) === -1) {\n  tab.push(value);\n}\n\nreturn [\n  {\n    json: { tags: JSON.stringify(tab) }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        180
+      ],
+      "id": "be9c7424-61c2-4500-b2e4-88929d3c2fb0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://app:3000/api/analysis/{{ $('Loop Over Items').item.json.id }}/analysed/{{ $('Edit Fields').item.json.agent_name }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        -200
+      ],
+      "id": "a0f653cc-8f99-442b-b8fe-c4fccdcc264a",
+      "name": "Save Analysis",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=http://app:3000/api/articles/unanalysed/{{ $json.agent_name }}/{{ $json.classifier_tag }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "14d36058-4cb0-40fe-85d9-36d496b9f431",
+      "name": "Get Articles By Tag Name"
+    },
+    {
+      "parameters": {
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_tofu }}** :\n\n###\nInput:\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Description: \"\"\"{{ $('Loop Over Items').item.json.description }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n###",
+        "categories": {
+          "categories": [
+            {
+              "category": "={{ $('Edit Fields').item.json.classifier_tofu_tag }}",
+              "description": "={{ $('Edit Fields').item.json.classifier_tofu }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        720,
+        80
+      ],
+      "id": "d6ac0876-20ed-450a-892b-f656b00f67e4",
+      "name": "Text Classifier TOFU",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        700,
+        400
+      ],
+      "id": "9dc0dfd3-297f-4c0a-a0b4-8cda4c5b504f",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "Fr0Brj5aUCgdQXdS",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        440,
+        420
+      ],
+      "id": "0bca9510-9e81-4d0b-b1b4-2783a1db87c4",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "7wQbh0FGHVdpGCkr",
+          "name": "Ollama account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://app:3000/api/articles/{{ $('Loop Over Items').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tags\": {{ $('Code').item.json.tags }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        180
+      ],
+      "id": "a9b3848d-4ce4-4233-b376-41911aacd34f",
+      "name": "Save Tag TOFU"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Text Classifier TOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get Articles By Tag Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Save Tag TOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Articles By Tag Name": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier TOFU": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier TOFU",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Save Tag TOFU": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "896ab70d-6e93-45c7-915f-904d2fe45940",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83ee9c1d9815d10ebbe9538d3f36cc15f803fc88dab8df02e2d9a2b6f457cb51"
+  },
+  "id": "3Q26axSVdao49SRs",
+  "tags": []
+}

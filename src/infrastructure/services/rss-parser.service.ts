@@ -1,5 +1,6 @@
 // src/infrastructure/rss-parser/rss-parser.service.ts
 import { Injectable } from '@nestjs/common';
+import * as he from 'he';
 import Parser from 'rss-parser';
 
 import { IRssParser } from 'src/domain/interfaces/rss-parser';
@@ -27,17 +28,24 @@ export class RssParserService implements IRssParser {
     };
 
     parserOutput.items = parsedFeed.items.map((item): ItemParser => {
+      const title = item.title ? he.decode(item.title) : item.title;
+      const summary = item.summary ? he.decode(item.summary) : item.summary;
+      const content = item.content ? he.decode(item.content) : item.content;
+      const contentSnippet = item.contentSnippet
+        ? he.decode(item.contentSnippet)
+        : item.contentSnippet;
+
       const itemParser: ItemParser = {
         link: item.link || null,
         guid: item.guid || null,
-        title: item.title || null,
+        title: title || null,
         pubDate: item.pubDate || null,
         creator: item.creator || null,
-        summary: item.summary || null,
-        content: item.content || null,
+        summary: summary || null,
+        content: content || null,
         isoDate: item.isoDate || null,
         categories: item.categories || null,
-        contentSnippet: item.contentSnippet || null,
+        contentSnippet: contentSnippet || null,
         media: [],
         enclosure: item.enclosure || null,
         videoId: item['yt:videoId'] || null,
@@ -49,7 +57,13 @@ export class RssParserService implements IRssParser {
 
         // 📌 Extraction de la description enrichie
         if (mediaGroup['media:description']) {
-          itemParser.contentSnippet = mediaGroup['media:description'];
+          const descriptionArray = mediaGroup['media:description'];
+          if (Array.isArray(descriptionArray)) {
+            const description = descriptionArray.join(' ');
+            itemParser.contentSnippet = he.decode(description);
+          } else if (typeof descriptionArray === 'string') {
+            itemParser.contentSnippet = he.decode(descriptionArray);
+          }
         }
 
         // 📸 Extraction de la miniature

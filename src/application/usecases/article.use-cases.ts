@@ -95,6 +95,26 @@ export class ArticleUseCases
     return await this.repository.create(article);
   }
 
+  async createArticleFromEntity(article: Article): Promise<Article> {
+    if (!article.tags.includes('video')) {
+      const content = await this.scraperUseCases.scrape(article.link);
+
+      if (content) article.content = content;
+    }
+
+    return await this.repository.create(article);
+  }
+
+  async updateArticleFromEntity(article: Article): Promise<Article> {
+    if (!article.tags.includes('video')) {
+      const content = await this.scraperUseCases.scrape(article.link);
+
+      if (content) article.content = content;
+    }
+
+    return await this.repository.update(article);
+  }
+
   async getOneById(id: number): Promise<Article | null> {
     const article = await this.repository.getOneById(id);
     if (!article) {
@@ -102,6 +122,15 @@ export class ArticleUseCases
     }
 
     return await this.repository.getOneById(id);
+  }
+
+  async getOneByLink(link: string): Promise<Article | null> {
+    const article = await this.repository.getOneByLink(link);
+    if (!article) {
+      return null;
+    }
+
+    return article;
   }
 
   async getArticlesByFeedId(feedId: number): Promise<Article[]> {

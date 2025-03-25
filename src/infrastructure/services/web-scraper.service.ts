@@ -2,40 +2,73 @@ import { Inject, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
+import * as he from 'he';
+import * as iconv from 'iconv-lite';
 
 import { ILogger } from 'src/domain/interfaces/logger';
 import { IWebScraper } from 'src/domain/interfaces/web-scraper';
+import { HtmlToMdService } from './html-to-md.service';
 
 @Injectable()
 export class WebScraperService implements IWebScraper {
   constructor(
     @Inject('ILogger')
     private readonly logger: ILogger,
+    private readonly htmlToMdService: HtmlToMdService,
   ) {}
 
   async scrape(url: string): Promise<string | null> {
     try {
       this.logger.log(`Starting scraping for URL: ${url}`);
 
-      const { data } = await axios.get(url);
-      const $ = cheerio.load(data);
+      // Récupération de la page en mode binaire (buffer)
+      const response = await axios.get(url, {
+        responseType: 'arraybuffer', // Permet de récupérer un buffer (pour convertir l'encodage)
+      });
 
-      // 1️⃣ Priority: <article>
-      let content = $('article').text().trim();
+      // Détection et conversion d'encodage en UTF-8
+      let contentType = response.headers['content-type'] || '';
+      let encoding = contentType.includes('charset=')
+        ? contentType.split('charset=')[1]
+        : 'utf-8';
+
+      if (
+        encoding.toLowerCase() === 'iso-8859-1' ||
+        encoding.toLowerCase() === 'windows-1252'
+      ) {
+        this.logger.warn(`Encoding detected: ${encoding}, converting to UTF-8`);
+        response.data = iconv.decode(Buffer.from(response.data), encoding);
+      } else {
+        response.data = response.data.toString('utf-8');
+      }
+
+      const $ = cheerio.load(response.data);
+
+      // 🗑️ Suppression des balises inutiles (script, style, etc.)
+      $(
+        'script, style, noscript, iframe, link, meta, nav, aside, form',
+      ).remove();
+
+      // 1️⃣ Priorité à <article> (avec balises HTML)
+      let contentHtml = $('article').html()?.trim() || '';
 
       // 2️⃣ If <article> is empty, search alternatives
-      if (!content) {
+      if (!contentHtml) {
         this.logger.warn(
           `No <article> tag found, searching for alternative content.`,
         );
-        content = this.extractMainContent($);
+        contentHtml = this.extractMainContent($);
       }
 
-      if (!content) {
+      if (!contentHtml) {
         this.logger.error(`Failed to extract meaningful content from ${url}`);
 
         return null;
       }
+
+      // 🔥 Décodage des entités HTML (`&quot;`, `&amp;`, etc.)
+      contentHtml = he.decode(contentHtml);
+      const content = this.htmlToMdService.convert(contentHtml);
 
       this.logger.log(`Successfully extracted content from ${url}`);
       return content;
@@ -55,7 +88,7 @@ export class WebScraperService implements IWebScraper {
     let bestScore = 0;
 
     $(possibleSelectors.join(', ')).each((_, element) => {
-      const text = $(element).text().trim();
+      const text = $(element).html()?.trim() || '';
       const wordCount = text.split(/\s+/).length;
       const tagName = $(element).prop('tagName').toLowerCase();
 

@@ -75,6 +75,11 @@ export class RssFeedController {
     return await this.useCase.delete(id);
   }
 
+  @Post('/parse')
+  async parseAllFeeds() {
+    return await this.useCase.parseAllFeeds();
+  }
+
   @Post('/parse/:id')
   async parseFeed(@Param('id', ParsePositiveIntPipe) id: number) {
     const feed = await this.useCase.getOneById(id);

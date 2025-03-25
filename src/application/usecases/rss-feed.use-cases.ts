@@ -95,4 +95,11 @@ export class RssFeedUseCases
   async getFeedInfo(dto: RssFeedInfosDto): Promise<RssFeedInfo> {
     return await this.parseFeedUseCase.getFeedInfo(dto.url);
   }
+
+  async parseAllFeeds() {
+    const feeds = await this.repository.getAll();
+    for (const feed of feeds) {
+      await this.parseFeedUseCase.execute(feed);
+    }
+  }
 }

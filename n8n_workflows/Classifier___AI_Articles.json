@@ -55,7 +55,7 @@
     },
     {
       "parameters": {
-        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_subject }}**.\n\n### Input:\n- Title: {{ $('Loop Over Items').item.json.title }}\n- Content: {{ $('Loop Over Items').item.json.description }}",
+        "inputText": "=You are an AI content classifier. Your task is to determine whether the given article is about **{{ $('Edit Fields').item.json.classifier_subject }}**.\n\n### Input:\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Description: \"\"\"{{ $('Loop Over Items').item.json.description }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";",
         "categories": {
           "categories": [
             {
@@ -73,27 +73,9 @@
       ],
       "id": "22103164-c6b3-41d6-b722-f0e0bd221a99",
       "name": "Text Classifier",
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "model": "qwen2.5:3b",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmOllama",
-      "typeVersion": 1,
-      "position": [
-        720,
-        400
-      ],
-      "id": "50947e83-5781-40fb-9146-7ddc2d9b3c8a",
-      "name": "Ollama Model",
-      "credentials": {
-        "ollamaApi": {
-          "id": "7wQbh0FGHVdpGCkr",
-          "name": "Ollama account"
-        }
-      }
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -210,6 +192,25 @@
       ],
       "id": "796f0304-47e3-4470-aa5d-c519e3d6e089",
       "name": "Save Tag"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        660,
+        400
+      ],
+      "id": "1068238d-ce8a-4875-b02c-2d5bc96da919",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "Fr0Brj5aUCgdQXdS",
+          "name": "Mistral Cloud account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -248,17 +249,6 @@
         ]
       ]
     },
-    "Ollama Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Text Classifier",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields": {
       "main": [
         [
@@ -280,6 +270,13 @@
           },
           {
             "node": "Save Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -325,13 +322,24 @@
           }
         ]
       ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "52debd1c-3717-459a-8fa1-927ccee0c3fa",
+  "versionId": "f08f1bce-54f7-4b60-86f6-b077e50d40b9",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "83ee9c1d9815d10ebbe9538d3f36cc15f803fc88dab8df02e2d9a2b6f457cb51"

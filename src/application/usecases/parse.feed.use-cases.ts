@@ -6,19 +6,18 @@ import { Article } from '../../domain/entities/article';
 import { MediaAttachment } from '../../domain/entities/media.attachment';
 import { RssFeed } from '../../domain/entities/rss-feed';
 import { ArticleSourceType } from '../../domain/enums/article.source.type';
-import { IArticleRepository } from '../../domain/interfaces/article.repository';
 import { ItemParser } from '../../domain/interfaces/item.parser';
 import { ILogger } from '../../domain/interfaces/logger';
 import { RssFeedInfo } from '../../domain/interfaces/rss-feed.infos';
 import { IRssParser } from '../../domain/interfaces/rss-parser';
+import { ArticleUseCases } from './article.use-cases';
 
 @Injectable()
 export class ParseFeedUseCases {
   constructor(
     @Inject('ILogger')
     private readonly logger: ILogger,
-    @Inject('IRepository<Article>')
-    private readonly repository: IArticleRepository,
+    private readonly articleUseCases: ArticleUseCases,
     @Inject('IRssParser')
     private readonly rssParser: IRssParser,
   ) {}
@@ -40,13 +39,13 @@ export class ParseFeedUseCases {
 
         let articleExist: boolean = false;
         if (item.link) {
-          const article = await this.repository.getOneByLink(item.link);
+          const article = await this.articleUseCases.getOneByLink(item.link);
 
           if (article) {
             articleExist = true;
 
             article.feed = feed;
-            await this.repository.update(article);
+            await this.articleUseCases.updateArticleFromEntity(article);
           }
         }
 
@@ -80,7 +79,7 @@ export class ParseFeedUseCases {
             article.addTag('to-transcript');
           }
 
-          await this.repository.create(article);
+          await this.articleUseCases.createArticleFromEntity(article);
         }
       }
       this.logger.log(`Feed processed successfully : ${feed.title}`);

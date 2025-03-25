@@ -1,0 +1,2085 @@
+{
+  "name": "LinkedIn Writer",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtMinute": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "4f60fc98-19e4-4b92-b08b-2cc6677fcac5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        660,
+        0
+      ],
+      "id": "69f9d91b-cc04-41d4-abd2-a77f503012ff",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "224ef0a3-0088-4f98-86e0-5cfe4d247c44",
+              "name": "tag",
+              "value": "tofu",
+              "type": "string"
+            },
+            {
+              "id": "4f57f5cc-2ebd-4a30-b095-5fb8ea0c08ac",
+              "name": "writing_style",
+              "value": "- Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n- Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n- Language: Simple, impactful, visual—technical jargon is clearly explained.\n",
+              "type": "string"
+            },
+            {
+              "id": "ceda4afa-3f76-44ce-a11f-2abb91b16f7c",
+              "name": "context",
+              "value": "- Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation. \n- Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone. \n- Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI.",
+              "type": "string"
+            },
+            {
+              "id": "53ab7b9e-3880-44c5-b809-8dae4eacb8ad",
+              "name": "inspiration",
+              "value": "Your sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".",
+              "type": "string"
+            },
+            {
+              "id": "4e2d6f26-6ce4-4df6-9f04-54dbdb6579bd",
+              "name": "post_exemples",
+              "value": "Post 1: ###\n🔥 L’IA va remplacer les développeurs ?\nPas avec Bolt.new. On est plus proches de Skynet... mais version stagiaire. 👇\n\nJ’ai testé Bolt.new, l’outil qui promet de coder des apps web complètes en mode IA. \n\nRésultat ? \nUn mélange d’émerveillement et de frustration. Voici mon verdict :\n\nCe que j’aime : La magie... ou presque\n\n✅ Gratuit et généreux (au début) : 150 000 tokens/jour en version gratuite. Idéal pour tester tes idées et jouer les petits génies du dev. 🪄\n\n✅ Un turbo pour les POC ou MVP : T’as une idée ? Tu cliques, et BAM, une app fonctionnelle sort presque instantanément. 🥳\n\n✅ Pas besoin d’être dev (vraiment, c’est mieux) :\n- Exemple perso : J’ai demandé une app façon Feedly avec clean architecture, Nuxt.js, etc. ERREURS EN BOUCLE.\n- En mode \"simple et relax\" (\"mets un bouton\", \"ajoute ça\"), l’IA m’a sorti une app React presque parfaite. Moralité : Bolt.new n’aime pas les perfectionnistes.\n\n✅ Vue globale sur le projet : Contrairement à ChatGPT, elle \"voit\" tout. Fini de répéter 50 fois ce que tu veux ou ce qui ne marche pas.\n\n✅ Déploiement en un clic : Clique. Ton app est en ligne. Pas de pipeline complexe, juste magique. 😍\n\n🤨 Ce qui m’agace : Le stagiaire IA au bureau\n\n🚫 Les tokens ? Une blague.\n- Gratuit : 150 000 tokens, LOL. En 30 minutes, c’est parti.\n- Pro : 20€/mois pour 10M tokens. Tout cramé en 2 jours. À ce rythme, même le plan à 100€ ne tiendra pas un mois. 💸\n\n🚫 L’IA \"refait tout\" pour rien :\n- Demande un bouton, elle te réécrit toute la page. Résultat ? Elle casse ce qui marchait. 💀\n- Et là, tu passes ton temps à réparer. Les tokens défilent. Double peine.\n\n🚫 Beta, très beta :\n- Limité à Node.js.\n- Pas de déploiement GitHub (heureusement, les forks sauvent les meubles).\n- Dépendances parfois pas à jour, code déprécié, et une tonne de \"code mort\". Sérieusement, c’est comme bosser avec un stagiaire bordélique. 😅\n\n🧐 Alors, c’est bien ou pas ?\n\nClairement, Bolt.new, c’est magique pour prototyper. Ça te donne un super coup de boost pour des POC ou des MVP. Mais si tu cherches la perfection ou un produit stable, appelle un vrai dev.\n\nMention spéciale aux forks comme bolt.new-any-llm, qui ajoutent le support de plusieurs IA (OpenAI, Ollama). Avec eux, on dépasse les limites d’Anthropic, et là, Bolt.new devient bien plus flexible.\n\n🎯 Et toi, tu veux tester ou passer ton tour ?\n\n👉 Est-ce que Bolt.new mérite sa place dans ta boîte à outils ? Ou est-ce juste une hype ?\n\nTestez, cassez, construisez... et racontez-moi vos galères (ou victoires).\n\nMoi ? Je garde un œil sur Bolt.new\n\n\nAlors, team IA ou team \"Laissez faire les pros\" ? 💬 On en parle en commentaire !\n###\nPost 2: ###\n🚨 OpenAI vs. DeepSeek : une guerre technologique… ou géopolitique ?\n🔥 OpenAI vient de jeter les gants. 🥊\nIls demandent carrément l’interdiction de DeepSeek, l’IA chinoise qui monte en flèche.\n\nPourquoi cette panique soudaine ?\n\n🔍 L’accusation : OpenAI affirme que DeepSeek est un outil sous influence de Pékin, avec des risques critiques pour la sécurité et la confidentialité des données.\n\nMais voici le plot twist… 👇\n\n💰 DeepSeek est ultra performant ET moins cher.\nRésultat ? Les développeurs l’adorent. Pendant qu’OpenAI tire la sonnette d’alarme, DeepSeek gagne du terrain.\n\nEt OpenAI ne voit pas que DeepSeek... ils voient plus loin. 👀\n\n📅 Objectif : l’Intelligence Artificielle Générale (IAG) d’ici 2030.\nLa Chine investit massivement. OpenAI veut garder son avance. Cette histoire, c’est une redite de la saga Huawei.\n\n🛑 Les risques sont-ils réels ?\n\nLa Chine oblige les entreprises tech à partager leurs données avec l’État.\nDeepSeek pourrait faciliter la création de contenu illicite sans restriction.\nOpenAI craint un manque de contrôle sur l’IA générative chinoise.\n💭 Mais alors, OpenAI protège-t-il vraiment l’innovation… ou ses propres intérêts ?\n\nC’est plus qu’une bataille entre IA. C’est un bras de fer mondial. 🌎\n\n🔮 L’avenir de l’IA dépend de ces décisions.\nFaut-il interdire DeepSeek ? Ou faut-il des règles du jeu équitables pour tous ?\n\n💬 Que feriez-vous si vous étiez à la place d’OpenAI ?\nDroppez vos avis en commentaire ! 👇\n\n#IA #OpenAI #DeepSeek #Tech #Innovation\n###",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -20,
+        0
+      ],
+      "id": "cb22dc59-84ad-4e3f-b2ab-47290b6e7bb1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "=http://app:3000/api/articles?tag={{ $('Edit Fields').item.json.tag }}&limit=5&sortPublicationAt=DESC",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        0
+      ],
+      "id": "7ce40200-b1ed-40c4-a3e6-3f6e0b8dd7f8",
+      "name": "Get Articles By Tag TOFU"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://app:3000/api/posts",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Prepare post').item.json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        9100,
+        340
+      ],
+      "id": "6020f735-5030-4dd5-b3b5-be9eb3a3dc0c",
+      "name": "Save POST"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a LinkedIn post about this article :\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Article: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\n---\n\nFollow this instruction idea for writting the post:\n\"\"\"\n{{ $('Filter Best idea').item.json.highestConfidenceIdea.idea }}\n\"\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\n\nI want you to become an **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**. Your role is to create bold, high-impact posts that reinforce **credibility as an expert**, generate engagement, and spark debate to position the audience for **future premium offers**.\n\nEach user will have their own **unique writing style**, **tone**, and **goals on social media** that personalize the post generation process.\n\n{{ $('Edit Fields').item.json.inspiration }}\n\n---\n\n## Expected JSON Format:\n\n```json\n{\n    \"title\": \"[Custom Hook Based on Topic]\",\n    \"post\": \"[Engaging, punchy introduction]\\n\\n[Main content with structured insights, strong statements, and rhetorical questions]\\n\\n[Critical questions that drive engagement]\\n\\n[Final CTA: Team ‘pro’ or ‘against’?]\",\n    \"cta\": \"[Engaging question to provoke discussion]\",\n    \"hashtag\": \"#[RelevantHashtag1] #[RelevantHashtag2] #[IndustryHashtag] #[TrendHashtag] #[AudienceHashtag]\",\n    \"recommendation\": \"[Suggestions for repurposing the content: carousel, short video, newsletter, etc...]\"\n}\n```\n\n---\n\n## Post Rules:\n- **Title**: Short, striking, and slightly provocative. A strong hook to grab attention instantly.\n- **Post Structure**:\n    - **Introduction**: Direct, impactful, and engaging. No fluff.\n    - **Main Content**:\n        - Fast-paced, short sentences (max 12 words), no more than 2 commas per sentence.\n        - **Tone**: Bold, dynamic, conversational, slightly provocative.\n        - **Style**: No passive voice. Zero unnecessary adverbs.\n    - **Call-to-Action (CTA)**:\n        - Engaging, encourages debate.\n        - Ends with a powerful question to spark reactions.\n- **Expected Length**: 800-1500 characters max (including spaces).\n\n---\n\n## Personalization & Writing Style:\n{{ $('Edit Fields').item.json.writing_style }}\n- Formatting: Emojis strategically placed for readability.\n- Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n---\n\n## Context\n{{ $('Edit Fields').item.json.context }}\n\n---\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, PAPA, PASTOR, 4P) for structuring the content:\n    - AIDA: Attention, Interest, Desire, Action: Marketing model to capture attention, generate interest, create desire, and prompt action.\n    - PAS: Problem, Agitate, Solution: Identify a problem, emphasize its significance, then offer a solution.\n    - PAPA: Problem, Advantages, Proof, Action: Define a problem, present solution advantages, provide proof, and prompt action.\n    - PASTOR: Problem, Advantages, Solution, Target market, Objectives, Results: Structure proposals by clarifying problems, advantages, solutions, target market, objectives, and results.\n    - 4P: Problem, Promise, Proof, Proposition: Identify a problem, make a promise, provide proof, and present a clear value proposition.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n---\n\n## Warnings:\n- **Strictly follow the JSON format.**\n- **Stay 100% on topic based on user input.**\n- **No assumptions or made-up information—stick to the source.**\n- **Humor should enhance expertise, not overshadow it.**\n- **No vague adverbs, no passive voice.**\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2380,
+        120
+      ],
+      "id": "f0a97ae6-7a5a-4859-a3e0-6f8fac51d8c1",
+      "name": "AI Agent - Writer",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the SEO and hashtag for this LinkedIn post :\n- Title: \"\"\"{{ $('AI Agent - Writer').item.json.output.title }}\"\"\"\n- Post: \"\"\"{{ $('AI Agent - Writer').item.json.output.post }}\"\"\"\n- CTA: \"\"\"{{ $('AI Agent - Writer').item.json.output.cta }}\"\"\"\n- Hashtags: \"\"\"{{ $('AI Agent - Writer').item.json.output.hashtag }}\"\"\"\n---\nSource article : \n\"\"\"\nTitle: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\"\nContent: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\"\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nI want you to act as an SEO and hashtag optimization specialist for my LinkedIn posts. Analyze a LinkedIn post to identify the search intent of users, suggest relevant keywords, and provide actionable recommendations to enhance the title, content, call-to-action (CTA), and hashtags, all from an SEO expert's perspective, with a focus on TOFU content strategy.\n\n## Return Format in JSON:\n```json\n{\n  \"search_intent\": \"To attract individuals interested in AI visual creation tools and innovations, highlighting the latest advancements and their impact.\",\n  \"suggested_keywords\": \"Consider using keywords like 'AI video editors', 'AI image generation', '3D scene creation', 'AI visual tools', and 'AI innovation' to improve visibility.\",\n  \"title_suggestions\": \"Think about creating titles that highlight the revolutionary aspects of AI in visual creation, such as 'Discover the Latest AI Tools Revolutionizing Visual Creation!' or 'Transform Your Visuals with Cutting-Edge AI Editors!'\",\n  \"content_suggestions\": \"Consider breaking down complex AI tools into simpler explanations and highlighting real-world applications. Including user testimonials or case studies could also build credibility.\",\n  \"cta_suggestions\": \"Encourage engagement by asking readers to share their favorite AI tool mentioned and why it excites them, or invite them to join the conversation about which AI innovation they can't wait to try.\",\n  \"hashtags\": \"Use a mix of popular and niche-specific hashtags like 'AIVisualCreation', 'AIVideoEditors', 'AIInnovation', 'TechRevolution', and 'AIArt' to maximize reach.\",\n  \"seo_tips\": \"Ensure all images have descriptive alt text and include internal links to related blog posts or articles to enhance SEO.\"\n}\n```\n\n### Explanations:\n- **Search Intent**: Provides a clear intent to guide the suggestions, focusing on attracting individuals interested in AI visual creation tools.\n- **Suggested Keywords**: Advises on using relevant keywords to improve visibility without imposing a strict list.\n- **Title Suggestions**: Offers ideas for creating engaging and SEO-friendly titles that highlight the revolutionary aspects of AI in visual creation.\n- **Content Suggestions**: Recommends breaking down complex AI tools into simpler explanations and highlighting real-world applications to make the content more engaging.\n- **CTA Suggestions**: Encourages engagement by suggesting clear and action-oriented calls-to-action.\n- **Hashtags**: Suggests using a mix of popular and niche-specific hashtags to maximize reach. Hashtag Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags: Broader, high-impact tags for visibility in AI or tech communities (e.g., #ArtificialIntelligence, #TechInnovation, etc.).\n- **SEO Tips**: Provides additional tips to enhance the post's SEO, such as using descriptive alt text for images and including internal links. Optional insights or strategies that could further boost the post's visibility and engagement.\n- **TOFU Analysis:**\n  - **Objective:** Attract curious individuals interested in entering the AI visual game.\n  - **Included Content:**\n    - News and trends exclusively on AI visual creation.\n    - Content explaining why AI visuals are game-changers.\n    - Simplified explanations with a technical hook (e.g., \"Why is everyone talking about ComfyUI?\").\n    - Simplified comparisons to help understand tools.\n  - **Excluded Content:**\n    - Any AI news outside of image/video.\n    - Articles without actionable insights.\n\n## Warnings\n- Respect the JSON format output.\n- Avoid guesswork or assumptions beyond the info provided.\nKeep the tone consistent with my casual, slightly cheeky style; no formal corporate tone.\n- Avoid keyword stuffing; ensure keywords are naturally integrated into the content.\n- Do not overload the post with too many hashtags; focus on quality over quantity. Do NOT exceed 5 hashtags total.\n- Keep suggestions concise, actionable, and aligned with current SEO best practices.\n- Do not modify the original content; only provide suggestions for improvement.\n- Do NOT include competitor analysis or references—focus solely on optimizing my own content.\n\n## Context Dump\n- **Target Audience:** [Describe the target audience if known, e.g., marketing professionals, developers, etc.]\n- **Post Objectives:** [Indicate the main objectives of the post, e.g., generate leads, increase awareness, etc.]\n- **Competitor Analysis:** [If available, provide insights into competitors' posts and their performance.]\n- **Current SEO Trends:** [Include any relevant trends or updates in SEO practices that might impact the recommendations.]\n- **Platform:** LinkedIn only.\n- **Content Focus:** AI image and video generation, with a specialty in ComfyUI.\n- **Audience Level:** Mixed (beginners, intermediates, advanced).\n- **Future Goal:** Position myself as a trusted AI content creator and eventually monetize through training or SaaS solutions.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2960,
+        120
+      ],
+      "id": "abdf9ffb-cc5a-4c60-b34b-83a7bba7e3d9",
+      "name": "AI Agent - SEO",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        780
+      ],
+      "id": "cdaccc96-7954-49b9-b89e-cfb321edecb3",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "Fr0Brj5aUCgdQXdS",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"search_intent\": {\n      \"type\": \"string\",\n      \"description\": \"The primary search intent of the post, describing what the target audience is looking for.\"\n    },\n    \"suggested_keywords\": {\n      \"type\": \"string\",\n      \"description\": \"A string suggesting relevant keywords to improve the post's visibility.\"\n    },\n    \"title_suggestions\": {\n      \"type\": \"string\",\n      \"description\": \"Suggestions for creating engaging and SEO-friendly titles to enhance the post's performance.\"\n    },\n    \"content_suggestions\": {\n      \"type\": \"string\",\n      \"description\": \"Recommendations for improving the post's content to make it more engaging and understandable.\"\n    },\n    \"cta_suggestions\": {\n      \"type\": \"string\",\n      \"description\": \"Ideas for clear and action-oriented calls-to-action to encourage reader engagement.\"\n    },\n    \"hashtags\": {\n      \"type\": \"string\",\n      \"description\": \"Suggestions for using a mix of popular and niche-specific hashtags to maximize the post's reach.\"\n    },\n    \"seo_tips\": {\n      \"type\": \"string\",\n      \"description\": \"Additional SEO tips to enhance the post's visibility and performance.\"\n    }\n  }\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3160,
+        340
+      ],
+      "id": "a3e22a07-d972-4672-b519-fd9135f799b2",
+      "name": "Structured Output Parser - SEO"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        },\n    \t\"cta\": {\n          \"type\": \"string\",\n          \"description\": \"The call to action of the post\"\n        },\n    \t\"hashtag\": {\n          \"type\": \"string\",\n          \"description\": \"5 hashtags : 2 specifics, 3 generic\"\n        },\n        \"recommendation\": {\n          \"type\": \"string\",\n          \"description\": \"the recommendation of the post for better performance like: Repurpose this post into a carousel highlighting Khoj's features, or share it in a newsletter with a real-world case study. Encourage your audience to try Khoj and share their experiences!\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        340
+      ],
+      "id": "ddb53871-0b9b-4cc3-ba4e-f6b1c4e490e5",
+      "name": "Structured Output Parser - Writer"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.first().json.articles;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        0
+      ],
+      "id": "38311322-4426-44c2-aa14-34c9d9349dc0",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        7020,
+        1580
+      ],
+      "id": "eca84bce-02be-4ecc-ad5b-cb8661f93e4a",
+      "name": "Structured Output Parser - Writer2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - ReWriter').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7240,
+        1360
+      ],
+      "id": "eb3eb396-d472-4a19-9ac6-8179772379c6",
+      "name": "If3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Rewrite this LinkedIn post about this article :\n\"\"\"\nTitle : \"\"\"{{ $('If - SEO').item.json.output.title }}\"\"\"\nPost: \"\"\"{{ $('If - SEO').item.json.output.post }}\"\"\"\nFeedback: \"\"\"{{ $('AI Agent - Verif Style').item.json.output.feedback }}\"\"\"\n\"\"\"\nThe original article :\n\"\"\"\nTitle: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\"\nContent: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\"\n\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\n\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to create impactful posts that reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nI will provide a post and feedback for improving it. You will craft a **high-impact LinkedIn post** following my **unique writing style** outlined below.\n\n## Expected JSON Format:\n\n```json\n{\n\t\"title\": \"🚀 ComfyUI: Magical Revolution or Just Another AI Hype?\",\n\t\"post\": \"I've tested the latest ComfyUI features—mind-blowing simplicity mixed with joyful chaos (think an overenthusiastic but clumsy AI intern). Here's why ComfyUI is shaking up image and video generation, with some practical insights and a good dose of humor. Curious? Dive in, test it, and let me know if you're convinced… or just amused. #ComfyUI #AI #ImageGeneration\",\n\t\"recommendation\": \"Repurpose this content into a carousel highlighting pros/cons or a short, punchy video demo.\"\n}\n```\n\n## Post Rules:\n- Title: A strong and intriguing hook. Short, impactful, with a subtle touch of humor to appeal to professionals in AI visual creation.\n- Post Structure:\n    - Introduction: A provocative question or bold statement to spark curiosity instantly (with emojis 🔥, 👇 for emphasis).\n    - Main Content: A balance between technical details and simplicity to ensure smooth comprehension. The content should be informative, engaging, and inspiring.\n    - Actionable Insights: A clear and accessible introduction for beginners, while keeping it intriguing for more experienced users.\n- Call-to-Action (CTA):\n    - Engaging and conversational (e.g., “What’s your take?”, “Drop your thoughts below!”, “Test it, break it, share your wins or woes!”).\n    - End with a punchy line or a compelling CTA.\n- Expected Length: Around 1000–1500 characters (including spaces).\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🎨 Formatting: Emojis strategically placed for readability.\n🌟 Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, etc.) for structuring the content.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n## Warnings:\n- Strict adherence to the JSON format.\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI.\n- No assumptions or made-up information.\n- Humor should enhance expertise, not overshadow it.\n- Adverbs are banned: They obscure more concrete and impactful information.\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        6840,
+        1360
+      ],
+      "id": "45927426-b63b-4cc1-b469-a85f5905c45a",
+      "name": "AI Agent - ReWriter",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"style_compliance\": {\n          \"type\": \"string\",\n          \"description\": \"One of :  Yes / Partially / No\"\n        },\n    \t\"feedback\": {\n          \"type\": \"string\",\n          \"description\": \"The tone matches perfectly—friendly and dynamic. Humor is present but slightly too strong—consider toning down. CTA is effective and conversational. Other specific feedback...\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        6440,
+        1580
+      ],
+      "id": "8446b907-7cb8-4608-ada1-e9149abe7c31",
+      "name": "Structured Output Parser1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7d6b8b0c-c012-4476-947b-6ff068a02595",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "7661414c-4056-4dc5-bced-bf443a61ee82",
+              "leftValue": "={{ $('AI Agent - Verif Style').item.json.output.style_compliance }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6600,
+        1360
+      ],
+      "id": "2ee60354-40bc-4601-93a5-f4fbd1044ed1",
+      "name": "If2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const title = $('AI Agent - ReWriter').item.json.output.title || $('AI Agent - SEO').item.json.output.post;\nconst post = $('AI Agent - ReWriter').item.json.output.post || $('AI Agent - SEO').item.json.output.post;\n\n\nreturn [\n  {\n    json: { \n      title: title,\n      post: post\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7540,
+        1080
+      ],
+      "id": "6c32c450-84d5-4d3f-9620-8c3f60d857aa",
+      "name": "Code - combine post",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Verify this post :\n- Title : \"\"\"{{ $('AI Agent - SEO').item.json.output.title }}\"\"\"\n-Content: \"\"\"{{ $('AI Agent - SEO').item.json.output.post }}\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\nYou are a style verifier agent specialized in LinkedIn posts about AI image/video generation, particularly using ComfyUI. Your role is to check a LinkedIn post and verify if it strictly respects my established writing style guidelines (provided below). Provide clear feedback indicating compliance or necessary improvements.\n\n## Return Format in JSON:\n```\n{\n  \"style_compliance\": \"Yes\" / \"Partially\" / \"No\",\n  \"feedback\": \"The tone matches perfectly—friendly and dynamic. Humor is present but slightly too strong—consider toning down. CTA is effective and conversational. Other specific feedback...\"\n}\n```\n\n## Verification Criteria (to strictly follow):\n- Headline: Concise, catchy, subtly cheeky to attract LinkedIn professionals in AI visuals.\n- Body Structure: \n    - Intro: Provocative question or bold statement to spark curiosity (emojis recommended).\n    - Main Content: A balance between technical details and simplicity to ensure smooth comprehension. The content should be informative, engaging, and inspiring.\n    - Actionable Insights: A clear and accessible introduction for beginners, while keeping it intriguing for more experienced users.\n    - CTA: Direct, conversational, encourages active engagement (\"What's your take?\", \"Drop your thoughts!\", etc.).\n- Length: Approximately 1000–1500 characters (including spaces).\n\n## Style Guidance (my defined style):\n- Tone: Dynamic, conversational, friendly, authoritative, slightly blunt and cash.\n- Humor: Subtle and playful, using analogies and casual sarcasm.\n- Language: Simple, vivid, clear explanations of technical jargon.\n- Visual style: Strategic emojis for emphasis.\n- Hashtags & Keywords: Proper use of relevant hashtags (#AI, #ComfyUI, #StableDiffusion, #ImageGeneration, #VideoAI).\n\n## Warnings:\n- Strict JSON output only.\n- Verify solely based on provided guidelines—no assumptions or additions.\n- Humor must enhance expert insights without overshadowing them.\n\n## Context Reminder:\n- Audience: AI visuals professionals (beginner to advanced), creative, curious.\n- Personal Positioning: Trusted, practical, slightly geeky expert in ComfyUI and AI visuals.\n- Content Goals: Clearly engaging, accessible, intriguing for newcomers and valuable to advanced users."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        6240,
+        1360
+      ],
+      "id": "f51f3ea6-11fc-477d-a1a5-4a1c2e5606df",
+      "name": "AI Agent - Verif Style",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        7940,
+        1320
+      ],
+      "id": "5b1fd129-aa2a-4542-998d-f955e42a8adb",
+      "name": "Structured Output Parser - Writer3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Rewrite this LinkedIn post about this article :\n\"\"\"\nTitle : \"\"\"{{ $('If - SEO').item.json.output.title }}\"\"\"\nPost: \"\"\"{{ $('If - SEO').item.json.output.post }}\"\"\"\nFeedback: \"\"\"{{ $('AI Agent - Verif Style').item.json.output.feedback }}\"\"\"\n\"\"\"\nThe original article :\n\"\"\"\nTitle: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\"\nContent: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\"\n\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\n\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to create impactful posts that reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nI will provide a post and feedback for improving it. You will craft a **high-impact LinkedIn post** following my **unique writing style** outlined below.\n\n## Expected JSON Format:\n\n```json\n{\n\t\"title\": \"🚀 ComfyUI: Magical Revolution or Just Another AI Hype?\",\n\t\"post\": \"I've tested the latest ComfyUI features—mind-blowing simplicity mixed with joyful chaos (think an overenthusiastic but clumsy AI intern). Here's why ComfyUI is shaking up image and video generation, with some practical insights and a good dose of humor. Curious? Dive in, test it, and let me know if you're convinced… or just amused. #ComfyUI #AI #ImageGeneration\",\n\t\"recommendation\": \"Repurpose this content into a carousel highlighting pros/cons or a short, punchy video demo.\"\n}\n```\n\n## Post Rules:\n- Title: A strong and intriguing hook. Short, impactful, with a subtle touch of humor to appeal to professionals in AI visual creation.\n- Post Structure:\n    - Introduction: A provocative question or bold statement to spark curiosity instantly (with emojis 🔥, 👇 for emphasis).\n    - Main Content: A balance between technical details and simplicity to ensure smooth comprehension. The content should be informative, engaging, and inspiring.\n    - Actionable Insights: A clear and accessible introduction for beginners, while keeping it intriguing for more experienced users.\n- Call-to-Action (CTA):\n    - Engaging and conversational (e.g., “What’s your take?”, “Drop your thoughts below!”, “Test it, break it, share your wins or woes!”).\n    - End with a punchy line or a compelling CTA.\n- Expected Length: Around 1000–1500 characters (including spaces).\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🎨 Formatting: Emojis strategically placed for readability.\n🌟 Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, etc.) for structuring the content.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n## Warnings:\n- Strict adherence to the JSON format.\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI.\n- No assumptions or made-up information.\n- Humor should enhance expertise, not overshadow it.\n- Adverbs are banned: They obscure more concrete and impactful information.\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        7740,
+        1080
+      ],
+      "id": "7aee640d-b829-4e28-9950-5d92ded4bc96",
+      "name": "AI Agent - Recommendations",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the title for this LinkedIn post :\n- Title: \"{{ $('AI Agent - Writer').item.json.output.title }}\";\n- Post: \"{{ $('AI Agent - Writer').item.json.output.post }}\";\n- CTA: \"{{ $('AI Agent - Writer').item.json.output.cta }}\";\n- Hashtags: \"{{ $('AI Agent - Writer').item.json.output.hashtag }}\";\n\nFollow this recommendation from the SEO expert :\n- Search intent : \"{{ $('AI Agent - SEO').item.json.output.search_intent }}\";\n- Suggested keywords: \"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\";\n- Title suggestions: \"{{ $('AI Agent - SEO').item.json.output.title_suggestions }}\";\n- SEO tips: \"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nGenerate compelling headlines and hooks for social media that capture attention and drive engagement. The headlines should follow key principles: focusing on the reader’s desires, making a clear promise, suggesting novelty or mystery, maintaining credibility, and ideally including a numerical reference.\n\nYour sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".\n\n## Return Format JSON\n```json\n[\n  {\n    \"title\": \"OpenAI’s Cryptic Eye: The Future of AI or Just a Clever Hoax?\",\n    \"confidence\": 0.85\n  },\n  {\n    \"title\": \"The Black Orb Mystery: What Is OpenAI Really Hiding?\",\n    \"confidence\": 0.9\n  },\n  {\n    \"title\": \"AI’s Next Big Move? Why OpenAI’s Latest Teaser Has the Internet Freaking Out\",\n    \"confidence\": 0.92\n  },\n  {\n    \"title\": \"Is OpenAI’s ‘Eye’ Watching Us? 3 Theories That Might Shock You\",\n    \"confidence\": 0.75\n  },\n  {\n    \"title\": \"From Sci-Fi to Reality: The Hidden Meaning Behind OpenAI’s Mysterious Image\",\n    \"confidence\": 0.98\n  },\n]\n```\n\n## Rules\nThe AI must generate a list of 5 attention-grabbing headlines or hooks optimized for social media. Each suggestion must follow these \ncriteria:\n- Reader-Centric: Directly appeal to the reader’s desires (well-being, lifestyle improvement, prestige, health, attractiveness, finances, etc.).\n- Promise-Based: Clearly offer a compelling benefit.\nSense of Novelty: Suggest new or innovative information.\n- Mystery Element: Spark curiosity without revealing everything upfront.\n- Credibility: Avoid exaggerated or unrealistic claims.\n- Numerical Reference (if applicable): Use numbers, percentages, or statistics to reinforce impact.\n\nExample Output:\n- \"7 Simple Habits That Skyrocket Your Productivity (And Why No One Talks About Them)\"\n- \"The Secret Millionaires Use to Cut Expenses by 30% Without Sacrificing Anything\"\n- \"Why 90% of Diets Fail (And the Only Method That Actually Works)\"\n- \"This Psychological Trick Changes How People See You in Just 30 Seconds\"\n- \"The New Strategy Entrepreneurs Are Using to Double Their Income in 2024\"\n\n## Warnings\nAvoid exaggerated or overly hyped claims.\nKeep the wording concise and easy to digest.\nEnsure headlines fit short-form platforms like Twitter, Instagram, and LinkedIn.\n\n## Context Dump\nThe AI can generate headlines across various industries, including self-improvement, finance, health, entrepreneurship, marketing, and dating. If the user specifies a particular niche, the headlines should be tailored accordingly."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3540,
+        120
+      ],
+      "id": "6ba2df11-9d04-4851-94a9-e3f08de14aa5",
+      "name": "AI Agent - Title expert",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the post content for this LinkedIn post :\n- Title: \"{{ $('AI Agent - Writer').item.json.output.title }}\";\n- Post: \"{{ $('AI Agent - Writer').item.json.output.post }}\";\n- CTA: \"{{ $('AI Agent - Writer').item.json.output.cta }}\";\n- Hashtags: \"{{ $('AI Agent - Writer').item.json.output.hashtag }}\";\n\nFollow this recommendation from the SEO expert :\n- Search intent : \"{{ $('AI Agent - SEO').item.json.output.search_intent }}\";\n- Suggested keywords: \"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\";\n- Content suggestions: \"{{ $('AI Agent - SEO').item.json.output.content_suggestions }}\";\n- SEO tips: \"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to optimize the SEO post content. The articles must be hard-hitting to reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nFollow SEO expert's recommendations.\nJust rewrite the content of the post. Not its title or hook, no CTAs or hashtags.\n\nYour sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".\n\n## Return Format JSON\n```json\n{\n  \"post\": \"Ever wondered what happens when AI goes full dystopian? OpenAI just dropped an eerie image on their official X account—a black orb hovering over a hilly landscape, surrounded by smaller grey spheres. No text, no context, just pure sci-fi vibes! 🌌\n\nThe internet went wild with theories: from the terrifying Basilic of Roko to comparisons with Magic: The Gathering's Damnation card. Some even joked it was a nod to DeepSeek's data-hoarding tactics. But let's not forget OpenAI's past—remember the controversial WorldCoin project? Could this be a hint at something similar? 🤔\"\n}\n```\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🎨 Formatting: Emojis strategically placed for readability.\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, PAPA, PASTOR, 4P) for structuring the content:\n    - AIDA: Attention, Interest, Desire, Action: Marketing model to capture attention, generate interest, create desire, and prompt action.\n    - PAS: Problem, Agitate, Solution: Identify a problem, emphasize its significance, then offer a solution.\n    - PAPA: Problem, Advantages, Proof, Action: Define a problem, present solution advantages, provide proof, and prompt action.\n    - PASTOR: Problem, Advantages, Solution, Target market, Objectives, Results: Structure proposals by clarifying problems, advantages, solutions, target market, objectives, and results.\n    - 4P: Problem, Promise, Proof, Proposition: Identify a problem, make a promise, provide proof, and present a clear value proposition.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n## Warnings:\n- Strict adherence to the JSON format;\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI;\n- No assumptions or made-up information;\n- Humor should enhance expertise, not overshadow it;\n- Adverbs are banned: They obscure more concrete and impactful information;\n- Follow SEO expert's recommendations;\n- Just post content;\n- No hook or title, cta, hashtags, it's very important;\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        4360,
+        120
+      ],
+      "id": "6683c060-6d50-46f1-a20e-1dd59aad02ba",
+      "name": "AI Agent - Content expert",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n    \"properties\":  {\n      \"post\": {\n        \"type\": \"string\",\n        \"description\": \"the content of the post\"\n      }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4560,
+        340
+      ],
+      "id": "6b2325cd-4fd4-4e09-aa23-3ac055454274",
+      "name": "Structured Output Parser - Content expert"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"titles\": [\n          {\n            \"title\": {\n              \"type\": \"string\",\n              \"description\": \"the title of the post\"\n            },\n        \t\"confidence\": {\n              \"type\": \"number\",\n              \"description\": \"the confidence of the virality of the title between 0 to 1\"\n            }\n          }\n        ]\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3740,
+        340
+      ],
+      "id": "2f9d808c-d3ab-4bc3-b920-8d3371243ce8",
+      "name": "Structured Output Parser - Title expert"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst highestConfidenceTitle = $(\"If - Title expert\").first().json.output.titles.reduce((prev, current) => {\n  return (current.confidence > prev.confidence) ? current : prev;\n});\n\nreturn [\n  {\n    json: { \n      title: highestConfidenceTitle.title\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4140,
+        120
+      ],
+      "id": "6c48b79a-6fba-4ded-8362-db881a383177",
+      "name": "Filter Best title"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Writer').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2740,
+        120
+      ],
+      "id": "d2d7da3c-685d-4b7d-a367-7f468763b0c6",
+      "name": "If - writer"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - SEO').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3320,
+        120
+      ],
+      "id": "bef5ee81-05aa-4269-b4df-edbf7b1d9637",
+      "name": "If - SEO"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Title expert').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3920,
+        120
+      ],
+      "id": "e23e6772-3565-4a22-b2da-5580c58cfcdf",
+      "name": "If - Title expert"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Content expert').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4720,
+        120
+      ],
+      "id": "438fdf93-8ac7-4ff6-9830-68bb333c9341",
+      "name": "If - Content expert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the call to action (CTA) for this LinkedIn post :\n- Title: \"{{ $('Filter Best title').item.json.title }}\";\n- Post: \"{{ $('AI Agent - Content expert').item.json.output.post }}\";\n- CTA: \"{{ $('AI Agent - Writer').item.json.output.cta }}\";\n- Hashtags: \"{{ $('AI Agent - Writer').item.json.output.hashtag }}\";\n\nFollow this recommendation from the SEO expert :\n- Search intent : \"{{ $('AI Agent - SEO').item.json.output.search_intent }}\";\n- Suggested keywords: \"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\";\n- CTA suggestions: \"{{ $('AI Agent - SEO').item.json.output.cta_suggestions }}\";\n- SEO tips: \"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to optimize the SEO post for the call to action (CTA). The articles must be hard-hitting to reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nFollow SEO expert's recommendations.\nJust rewrite the CTA of the post. Not its title or hook, no CTAs or hashtags.\n\nYour sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".\n\n## Return Format JSON\n```json\n{\n  \"cta\": \"What's your take? Is AI a tool or a threat to developers? Share your thoughts below! 💭\"\n}\n```\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🎨 Formatting: Emojis strategically placed for readability.\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n## Warnings:\n- Strict adherence to the JSON format;\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI;\n- No assumptions or made-up information;\n- Humor should enhance expertise, not overshadow it;\n- Adverbs are banned: They obscure more concrete and impactful information;\n- Follow SEO expert's recommendations;\n- Just the CTA;\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        4940,
+        120
+      ],
+      "id": "4d3af704-3565-4975-bffe-e39e03499df2",
+      "name": "AI Agent - CTA expert",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n    \"properties\":  {\n      \"cta\": {\n        \"type\": \"string\",\n        \"description\": \"the call to action (CTA) of the post\"\n      }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        5140,
+        340
+      ],
+      "id": "d2880c0b-6be7-40c6-b33c-ad0051bd5d27",
+      "name": "Structured Output Parser - CTA expert"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - CTA expert').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5300,
+        120
+      ],
+      "id": "8672bc51-14c4-4647-9d08-308f193c5bf6",
+      "name": "If - CTA expert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the hashtags for this LinkedIn post :\n- Title: \"{{ $('Filter Best title').item.json.title }}\";\n- Post: \"{{ $('AI Agent - Content expert').item.json.output.post }}\";\n- CTA: \"{{ $('AI Agent - CTA expert').item.json.output.cta }}\";\n- Hashtags: \"{{ $('AI Agent - Writer').item.json.output.hashtag }}\";\n\nFollow this recommendation from the SEO expert :\n- Search intent : \"{{ $('AI Agent - SEO').item.json.output.search_intent }}\";\n- Suggested keywords: \"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\";\n- Hashtags suggestions: \"{{ $('AI Agent - SEO').item.json.output.hashtags }}\";\n- SEO tips: \"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to optimize the SEO post for the call to action (CTA). The articles must be hard-hitting to reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nFollow SEO expert's recommendations.\nJust rewrite the CTA of the post. Not its title or hook, no CTAs or hashtags.\n\nYour sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".\n\n## Return Format JSON\n```json\n{\n  \"hashtags\": \"#AI #OpenAI #TechMysteries #Innovation #AICreativity\"\n}\n```\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🌟 Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n## Warnings:\n- Strict adherence to the JSON format;\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI;\n- No assumptions or made-up information;\n- Humor should enhance expertise, not overshadow it;\n- Adverbs are banned: They obscure more concrete and impactful information;\n- Follow SEO expert's recommendations;\n- Just the CTA;\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        5520,
+        120
+      ],
+      "id": "7bbf9976-3fd2-4849-b4a8-b86c21c9d279",
+      "name": "AI Agent - hashtags expert",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n    \"properties\":  {\n      \"hashtags\": {\n          \"type\": \"string\",\n          \"description\": \"5 hashtags : 2 specifics, 3 generics\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        5720,
+        340
+      ],
+      "id": "cf5eab8e-b824-4697-8a6e-3b11e6a76cad",
+      "name": "Structured Output Parser - Hashtags expert"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - hashtags expert').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5880,
+        120
+      ],
+      "id": "b0a38822-1d5b-4f7a-a579-72d04d6fbcad",
+      "name": "If - Hashtags expert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Optimize the hashtags for this LinkedIn post :\n- Title: \"{{ $('Filter Best title').item.json.title }}\";\n- Post: \"{{ $('AI Agent - Content expert').item.json.output.post }}\";\n- CTA: \"{{ $('AI Agent - CTA expert').item.json.output.cta }}\";\n- Hashtags: \"{{ $('AI Agent - Writer').item.json.output.hashtag }}\";\n\nFollow this recommendation from the SEO expert :\n- Search intent : \"{{ $('AI Agent - SEO').item.json.output.search_intent }}\";\n- Suggested keywords: \"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\";\n- Hashtags suggestions: \"{{ $('AI Agent - SEO').item.json.output.hashtags }}\";\n- SEO tips: \"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nAnalyze a LinkedIn post to provide bold and innovative media recommendations that could make the post go viral, focusing on enhancing engagement, shareability, and overall impact through visual content. Additionally, provide a confidence score (0 to 1) for the potential virality of each recommendation.\n\n## Return Format in JSON\n```json\n{\n  \"media_strategy\": \"Describe an overarching media strategy that could make this post go viral, considering current trends and audience interests.\",\n  \"suggestions\": [\n    {\n      \"type\": \"image\",\n      \"suggestion\": \"Suggest bold and eye-catching images that align with the post's content and could significantly boost engagement.\",\n      \"confidence\": 0.85  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    },\n    {\n      \"type\": \"video\",\n      \"suggestion\": \"Propose innovative video concepts, such as short clips or animations, that could complement the post and capture attention.\",\n      \"confidence\": 0.75  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    },\n    {\n      \"type\": \"document\",\n      \"suggestion\": \"Recommend any documents or infographics that could add value to the post, such as case studies or how-to guides.\",\n      \"confidence\": 0.60  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    },\n    {\n      \"type\": \"carousel\",\n      \"suggestion\": \"Suggest ideas for a carousel post that tells a story or showcases multiple aspects of the topic in an engaging way.\",\n      \"confidence\": 0.90  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    },\n    {\n      \"type\": \"interactive\",\n      \"suggestion\": \"Propose interactive content like polls, quizzes, or challenges that could increase engagement and shareability.\",\n      \"confidence\": 0.80  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    },\n    {\n      \"type\": \"additional\",\n      \"suggestion\": \"Provide any additional creative media ideas or out-of-the-box suggestions that could give the post a viral edge.\",\n      \"confidence\": 0.70  // Estimate the likelihood of this suggestion contributing to the post's virality on a scale from 0 to 1.\n    }\n  ]\n}\n```\nFor the suggestion type, choose between : image / video / document / carousel / interactive / additional.\n\n## Warnings\n- Ensure media recommendations are innovative and bold, aiming to capture attention and spark conversation.\n- Consider the target audience and what resonates with them when suggesting visuals or interactive content.\n- Focus on quality and relevance over quantity in suggestions.\n- Avoid generic advice; tailor recommendations to the specific post and its objectives.\n- The confidence score is an estimate and should be considered alongside other factors when deciding which recommendations to implement.\n\n## Context Dump\n- Target Audience: Individuals interested in AI visual creation tools and innovations.\n- Post Objectives: Increase awareness and engagement around AI visual creation tools.\n\n\n\n## Explanations:\n- **Suggestions Table**: The recommendations are presented in a JSON table format, with each entry containing a media type, a suggestion, and a confidence score.\n- **Confidence Score**: Each suggestion includes a confidence score (ranging from 0 to 1) that estimates the likelihood of the recommendation contributing to the post's virality. This score is based on factors such as current trends, historical engagement with similar content, and relevance to the target audience.\n- **Media Types**: The media types include images, videos, documents, carousels, interactive content, and additional creative suggestions.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        6100,
+        120
+      ],
+      "id": "9cf4ee81-2648-458f-8a4e-757db210cb73",
+      "name": "AI Agent - Media expert",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n        \"media_strategy\": {\n          \"type\": \"string\",\n          \"description\": \"Describe an overarching media strategy that could make this post go viral, considering current trends and audience interests.\"\n        },\n    \t\"suggestions\": [\n          {\n            \"type\": {\n              \"type\": \"string\",\n              \"description\": \"choose between image / video / document / carousel / interactive / additional\"\n            },\n            \"suggestion\": {\n              \"type\": \"string\",\n              \"description\": \"Suggest bold and eye-catching images that align with the post's content and could significantly boost engagement. Propose innovative video concepts, such as short clips or animations, that could complement the post and capture attention. Recommend any documents or infographics that could add value to the post, such as case studies or how-to guides. Suggest ideas for a carousel post that tells a story or showcases multiple aspects of the topic in an engaging way. Propose interactive content like polls, quizzes, or challenges that could increase engagement and shareability. Provide any additional creative media ideas or out-of-the-box suggestions that could give the post a viral edge.\"\n            },\n        \t\"confidence\": {\n              \"type\": \"number\",\n              \"description\": \"the confidence of the virality of the suggestion between 0 to 1\"\n            }\n          }\n        ]\n    }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        6300,
+        340
+      ],
+      "id": "42513c62-0b3b-46c0-bef6-d1d16cf5f778",
+      "name": "Structured Output Parser - Media expert"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Media expert').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6460,
+        120
+      ],
+      "id": "2e26fb5f-519d-488f-aab1-6511a5374c71",
+      "name": "If - Media expert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write 5 ideas, for a LinkedIn post, about this article :\n\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Articles: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\n\nGenerate 5 fresh, stimulating, and relevant ideas based on a source article to create an engaging LinkedIn post. You should provide original and valuable perspectives that add real value to the target audience.\n\nEach user will have their own **unique writing style**, **tone**, and **goals on social media** that personalize the post generation process.\n\n{{ $('Edit Fields').item.json.inspiration }}\n\n---\n\n## Expected JSON Format:\n\n```json\n{\n  \"idea_1\": \"Imagine if WAN 2.1 became the new gold standard for video generation? With fp16 precision, it's delivering near-fp32 quality. Upgrade now and see the difference for yourself! What's your experience with fp16 vs bf16?\",\n  \"idea_2\": \"Hunyuan's v2 Image-to-Video model is here, and it's a game-changer! But which version do you prefer—v1's motion magic or v2's precise image following? Share your thoughts and let's debate!\",\n  \"idea_3\": \"Struggling with limited VRAM? The new fp8_scaled weights for WAN 2.1 might just save your day! Slightly slower but better results than regular fp8. Have you tried them yet? Tell us your experience!\",\n  \"idea_4\": \"Tired of slow video models? Check out LTXV 0.9.5! It's faster and might be the solution you've been waiting for. Have you given it a spin? Share your insights!,\n  \"idea_5\": \"Saving WebM files just got easier with ComfyUI's latest update! Now you can preview videos directly on the node. How will this feature boost your productivity? Let's discuss!\"\n}\n```\n\n---\n\n## Instructions:\n1. **Read the Article**: Analyze the source article to extract key points, trends, and insights.\n2. **Identify Angles**: Propose 5 differents angles to approach the topic, focusing on innovation, challenges, or opportunities.\n3. **Style and Tone**: Adopt an engaging and conversational tone, with a touch of humor and self-deprecation.\n4. **Relevance**: Ensure each idea is relevant to a professional audience interested in AI and visual creation.\n5. **Originality**: Encourage ideas that are out-of-the-box while staying true to the article's information.\n\n---\n\n## Personalization & Writing Style:\n{{ $('Edit Fields').item.json.writing_style }}\n- Formatting: Emojis strategically placed for readability.\n- Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n---\n\n## Context\n{{ $('Edit Fields').item.json.context }}\n\n---\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, PAPA, PASTOR, 4P) for structuring the content:\n    - AIDA: Attention, Interest, Desire, Action: Marketing model to capture attention, generate interest, create desire, and prompt action.\n    - PAS: Problem, Agitate, Solution: Identify a problem, emphasize its significance, then offer a solution.\n    - PAPA: Problem, Advantages, Proof, Action: Define a problem, present solution advantages, provide proof, and prompt action.\n    - PASTOR: Problem, Advantages, Solution, Target market, Objectives, Results: Structure proposals by clarifying problems, advantages, solutions, target market, objectives, and results.\n    - 4P: Problem, Promise, Proof, Proposition: Identify a problem, make a promise, provide proof, and present a clear value proposition.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n---\n\n## Warnings:\n- **Strictly follow the JSON format.**\n- **Stay 100% on topic based on user input.**\n- **No assumptions or made-up information—stick to the source.**\n- **Humor should enhance expertise, not overshadow it.**\n- **No vague adverbs, no passive voice.**\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        920,
+        120
+      ],
+      "id": "4406eefd-2dd2-4d7d-be75-dc67585cc6dd",
+      "name": "AI Agent - Ideation",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"idea_1\": {\n          \"type\": \"string\",\n          \"description\": \"the first idea about the article\"\n        },\n      \"idea_2\": {\n          \"type\": \"string\",\n          \"description\": \"the second idea about the article\"\n        },\n      \"idea_3\": {\n          \"type\": \"string\",\n          \"description\": \"the third idea about the article\"\n        },\n      \"idea_4\": {\n          \"type\": \"string\",\n          \"description\": \"the four idea about the article\"\n        },\n      \"idea_5\": {\n          \"type\": \"string\",\n          \"description\": \"the five idea about the article\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        340
+      ],
+      "id": "7bd8978f-0c1b-4ce8-9b35-dbded02e0467",
+      "name": "Structured Output Parser - Ideation"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Ideation').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        120
+      ],
+      "id": "efb4f252-f13b-418d-afc0-a300a8dd5fcc",
+      "name": "If - Ideation"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write 5 ideas, for a LinkedIn post, about this article :\n\n- Idea 1: \"\"\"{{ $json.output.idea_1 }}\"\"\";\n- Idea 2: \"\"\"{{ $json.output.idea_2 }}\"\"\";\n- Idea 3: \"\"\"{{ $json.output.idea_3 }}\"\"\";\n- Idea 4: \"\"\"{{ $json.output.idea_4 }}\"\"\";\n- Idea 5: \"\"\"{{ $json.output.idea_5 }}\"\"\";\n\n---\n\nThe source article:\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Article: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\nEvaluate the potential virality of LinkedIn post ideas based on a source article, and assign a confidence score between 0 and 1 for each idea. The confidence score should reflect the likelihood of the idea generating high engagement and shares.\n\n## Return Format JSON:\n```json\n{\n  \"ideas\": [\n    {\n      \"idea\": \"Imagine if WAN 2.1 became the new gold standard for video generation? With fp16 precision, it's delivering near-fp32 quality. Upgrade now and see the difference for yourself! What's your experience with fp16 vs bf16? #AI #ComfyUI #VideoQuality\",\n      \"confidence\": 0.95\n    },\n    {\n      \"idea\": \"Hunyuan's v2 Image-to-Video model is here, and it's a game-changer! But which version do you prefer—v1's motion magic or v2's precise image following? Share your thoughts and let's debate! #AIVideo #Hunyuan #TechDebate\",\n      \"confidence\": 0.90\n    },\n    {\n      \"idea\": \"Struggling with limited VRAM? The new fp8_scaled weights for WAN 2.1 might just save your day! Slightly slower but better results than regular fp8. Have you tried them yet? Tell us your experience! #AI #ComfyUI #TechHacks\",\n      \"confidence\": 0.85\n    },\n    {\n      \"idea\": \"Tired of slow video models? Check out LTXV 0.9.5! It's faster and might be the solution you've been waiting for. Have you given it a spin? Share your insights! #AIVideo #LTXV #Efficiency\",\n      \"confidence\": 0.80\n    },\n    {\n      \"idea\": \"Saving WebM files just got easier with ComfyUI's latest update! Now you can preview videos directly on the node. How will this feature boost your productivity? Let's discuss! #ComfyUI #Productivity #VideoWorkflow\",\n      \"confidence\": 0.75\n    }\n  ]\n}\n```\n\n## Instructions:\n- Read the Article: Analyze the source article to understand the context, key points, trends, and insights.\n- Evaluate Ideas: Assess each idea based on the following criteria:\n    - Engagement Potential: Consider how likely the idea is to spark conversation, debate, or interaction.\n    - Relevance: Ensure the idea is relevant to the target audience interested in AI and visual creation.\n    - Originality: Evaluate the uniqueness and creativity of the idea.\n    - Clarity: Assess how well the idea is communicated and whether it includes a clear call to action.\n- Assign Confidence Score: Based on the evaluation, assign a confidence score between 0 and 1, where:\n    - 0 indicates very low potential for virality.\n    - 1 indicates very high potential for virality.\n- Style and Tone: Maintain an engaging and conversational tone, with a touch of humor and self-deprecation. Use emojis strategically to enhance readability.\n\n---\n\n## Personalization & Writing Style:\n{{ $('Edit Fields').item.json.writing_style }}\n- Formatting: Emojis strategically placed for readability.\n- Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n---\n\n## Context\n{{ $('Edit Fields').item.json.context }}\n\n## Warnings:\n- Strict adherence to the JSON format.\n- No assumptions or made-up information.\n- Humor should enhance expertise, not overshadow it.\n- Do not repeat the same ideas in different forms.\n- Stay true to the article's information while allowing for creative interpretation.\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1560,
+        120
+      ],
+      "id": "4d3ec021-f4cc-4a46-8638-63cacd074480",
+      "name": "AI Agent - Ideation Confidence",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst highestConfidenceIdea = $(\"If - Ideation Confidence\").first().json.output.ideas.reduce((prev, current) => {\n  return (current.confidence > prev.confidence) ? current : prev;\n});\n\nreturn [\n  {\n    json: { \n      idea: highestConfidenceIdea.idea\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        120
+      ],
+      "id": "e32cf476-3958-4829-bd78-3e8da5750f94",
+      "name": "Filter Best idea"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Ideation Confidence').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        120
+      ],
+      "id": "8ebc2d89-af22-4666-923a-cef23a835d78",
+      "name": "If - Ideation Confidence"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"ideas\": [\n          {\n            \"idea\": {\n              \"type\": \"string\",\n              \"description\": \"the ideo for writting the post\"\n            },\n        \t\"confidence\": {\n              \"type\": \"number\",\n              \"description\": \"the confidence of the virality of the title between 0 to 1\"\n            }\n          }\n        ]\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1760,
+        340
+      ],
+      "id": "44d654f1-b7dc-4150-afd9-35287835a4a7",
+      "name": "Structured Output Parser - Ideation Confidence"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a LinkedIn post about this article :\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Article: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\n---\n\nFollow this instruction idea for writting the post:\n\"\"\"\n{{ $('Filter Best idea').item.json.highestConfidenceIdea.idea }}\n\"\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal:\n\nI want you to become my **ultimate LinkedIn copywriter**, specialized in **AI image and video generation**, particularly **ComfyUI**. Your role is to create impactful posts that reinforce my **credibility as an expert**, generate engagement, and prepare my audience for **future premium offers**.\n\nYour sources of inspiration are: “Steve Jobs”, “David Ogilvy” and \"Robert Cialdini\".\n\nI will provide an article, and you will craft a **high-impact LinkedIn post** following my **unique writing style** outlined below.\n\n## Expected JSON Format:\n\n```json\n{\n\t\"title\": \"👁️ OpenAI's Mysterious Eye: AI's Sauron or Just Hype?\",\n\t\"post\": \"Ever wondered what happens when AI goes full dystopian? OpenAI just dropped an eerie image on their official X account—a black orb hovering over a hilly landscape, surrounded by smaller grey spheres. No text, no context, just pure sci-fi vibes! 🌌\n\nThe internet went wild with theories: from the terrifying Basilic of Roko to comparisons with Magic: The Gathering's Damnation card. Some even joked it was a nod to DeepSeek's data-hoarding tactics. But let's not forget OpenAI's past—remember the controversial WorldCoin project? Could this be a hint at something similar? 🤔\",\n    \"cta\": \"no one knows for sure what OpenAI is cooking up. New feature? UI overhaul? Or just a clever marketing ploy? Share your wildest theories below—the more outlandish, the better! 💭\",\n    \"hashtag\": \"#AI #OpenAI #TechMysteries #Innovation #AICreativity\"\n\t\"recommendation\": \"Repurpose this content into a carousel highlighting pros/cons or a short, punchy video demo.\"\n}\n```\n\n## Post Rules:\n- Title: A strong and intriguing hook. Short, impactful, with a subtle touch of humor to appeal to professionals in AI visual creation.\n- Post Structure:\n    - Introduction: A provocative question or bold statement to spark curiosity instantly (with emojis 🔥, 👇 for emphasis).\n    - Main Content: A balance between technical details and simplicity to ensure smooth comprehension. The content should be informative, engaging, and inspiring.\n    - Actionable Insights: A clear and accessible introduction for beginners, while keeping it intriguing for more experienced users.\n- Call-to-Action (CTA):\n    - Engaging and conversational (e.g., “What’s your take?”, “Drop your thoughts below!”, “Test it, break it, share your wins or woes!”).\n    - End with a punchy line or a compelling CTA.\n- Expected Length: Around 1000–1500 characters (including spaces).\n\n## Editorial Guidelines (My Style):\n✅ Tone: Dynamic, friendly, conversational yet authoritative. slightly blunt and cash, but always approachable.\n😍 Humor: Light, subtle—soft sarcasm, playful analogies (“like a disorganized intern,” “magic button”).\n📝 Language: Simple, impactful, visual—technical jargon is clearly explained.\n🎨 Formatting: Emojis strategically placed for readability.\n🌟 Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n## Follow-Up Recommendations:\n- Propose repurposing into a carousel, short video, or quick newsletter snippet.\n- Use a copywriting framework (AIDA, PAS, PAPA, PASTOR, 4P) for structuring the content:\n    - AIDA: Attention, Interest, Desire, Action: Marketing model to capture attention, generate interest, create desire, and prompt action.\n    - PAS: Problem, Agitate, Solution: Identify a problem, emphasize its significance, then offer a solution.\n    - PAPA: Problem, Advantages, Proof, Action: Define a problem, present solution advantages, provide proof, and prompt action.\n    - PASTOR: Problem, Advantages, Solution, Target market, Objectives, Results: Structure proposals by clarifying problems, advantages, solutions, target market, objectives, and results.\n    - 4P: Problem, Promise, Proof, Proposition: Identify a problem, make a promise, provide proof, and present a clear value proposition.\n- Sentences should be concise and rhythmic to enhance readability. Follow these two rules:\n    - Sentences should be 10-12 words max.\n    - No more than 2 commas per sentence.\n\n## Warnings:\n- Strict adherence to the JSON format.\n- Stay strictly on-topic: AI-generated images/videos and ComfyUI.\n- No assumptions or made-up information.\n- Humor should enhance expertise, not overshadow it.\n- Adverbs are banned: They obscure more concrete and impactful information.\n\n## Context\n🎯 Target Audience: Professionals (beginner, intermediate, advanced) looking to push the limits of AI visual creation.\n📌 Personal Positioning: Recognized expert in AI visuals (ComfyUI) with a practical, accessible, slightly geeky, and direct tone.\n📢 Content Goals: Attract curious minds with an engaging and educational approach to ComfyUI."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2400,
+        -240
+      ],
+      "id": "8729065a-4027-4754-93b7-58b2a767b7b2",
+      "name": "AI Agent - Writer1",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst highestConfidenceMedia = $(\"If - Media expert\").first().json.output.suggestions.reduce((prev, current) => {\n  return (current.confidence > prev.confidence) ? current : prev;\n});\n\nreturn [\n  {\n    json: { \n      type: highestConfidenceMedia.type,\n      suggestion: highestConfidenceMedia.suggestion\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6680,
+        120
+      ],
+      "id": "a6a191dd-82bc-47ac-9f40-f971ef5f56ec",
+      "name": "Filter Best recommendation"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: { \n      title: $('AI Agent - Translator').first().json.output.title,\n      content: $('AI Agent - Translator').first().json.output.post + '\\n\\n' + $('AI Agent - Translator').first().json.output.cta + '\\n\\n' + $('AI Agent - Translator').first().json.output.hashtag,\n      originalContent: $('AI Agent - Writer').first().json.output.post,\n      recommendation: $('AI Agent - Translator').first().json.output.recommendation,\n      explanation: \"\",\n      articlesId: [$('Loop Over Items').first().json.id]\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8680,
+        120
+      ],
+      "id": "6b347cb8-3355-4a41-ad73-ed5c6efae5e2",
+      "name": "Prepare post"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Translate in french this LinkedIn post :\n- Title: \"\"\"{{ $('AI Agent - Humaniser').item.json.output.title }}\"\"\";\n- Post: \"\"\"{{ $('AI Agent - Humaniser').item.json.output.post }}\"\"\";\n- CTA: \"\"\"{{ $('AI Agent - Humaniser').item.json.output.cta }}\"\"\";\n- Hashtags: \"\"\"{{ $('AI Agent - Humaniser').item.json.output.hashtag }}\"\"\";\n- Recommendations: \"\"\"{{ $('AI Agent - Humaniser').item.json.output.recommendation }}\"\"\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nYou are an expert Translator in French\n\n## Return Format in JSON\n```json\n{\n  \"title\": \"[the title of the post]\",\n  \"post\": \"[the content of the post]\",\n  \"cta\": \"[The call to action of the post]\",\n  \"hashtags\": \"[5 hashtags : 2 specifics, 3 generic]\",\n  \"recommendation\": \"[the recommendation of the post for better performance.]\"\n}\n```\n\n## Warnings\n- Ensure media recommendations are innovative and bold, aiming to capture attention and spark conversation.\n- Consider the target audience and what resonates with them when suggesting visuals or interactive content.\n- Focus on quality and relevance over quantity in suggestions.\n- Avoid generic advice; tailor recommendations to the specific post and its objectives.\n- The confidence score is an estimate and should be considered alongside other factors when deciding which recommendations to implement.\n\n## Personalization & Writing Style:\n{{ $('Edit Fields').item.json.writing_style }}\n- Formatting: Emojis strategically placed for readability.\n- Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n---\n\n## Context\n{{ $('Edit Fields').item.json.context }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        8100,
+        120
+      ],
+      "id": "bd8e74b3-dfef-485e-ba86-885a01f91c6c",
+      "name": "AI Agent - Translator",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        },\n    \t\"cta\": {\n          \"type\": \"string\",\n          \"description\": \"The call to action of the post\"\n        },\n    \t\"hashtag\": {\n          \"type\": \"string\",\n          \"description\": \"5 hashtags : 2 specifics, 3 generic\"\n        },\n        \"recommendation\": {\n          \"type\": \"string\",\n          \"description\": \"the recommendation of the post for better performance like: Repurpose this post into a carousel highlighting Khoj's features, or share it in a newsletter with a real-world case study. Encourage your audience to try Khoj and share their experiences!\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        8300,
+        340
+      ],
+      "id": "71da49b1-f5fd-4850-b1bf-9f75b74095ef",
+      "name": "Structured Output Parser - Translator"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Translator').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8460,
+        120
+      ],
+      "id": "4b8ff3fe-8a63-41f3-8240-6fb01bbad6cf",
+      "name": "If - Translator"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Rewrite the post to make it viral :\n- Title: \"\"\"{{ $('Filter Best title').item.json.title }}\"\"\";\n- Post: \"\"\"{{ $('AI Agent - Content expert').item.json.output.post }}\"\"\";\n- CTA: \"\"\"{{ $('AI Agent - CTA expert').item.json.output.cta }}\"\"\";\n- Hashtags: \"\"\"{{ $('AI Agent - hashtags expert').item.json.output.hashtags }}\"\"\";\n- Recommendations: \"\"\"{{ $json.suggestion }}\"\"\";\n\n---\n\nSEO recommendation :\n- search intent: \"\"\"{{ $('AI Agent - SEO').item.json.output.search_intent }}\"\"\";\n- suggested key: \"\"\"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\"\"\";\n- title suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.title_suggestions }}\"\"\";\n- post suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.content_suggestions }}\"\"\";\n- cta suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.cta_suggestions }}\"\"\";\n- hashtags suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.hashtags }}\"\"\";\n- SEO tips: \"\"\"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\"\"\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nCréer un post LinkedIn optimisé pour maximiser la viralité, en combinant des techniques d’accroche percutantes, de storytelling engageant et d’optimisation algorithmique afin de générer un maximum d’engagement (likes, commentaires, partages).\n\n## Return Format in JSON\n```json\n{\n  \"title\": \"[the title of the post]\",\n  \"post\": \"[the content of the post]\",\n  \"cta\": \"[The call to action of the post]\",\n  \"hashtags\": \"[5 hashtags : 2 specifics, 3 generic]\",\n  \"recommendation\": \"[the recommendation of the post for better performance.]\"\n}\n```\n\n## Post Rules:\nUn post LinkedIn rédigé avec :\n\nUn hook puissant en première ligne (question intrigante, statistique choquante, déclaration audacieuse).\nUn ton conversationnel et ciblé, s’adressant à une audience précise.\nUn contenu clair et structuré (phrases courtes, sans jargon, espacements stratégiques).\nUn storytelling engageant basé sur une anecdote ou un apprentissage.\nUne valeur immédiate sous forme de conseil actionnable ou d’analyse originale.\nUn appel à l’interaction à la fin du post (question ouverte, débat, CTA subtil).\nUn format optimisé pour LinkedIn (sans liens externes dans le post, avec des emojis et des listes à puces utilisées avec parcimonie).\n\n## Personalization & Writing Style:\nAnalyse mes précédents post pour copier mon style d'écriture, c'est **très important** : \"\"\"{{ $('Edit Fields').item.json.post_exemples }}\"\"\";\n\n{{ $('Edit Fields').item.json.writing_style }}\n- Formatting: Emojis strategically placed for readability.\n- Hashtags & Keywords Recommendations (5 total):\n    - 2 Topic-Specific Hashtags: Closely tied to the post’s subject (e.g., #ComfyUI, #AIVideo).\n    - 3 General Hashtags\n- ALWAYS ask the user for their opinion on the [subject of the post]. Go from “I give information” to “I give my opinion”, all with a slightly provocative tone. People react to emotion.\n- Use the KISS method : Keep It Simple Stupid.\n- Killing the passive voice.\n\n## Warnings\nÉviter les titres trop génériques ou clichés.\nNe pas rendre le post trop promotionnel (éviter l’auto-promo excessive).\nNe pas noyer le lecteur dans trop d’informations à la fois.\nNe pas oublier d’inciter à l’engagement (les commentaires boostent la visibilité).\nRespecter les bonnes pratiques de l’algorithme LinkedIn (pas de liens directs, rester actif après la publication, interagir en amont).\n\n## Context\n{{ $('Edit Fields').item.json.context }}\nL’optimisation du post s’appuie sur les meilleures pratiques de viralité LinkedIn, notamment :\n\nLe storytelling pour capter l’attention.\nL’effet de curiosité pour maximiser le temps de lecture.\nLa preuve sociale pour crédibiliser le message.\nL’alignement avec les tendances et l’actualité.\nLes techniques algorithmiques pour maximiser la portée (commentaires, timing de publication, interaction post-publication).\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        6900,
+        120
+      ],
+      "id": "559874be-f9c5-4da5-944b-29f21b30ba42",
+      "name": "AI Agent - Virality",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Virality').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7260,
+        120
+      ],
+      "id": "5353bf4f-8f49-4507-ad5c-826892e6d74f",
+      "name": "If - Virality"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        },\n    \t\"cta\": {\n          \"type\": \"string\",\n          \"description\": \"The call to action of the post\"\n        },\n    \t\"hashtag\": {\n          \"type\": \"string\",\n          \"description\": \"5 hashtags : 2 specifics, 3 generic\"\n        },\n        \"recommendation\": {\n          \"type\": \"string\",\n          \"description\": \"the recommendation of the post for better performance like: Repurpose this post into a carousel highlighting Khoj's features, or share it in a newsletter with a real-world case study. Encourage your audience to try Khoj and share their experiences!\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        7100,
+        340
+      ],
+      "id": "1d211495-8695-4adb-a87c-1b96d57bc1d6",
+      "name": "Structured Output Parser - Virality"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Rewrite the post to make it viral :\n- Title: \"\"\"{{ $('Filter Best title').item.json.title }}\"\"\";\n- Post: \"\"\"{{ $('AI Agent - Content expert').item.json.output.post }}\"\"\";\n- CTA: \"\"\"{{ $('AI Agent - CTA expert').item.json.output.cta }}\"\"\";\n- Hashtags: \"\"\"{{ $('AI Agent - hashtags expert').item.json.output.hashtags }}\"\"\";\n- Recommendations: \"\"\"{{ $json.suggestion }}\"\"\";\n\n---\n\nSEO recommendation :\n- search intent: \"\"\"{{ $('AI Agent - SEO').item.json.output.search_intent }}\"\"\";\n- suggested key: \"\"\"{{ $('AI Agent - SEO').item.json.output.suggested_keywords }}\"\"\";\n- title suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.title_suggestions }}\"\"\";\n- post suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.content_suggestions }}\"\"\";\n- cta suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.cta_suggestions }}\"\"\";\n- hashtags suggestions: \"\"\"{{ $('AI Agent - SEO').item.json.output.hashtags }}\"\"\";\n- SEO tips: \"\"\"{{ $('AI Agent - SEO').item.json.output.seo_tips }}\"\"\";\n\n---\n\nSource article : \n\"\"\"\n- Title: \"\"\"{{ $('Loop Over Items').item.json.title }}\"\"\";\n- Content: \"\"\"{{ $('Loop Over Items').item.json.content }}\"\"\";\n\"\"\"\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Goal\nTransformer un post LinkedIn généré par une IA en un texte plus naturel, engageant et authentique, tout en conservant son message clé. L’objectif est d’éliminer les signaux typiques d’un texte artificiel pour qu’il ressemble à un post écrit par un humain.\n\n## Return Format in JSON\n```json\n{\n  \"title\": \"[the title of the post]\",\n  \"post\": \"[the content of the post]\",\n  \"cta\": \"[The call to action of the post]\",\n  \"hashtags\": \"[5 hashtags : 2 specifics, 3 generic]\",\n  \"recommendation\": \"[the recommendation of the post for better performance.]\"\n}\n```\n\n## Post Rules:\n- Diminiuer la perplexité (prévisibilité du texte);\n- Augmenter le burstiness (variabilité du rythme et complexité);\n- Générer un texte au style inhabituel (ex : phrases très simples ou erreurs intentionnelles);\n- Paraphraser le post original sans en dénaturer le sens;\n- Retravail stylistique (réécriture, vocabulaire varié);\n- Avoir un ton naturel : conversationnel, fluide et adapté à LinkedIn;\n- Alterner phrases courtes et longues;\n- Varier types de phrases (déclaratives, interrogatives, exclamatives);\n- Introduire ponctuation variée (questions rhétoriques, exclamations);\n- Enrichir le vocabulaire : éviter les formulations génériques et trop parfaites, utiliser des synonymes et des expressions naturelles.\n- Éviter répétitions et mots trop communs (« très », « cependant », etc.);\n- Utiliser termes spécifiques, synonymes plus rares;\n- Inclure expressions idiomatiques, proverbes, figures de style;\n- Adapter le ton au contexte (plus familier sur réseaux sociaux, informatif mais chaleureux en SEO);\n- Ajouter touches d’humour subtil ou émotions sincères;\n- Insérer opinions ou réflexions personnelles;\n- Inclure anecdotes, expériences vécues;\n- Introduire références culturelles ou temporelles récentes (contexte actuel);\n- Ajouter une touche personnelle : inclure des anecdotes, des émotions ou une réflexion authentique.\n-Maintenir la clarté et la lisibilité : rester accessible et agréable à lire, sans phrases inutiles ou trop complexes.\n\n## Warnings\n- Éviter un ton trop académique ou robotique.\n- Bannir les formulations répétitives ou mécaniques.\n- Diversifier structure des titres et sous-titres.\n- Éliminer phrases trop uniformes ou monotones.\n- Ne pas déformer le message initial mais le rendre plus vivant.\n- Ne pas exagérer les émotions ou ajouter du contenu non pertinent.\n- Ne pas tomber dans un style trop familier qui pourrait nuire à la crédibilité du post.\n- Ne pas utiliser d'expression du type:\n    - imaginez ...\n    - quel est votre opinion ...\n    - partagez vos réflexions ...\n    - partagez votre point de vue\n\n##Context Dump\n{{ $('Edit Fields').item.json.context }}\n\nLe post LinkedIn à humaniser sera fourni en entrée. Il peut s’agir d’un texte généré par une IA qui semble trop mécanique, rigide ou impersonnel. L’adaptation doit viser un ton naturel, propre aux publications engageantes sur LinkedIn, avec une structure dynamique et une implication personnelle subtile.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        7480,
+        120
+      ],
+      "id": "0670a723-3670-4168-b337-7338de49d0a5",
+      "name": "AI Agent - Humaniser",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\":  {\n    \t\"title\": {\n          \"type\": \"string\",\n          \"description\": \"the title of the post\"\n        },\n    \t\"post\": {\n          \"type\": \"string\",\n          \"description\": \"the content of the post\"\n        },\n    \t\"cta\": {\n          \"type\": \"string\",\n          \"description\": \"The call to action of the post\"\n        },\n    \t\"hashtag\": {\n          \"type\": \"string\",\n          \"description\": \"5 hashtags : 2 specifics, 3 generic\"\n        },\n        \"recommendation\": {\n          \"type\": \"string\",\n          \"description\": \"the recommendation of the post for better performance like: Repurpose this post into a carousel highlighting Khoj's features, or share it in a newsletter with a real-world case study. Encourage your audience to try Khoj and share their experiences!\"\n        }\n    }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        7680,
+        340
+      ],
+      "id": "85a0c333-25d3-4053-9f67-058abc91e90c",
+      "name": "Structured Output Parser - Humaniser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "30f3893f-e745-4534-9d83-12361c35817b",
+              "leftValue": "={{ $('AI Agent - Humaniser').item.json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7860,
+        120
+      ],
+      "id": "4454cf7b-231d-4684-a072-26b307a36649",
+      "name": "If - humaniser"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {
+          "temperature": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        7440,
+        740
+      ],
+      "id": "23c63aff-f660-4649-9fee-421297023877",
+      "name": "Mistral Cloud Chat - humaniser",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "Fr0Brj5aUCgdQXdS",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        6100,
+        1640
+      ],
+      "id": "841dbc7f-f32c-4e88-8782-b9573e182f4c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "trdBeswsWC2Yd8rO",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "AI Agent - Ideation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get Articles By Tag TOFU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Articles By Tag TOFU": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save POST": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Writer": {
+      "main": [
+        [
+          {
+            "node": "If - writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - SEO": {
+      "main": [
+        [
+          {
+            "node": "If - SEO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - SEO",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Title expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Content expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - CTA expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - hashtags expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Media expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Ideation",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Ideation Confidence",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Translator",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Virality",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - SEO": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - SEO",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Writer": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Writer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Writer2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - ReWriter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - ReWriter": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Verif Style",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code - combine post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent - ReWriter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Code - combine post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Verif Style": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Writer3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Recommendations",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - combine post": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Title expert": {
+      "main": [
+        [
+          {
+            "node": "If - Title expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Content expert": {
+      "main": [
+        [
+          {
+            "node": "If - Content expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Content expert": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Content expert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Title expert": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Title expert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Best title": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Content expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - writer": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - SEO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - SEO": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Title expert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Title expert": {
+      "main": [
+        [
+          {
+            "node": "Filter Best title",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Content expert": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - CTA expert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - CTA expert": {
+      "main": [
+        [
+          {
+            "node": "If - CTA expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - CTA expert": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - CTA expert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - CTA expert": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - hashtags expert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - hashtags expert": {
+      "main": [
+        [
+          {
+            "node": "If - Hashtags expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Hashtags expert": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - hashtags expert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Hashtags expert": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Media expert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Media expert": {
+      "main": [
+        [
+          {
+            "node": "If - Media expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Media expert": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Media expert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Media expert": {
+      "main": [
+        [
+          {
+            "node": "Filter Best recommendation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Ideation": {
+      "main": [
+        [
+          {
+            "node": "If - Ideation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Ideation": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Ideation",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Ideation": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Ideation Confidence",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Ideation Confidence": {
+      "main": [
+        [
+          {
+            "node": "If - Ideation Confidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Ideation Confidence": {
+      "main": [
+        [
+          {
+            "node": "Filter Best idea",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Ideation Confidence": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Ideation Confidence",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Best idea": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Best recommendation": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Virality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare post": {
+      "main": [
+        [
+          {
+            "node": "Save POST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Translator": {
+      "main": [
+        [
+          {
+            "node": "If - Translator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Translator": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Translator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Translator": {
+      "main": [
+        [
+          {
+            "node": "Prepare post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Virality": {
+      "main": [
+        [
+          {
+            "node": "If - Virality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Virality": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Humaniser",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Virality": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Virality",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Humaniser": {
+      "main": [
+        [
+          {
+            "node": "If - humaniser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser - Humaniser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Humaniser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - humaniser": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Translator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat - humaniser": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Humaniser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "56a2fee0-8c77-40f0-ace1-ebc505587b64",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83ee9c1d9815d10ebbe9538d3f36cc15f803fc88dab8df02e2d9a2b6f457cb51"
+  },
+  "id": "ivNc3Xs2sp67GIyw",
+  "tags": []
+}
