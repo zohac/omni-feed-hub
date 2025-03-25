@@ -1,26 +1,19 @@
 // src/application/usecases/rss-feed.stats.use-cases.ts
 
 import { Inject } from '@nestjs/common';
+import { RssFeed } from 'src/domain/entities/rss-feed';
 
 import { RssFeedStats } from '../../domain/entities/rss-feed.stats';
 import { IRssFeedStatsRepository } from '../../domain/interfaces/rss-feed.stats.repository';
-
-import { RssFeedUseCases } from './rss-feed.use-cases';
 
 export class RssFeedStatsUseCases {
   constructor(
     @Inject('IRepository<RssFeedStats>')
     private readonly repository: IRssFeedStatsRepository,
-    private readonly feedUseCases: RssFeedUseCases,
   ) {}
 
   async getAll(): Promise<RssFeedStats[]> {
-    let stats = await this.repository.getAll();
-    if (0 === stats.length) {
-      stats = await this.syncAllStats();
-    }
-
-    return stats;
+    return await this.repository.getAll();
   }
 
   async syncStats(feedId: number): Promise<RssFeedStats | null> {
@@ -45,8 +38,7 @@ export class RssFeedStatsUseCases {
     return stats;
   }
 
-  async syncAllStats(): Promise<RssFeedStats[]> {
-    const feeds = await this.feedUseCases.getAll();
+  async syncAllStats(feeds: RssFeed[]): Promise<RssFeedStats[]> {
     const syncPromises = feeds.map(async (feed) => {
       return this.syncStats(feed.id);
     });

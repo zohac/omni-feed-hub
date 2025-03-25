@@ -7,12 +7,13 @@ import { CommandFactory } from '../../../application/factories/command.factory';
 import { TaskOrchestrator } from '../../../application/orchestrators/task.orchestrator';
 import { AnalysisUseCases } from '../../../application/usecases/analysis.use-cases';
 import { ParseFeedUseCases } from '../../../application/usecases/parse.feed.use-cases';
+import { RssFeedStatsUseCases } from '../../../application/usecases/rss-feed.stats.use-cases';
 import { RssFeedUseCases } from '../../../application/usecases/rss-feed.use-cases';
 import { TaskUseCases } from '../../../application/usecases/task.use-cases';
 import { InfrastructureModule } from '../../../infrastructure/modules/infrastructure.module';
 import { AiAgentModule } from '../ai-agent/ai-agent.module';
-import { ArticleModule } from '../article/article.module';
 import { ArticleCollectionModule } from '../article-collection/article.collection.module';
+import { ArticleModule } from '../article/article.module';
 import { RssFeedCollectionModule } from '../rss-feed-collection/rss-feed.collection.module';
 
 import { RssFeedController } from './rss-feed.controller';
@@ -27,6 +28,7 @@ import { RssFeedController } from './rss-feed.controller';
   ],
   controllers: [RssFeedController],
   providers: [
+    RssFeedStatsUseCases,
     RssFeedUseCases,
     ParseFeedUseCases,
     AnalysisUseCases,

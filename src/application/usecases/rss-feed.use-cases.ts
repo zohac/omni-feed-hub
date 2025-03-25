@@ -8,10 +8,9 @@ import { RssFeedInfo } from '../../domain/interfaces/rss-feed.infos';
 import { IUsecase } from '../../domain/interfaces/usecase';
 import { CreateRssFeedDto, UpdateRssFeedDto } from '../dtos/rss-feed.dto';
 import { RssFeedInfosDto } from '../dtos/rss-feed.infos.dto';
-
-import { AnalysisUseCases } from './analysis.use-cases';
 import { ParseFeedUseCases } from './parse.feed.use-cases';
 import { RssFeedCollectionUseCases } from './rss-feed.collection.use-cases';
+import { RssFeedStatsUseCases } from './rss-feed.stats.use-cases';
 
 @Injectable()
 export class RssFeedUseCases
@@ -22,7 +21,7 @@ export class RssFeedUseCases
     private readonly repository: IRepository<RssFeed>,
     private readonly collectionUseCases: RssFeedCollectionUseCases,
     private readonly parseFeedUseCase: ParseFeedUseCases,
-    private readonly analysisUseCases: AnalysisUseCases,
+    private readonly rssFeedStatsUseCases: RssFeedStatsUseCases,
   ) {}
 
   async getAll(): Promise<RssFeed[]> {
@@ -49,6 +48,7 @@ export class RssFeedUseCases
     const createdFeed = await this.repository.create(feed);
 
     await this.parseFeedUseCase.execute(createdFeed);
+    await this.rssFeedStatsUseCases.syncStats(createdFeed.id);
 
     return createdFeed;
   }
@@ -83,6 +83,8 @@ export class RssFeedUseCases
       );
     }
 
+    await this.rssFeedStatsUseCases.syncStats(updatedFeed.id);
+
     return updatedFeed;
   }
 
@@ -101,5 +103,6 @@ export class RssFeedUseCases
     for (const feed of feeds) {
       await this.parseFeedUseCase.execute(feed);
     }
+    await this.rssFeedStatsUseCases.syncAllStats(feeds);
   }
 }
